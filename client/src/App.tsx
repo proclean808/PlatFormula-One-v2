@@ -18,8 +18,11 @@ import {
   Star,
   CheckCircle,
   Rocket,
-  Brain
+  Brain,
+  Zap,
+  ArrowRight
 } from 'lucide-react'
+import { Resources } from './components/Resources'
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -350,177 +353,9 @@ function App() {
             </div>
           </TabsContent>
 
-          {/* Resources Tab - SUPERIOR VERSION PRESERVED */}
-          <TabsContent value="resources" className="space-y-8 animate-in fade-in-50 duration-500">
-            {/* NexusYC Launch Banner */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8 text-white shadow-xl">
-              <div className="absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 -mb-10 -ml-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Badge className="bg-white/20 hover:bg-white/30 text-white border-0 backdrop-blur-sm">
-                    <Rocket className="w-3 h-3 mr-1" />
-                    JUST LAUNCHED
-                  </Badge>
-                </div>
-                
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">NexusYC v1.0 - Human Capital Intelligence</h2>
-                <p className="text-xl text-blue-100 mb-6 max-w-2xl">
-                  Production-grade Co-Founder & Partner Matching Engine with JoyceGPT intelligence
-                </p>
-                
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/20 pt-6 mt-6">
-                  <p className="italic text-blue-100 text-lg">"Execute faster, decide smarter, grow bigger."</p>
-                  <div className="text-right">
-                    <p className="text-sm text-blue-200">Release Date</p>
-                    <p className="font-bold">Sept 22, 2025</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Core Features */}
-            <div>
-              <h3 className="text-xl font-bold mb-4 flex items-center">
-                <Star className="w-5 h-5 mr-2 text-yellow-500" />
-                Core Features
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="dark:bg-gray-900/50 backdrop-blur-sm border-t-4 border-t-blue-500">
-                  <CardHeader>
-                    <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-2">
-                      <Target className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <CardTitle>Privacy-First Matching</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      Secure, tokenized profile schema with Row-Level Security (RLS) and attribute-level visibility
-                    </p>
-                    <ul className="space-y-2">
-                      {[
-                        "Your data remains under your control",
-                        "Connect only when you choose",
-                        "Enterprise-grade security",
-                        "Tokenized profile system"
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start text-sm">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 mt-0.5 shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="dark:bg-gray-900/50 backdrop-blur-sm border-t-4 border-t-purple-500">
-                  <CardHeader>
-                    <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-2">
-                      <Brain className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <CardTitle>Intelligent Reasoning</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      JoyceGPT-powered MCP layer scores matches beyond just skills
-                    </p>
-                    <ul className="space-y-2">
-                      {[
-                        "Psychological fit analysis",
-                        "Work style compatibility",
-                        "Goal alignment scoring",
-                        "Multi-modal compute & perception"
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start text-sm">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 mt-0.5 shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="dark:bg-gray-900/50 backdrop-blur-sm border-t-4 border-t-emerald-500">
-                  <CardHeader>
-                    <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-2">
-                      <Zap className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <CardTitle>Real-Time Recommendations</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      Top-tier matches with AI explanations and immediate next steps
-                    </p>
-                    <ul className="space-y-2">
-                      {[
-                        "Instant match scoring",
-                        "AI-powered explanations",
-                        "Clear action paths",
-                        "Remove guesswork completely"
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-start text-sm">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 mt-0.5 shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            {/* Why This Matters */}
-            <div>
-              <h3 className="text-xl font-bold mb-4 flex items-center">
-                <Target className="w-5 h-5 mr-2 text-emerald-500" />
-                Why This Matters for You
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                This isn't just a new feature; it's the first live service of the NexusYC ecosystem.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-6 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30">
-                  <Users className="w-8 h-8 text-blue-500 mb-4" />
-                  <h4 className="font-bold mb-2">For Founders</h4>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    The fastest, most effective way to find your next co-founder or strategic partner
-                  </p>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>→ Stop sifting through directories</li>
-                    <li>→ Get intelligent recommendations</li>
-                    <li>→ Clear path forward</li>
-                  </ul>
-                </div>
-
-                <div className="p-6 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30">
-                  <Target className="w-8 h-8 text-emerald-500 mb-4" />
-                  <h4 className="font-bold mb-2">For The Platform</h4>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Proves core architecture and operational readiness for the entire founder cockpit
-                  </p>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>→ Reusable template for future modules</li>
-                    <li>→ Proven ingestion → reasoning → persistence pattern</li>
-                    <li>→ Scalable system architecture</li>
-                  </ul>
-                </div>
-
-                <div className="p-6 rounded-xl bg-purple-50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-900/30">
-                  <TrendingUp className="w-8 h-8 text-purple-500 mb-4" />
-                  <h4 className="font-bold mb-2">For Investors</h4>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Demonstrates tangible progress of core IP and ability to monetize proprietary data
-                  </p>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>→ Live, scalable system</li>
-                    <li>→ High-value problem solving</li>
-                    <li>→ Proprietary data assets</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          {/* Resources Tab */}
+          <TabsContent value="resources">
+            <Resources />
           </TabsContent>
 
           {/* Builder Tab Placeholder */}
@@ -648,39 +483,6 @@ function App() {
   )
 }
 
-function ArrowRight({ className }: { className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
-  )
-}
 
-function Zap({ className }: { className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-    </svg>
-  )
-}
 
 export default App
