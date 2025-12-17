@@ -395,10 +395,10 @@ export function Resources() {
                     <Button 
                       size="sm" 
                       className={`h-8 px-3 text-xs text-white border-0 ${
-                        acc.name.includes('Techstars')
-                          ? 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/20'
-                          : acc.name.includes('Y Combinator')
-                            ? 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/20'
+                        acc.name.includes('Y Combinator')
+                          ? 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/20'
+                          : acc.name.includes('Techstars')
+                            ? 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/20'
                             : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20'
                       }`}
                       onClick={() => window.open(acc.url, '_blank')}
