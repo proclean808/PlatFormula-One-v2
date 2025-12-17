@@ -23,6 +23,7 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { Resources } from './components/Resources'
+import { ApplicationBuilder } from './components/ApplicationBuilder'
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -358,20 +359,9 @@ function App() {
             <Resources />
           </TabsContent>
 
-          {/* Builder Tab Placeholder */}
-          <TabsContent value="builder" className="space-y-6 animate-in fade-in-50 duration-500">
-            <Card className="border-dashed border-2">
-              <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                  <Target className="w-8 h-8 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Application Builder</h3>
-                <p className="text-muted-foreground max-w-md mb-6">
-                  This module will help you craft perfect answers for accelerator applications using AI.
-                </p>
-                <Button>Launch Builder Demo</Button>
-              </CardContent>
-            </Card>
+          {/* Builder Tab */}
+          <TabsContent value="builder">
+            <ApplicationBuilder />
           </TabsContent>
 
           {/* Tracking Tab Placeholder */}

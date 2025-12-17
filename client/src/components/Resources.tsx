@@ -354,10 +354,18 @@ export function Resources() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredAccelerators.map((acc, i) => (
-              <Card key={i} className="hover:shadow-md transition-all hover:border-emerald-500/50 dark:hover:border-emerald-500/50 group">
+              <Card key={i} className={`hover:shadow-md transition-all group ${
+                acc.name.includes('Techstars') 
+                  ? 'hover:border-blue-500/50 dark:hover:border-blue-500/50' 
+                  : 'hover:border-emerald-500/50 dark:hover:border-emerald-500/50'
+              }`}>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-base font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <CardTitle className={`text-base font-bold transition-colors ${
+                      acc.name.includes('Techstars')
+                        ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                        : 'group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
+                    }`}>
                       {acc.name}
                     </CardTitle>
                     <Badge variant="secondary" className="text-xs">{acc.funding}</Badge>
@@ -373,7 +381,11 @@ export function Resources() {
                       {acc.focus}
                     </Badge>
                     <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => window.open(acc.url, '_blank')}>
-                      <ExternalLink className="w-4 h-4 text-muted-foreground hover:text-emerald-500" />
+                      <ExternalLink className={`w-4 h-4 text-muted-foreground ${
+                        acc.name.includes('Techstars')
+                          ? 'hover:text-blue-500'
+                          : 'hover:text-emerald-500'
+                      }`} />
                     </Button>
                   </div>
                 </CardContent>
