@@ -19,7 +19,10 @@ import {
   Cloud,
   Code,
   Database,
-  Shield
+  Shield,
+  Bot,
+  Cpu,
+  Sparkles
 } from 'lucide-react'
 
 // Y Combinator Ecosystem
@@ -133,6 +136,52 @@ const accelerators = [
   { name: "Kima Ventures", location: "Paris", focus: "SaaS", funding: "Seed", url: "https://kimaventures.com" },
   { name: "Jungle Ventures", location: "Singapore", focus: "Southeast Asia", funding: "Series A/B", url: "https://jungle.vc" },
   { name: "Blackbird", location: "Australia", focus: "Generalist", funding: "Seed+", url: "https://blackbird.vc" }
+]
+
+// AI & Developer Toolkit
+const aiTools = [
+  {
+    name: "Google AI Studio",
+    desc: "Fastest way to build with Gemini models. Prototyping environment for developers.",
+    category: "AI Development",
+    icon: Sparkles,
+    url: "https://aistudio.google.com"
+  },
+  {
+    name: "Gemini Product Drops",
+    desc: "Latest releases, model updates, and feature drops from Google DeepMind.",
+    category: "News & Updates",
+    icon: Zap,
+    url: "https://deepmind.google/technologies/gemini"
+  },
+  {
+    name: "GitHub Marketplace",
+    desc: "Tools to improve your workflow. CI/CD, code quality, and AI extensions.",
+    category: "Dev Ecosystem",
+    icon: Code,
+    url: "https://github.com/marketplace"
+  },
+  {
+    name: "OpenAI Platform",
+    desc: "Access GPT-4o, embeddings, and fine-tuning APIs.",
+    category: "LLM APIs",
+    icon: Bot,
+    url: "https://platform.openai.com"
+  },
+  {
+    name: "Hugging Face",
+    desc: "The AI community building the future. Models, datasets, and spaces.",
+    category: "Open Source",
+    icon: Cpu,
+    url: "https://huggingface.co"
+  },
+  {
+    name: "Vercel AI SDK",
+    desc: "The TypeScript toolkit for building AI-powered applications.",
+    category: "Frameworks",
+    icon: Code,
+    url: "https://sdk.vercel.ai"
+  }
 ]
 
 // Affiliate & Partner Network
@@ -278,9 +327,10 @@ export function Resources() {
       </div>
 
       <Tabs defaultValue="accelerators" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-8">
+        <TabsList className="grid w-full grid-cols-4 mb-8">
           <TabsTrigger value="accelerators">Accelerators (60+)</TabsTrigger>
           <TabsTrigger value="yc">YC Ecosystem</TabsTrigger>
+          <TabsTrigger value="ai-tools">AI Toolkit</TabsTrigger>
           <TabsTrigger value="partners">Partner Perks</TabsTrigger>
         </TabsList>
 
@@ -326,6 +376,41 @@ export function Resources() {
                       <ExternalLink className="w-4 h-4 text-muted-foreground hover:text-emerald-500" />
                     </Button>
                   </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* AI TOOLKIT TAB */}
+        <TabsContent value="ai-tools" className="space-y-6">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold flex items-center">
+              <Sparkles className="w-6 h-6 mr-2 text-purple-500" />
+              AI & Developer Toolkit
+            </h3>
+            <p className="text-muted-foreground">Essential tools for building the next generation of software</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {aiTools.map((tool, i) => (
+              <Card key={i} className="hover:shadow-lg transition-all border-t-4 border-t-purple-500 dark:border-t-purple-400">
+                <CardHeader>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <tool.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <Badge variant="outline" className="bg-purple-50 dark:bg-purple-900/10 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800">
+                      {tool.category}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-lg">{tool.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4 min-h-[40px]">{tool.desc}</p>
+                  <Button variant="secondary" className="w-full group" onClick={() => window.open(tool.url, '_blank')}>
+                    Launch Tool <ExternalLink className="w-4 h-4 ml-2 group-hover:text-purple-500 transition-colors" />
+                  </Button>
                 </CardContent>
               </Card>
             ))}
