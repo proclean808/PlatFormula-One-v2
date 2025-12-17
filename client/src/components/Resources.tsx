@@ -380,12 +380,19 @@ export function Resources() {
                     <Badge variant="outline" className="text-xs font-normal">
                       {acc.focus}
                     </Badge>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => window.open(acc.url, '_blank')}>
-                      <ExternalLink className={`w-4 h-4 text-muted-foreground ${
+                    <Button 
+                      size="sm" 
+                      className={`h-8 px-3 text-xs text-white border-0 ${
                         acc.name.includes('Techstars')
-                          ? 'hover:text-blue-500'
-                          : 'hover:text-emerald-500'
-                      }`} />
+                          ? 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/20'
+                          : acc.name.includes('Y Combinator')
+                            ? 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/20'
+                            : 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20'
+                      }`}
+                      onClick={() => window.open(acc.url, '_blank')}
+                    >
+                      Visit
+                      <ExternalLink className="w-3 h-3 ml-1.5" />
                     </Button>
                   </div>
                 </CardContent>
@@ -420,8 +427,8 @@ export function Resources() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4 min-h-[40px]">{tool.desc}</p>
-                  <Button variant="secondary" className="w-full group" onClick={() => window.open(tool.url, '_blank')}>
-                    Launch Tool <ExternalLink className="w-4 h-4 ml-2 group-hover:text-purple-500 transition-colors" />
+                  <Button className="w-full group bg-purple-600 hover:bg-purple-700 text-white border-0" onClick={() => window.open(tool.url, '_blank')}>
+                    Launch Tool <ExternalLink className="w-4 h-4 ml-2" />
                   </Button>
                 </CardContent>
               </Card>
