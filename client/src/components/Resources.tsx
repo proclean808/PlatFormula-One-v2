@@ -192,7 +192,8 @@ const partners = [
     desc: "Cloud infrastructure for scaling your startup.",
     category: "Infrastructure",
     icon: Cloud,
-    url: "https://aws.amazon.com/activate"
+    url: "https://aws.amazon.com/activate",
+    domain: "aws.amazon.com"
   },
   {
     name: "Google Cloud",
@@ -200,7 +201,8 @@ const partners = [
     desc: "AI-first cloud platform and Firebase tools.",
     category: "Infrastructure",
     icon: Cloud,
-    url: "https://cloud.google.com/startup"
+    url: "https://cloud.google.com/startup",
+    domain: "cloud.google.com"
   },
   {
     name: "Microsoft Azure",
@@ -208,7 +210,8 @@ const partners = [
     desc: "Includes OpenAI API access and GitHub Enterprise.",
     category: "AI & Cloud",
     icon: Server,
-    url: "https://startups.microsoft.com"
+    url: "https://startups.microsoft.com",
+    domain: "microsoft.com"
   },
   {
     name: "Stripe Atlas",
@@ -216,7 +219,8 @@ const partners = [
     desc: "Incorporate your company in Delaware instantly.",
     category: "Legal/Finance",
     icon: DollarSign,
-    url: "https://stripe.com/atlas"
+    url: "https://stripe.com/atlas",
+    domain: "stripe.com"
   },
   {
     name: "Mercury",
@@ -224,31 +228,35 @@ const partners = [
     desc: "Banking built for startups. No fees.",
     category: "Finance",
     icon: DollarSign,
-    url: "https://mercury.com"
+    url: "https://mercury.com",
+    domain: "mercury.com"
   },
-  {
+    {
     name: "Brex",
     offer: "50,000 Points",
     desc: "Corporate cards and spend management.",
     category: "Finance",
     icon: DollarSign,
-    url: "https://brex.com"
+    url: "https://brex.com",
+    domain: "brex.com"
   },
   {
     name: "HubSpot",
-    offer: "90% Off Year 1",
-    desc: "CRM, marketing, and sales suite.",
+    offer: "90% Off",
+    desc: "CRM platform for scaling companies.",
     category: "Sales/Marketing",
     icon: Users,
-    url: "https://hubspot.com/startups"
+    url: "https://hubspot.com/startups",
+    domain: "hubspot.com"
   },
   {
     name: "Notion",
     offer: "6 Months Free",
-    desc: "Connected workspace for wiki, docs, and projects.",
+    desc: "Connected workspace for your team.",
     category: "Productivity",
-    icon: Code,
-    url: "https://notion.so/startups"
+    icon: BookOpen,
+    url: "https://notion.so/startups",
+    domain: "notion.so"
   },
   {
     name: "Linear",
@@ -256,15 +264,17 @@ const partners = [
     desc: "Issue tracking built for high-performance teams.",
     category: "Productivity",
     icon: Code,
-    url: "https://linear.app"
+    url: "https://linear.app",
+    domain: "linear.app"
   },
   {
-    name: "Vercel",
-    offer: "Pro Plan Free",
-    desc: "Develop. Preview. Ship. The frontend cloud.",
-    category: "DevTools",
-    icon: Code,
-    url: "https://vercel.com"
+    name: "Segment",
+    offer: "$50,000 Credits",
+    desc: "Customer data platform (CDP) for every app.",
+    category: "Analytics",
+    icon: Users,
+    url: "https://segment.com/startups",
+    domain: "segment.com"
   },
   {
     name: "MongoDB",
@@ -272,15 +282,17 @@ const partners = [
     desc: "The developer data platform.",
     category: "Database",
     icon: Database,
-    url: "https://mongodb.com/startups"
+    url: "https://mongodb.com/startups",
+    domain: "mongodb.com"
   },
   {
-    name: "OpenAI",
-    offer: "API Credits",
-    desc: "Access to GPT-4 and latest models.",
-    category: "AI",
-    icon: Brain,
-    url: "https://openai.com"
+    name: "Mixpanel",
+    offer: "$50,000 Credits",
+    desc: "Product analytics for mobile, web, and more.",
+    category: "Analytics",
+    icon: Users,
+    url: "https://mixpanel.com/startups",
+    domain: "mixpanel.com"
   }
 ]
 

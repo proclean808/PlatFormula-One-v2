@@ -89,7 +89,7 @@ function App() {
   )
 
   const handleGetStarted = () => {
-    alert('Get Started functionality - This would open an onboarding modal in the full version.')
+    setActiveTab('builder')
   }
 
   return (
