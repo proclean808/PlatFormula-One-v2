@@ -21,7 +21,11 @@ import {
   Brain,
   Zap,
   ArrowRight,
-  MonitorPlay
+  MonitorPlay,
+  Tv,
+  LineChart,
+  Phone,
+  Mail
 } from 'lucide-react'
 import { Resources } from './components/Resources'
 import { ApplicationBuilder } from './components/ApplicationBuilder'
@@ -139,55 +143,55 @@ function App() {
             4. Removed any overlay/shading in dark mode by using explicit transparent backgrounds
           */}
           <div className="w-full overflow-x-auto pb-2 mb-6 scrollbar-hide">
-            <TabsList className="inline-flex w-full min-w-max sm:w-full sm:grid sm:grid-cols-6 bg-transparent dark:bg-transparent border-0 p-0 h-auto gap-2">
+            <TabsList className="inline-flex w-full min-w-max sm:w-full sm:grid sm:grid-cols-7 bg-gray-100/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-1 h-auto gap-1 rounded-xl backdrop-blur-sm">
               <TabsTrigger 
                 value="dashboard" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
                 <BarChart3 className="w-4 h-4" />
-                <span>Dashboard</span>
+                <span className="font-medium">Dashboard</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="directory" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
                 <Search className="w-4 h-4" />
-                <span>Directory</span>
+                <span className="font-medium">Directory</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="builder" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
-                <Target className="w-4 h-4" />
-                <span>Builder</span>
+                <Zap className="w-4 h-4" />
+                <span className="font-medium">Builder</span>
               </TabsTrigger>
               <TabsTrigger 
-                value="studio" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                value="pitch" 
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
-                <MonitorPlay className="w-4 h-4" />
-                <span>Pitch Studio</span>
+                <Tv className="w-4 h-4" />
+                <span className="font-medium">Pitch Studio</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="resources" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Resources</span>
+                <span className="font-medium">Resources</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="tracking" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
-                <TrendingUp className="w-4 h-4" />
-                <span>Tracking</span>
+                <LineChart className="w-4 h-4" />
+                <span className="font-medium">Tracking</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="community" 
-                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+                className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
               >
                 <Users className="w-4 h-4" />
-                <span>Community</span>
+                <span className="font-medium">Community</span>
               </TabsTrigger>
             </TabsList>
           </div>
