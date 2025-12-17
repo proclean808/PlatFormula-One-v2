@@ -20,10 +20,12 @@ import {
   Rocket,
   Brain,
   Zap,
-  ArrowRight
+  ArrowRight,
+  MonitorPlay
 } from 'lucide-react'
 import { Resources } from './components/Resources'
 import { ApplicationBuilder } from './components/ApplicationBuilder'
+import { PitchStudio } from './components/PitchStudio'
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -158,6 +160,13 @@ function App() {
               >
                 <Target className="w-4 h-4" />
                 <span>Builder</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="studio" 
+                className="flex items-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm border border-transparent data-[state=active]:border-gray-200 dark:data-[state=active]:border-gray-700 py-2.5"
+              >
+                <MonitorPlay className="w-4 h-4" />
+                <span>Pitch Studio</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="resources" 
@@ -362,6 +371,11 @@ function App() {
           {/* Builder Tab */}
           <TabsContent value="builder">
             <ApplicationBuilder />
+          </TabsContent>
+
+          {/* Pitch Studio Tab */}
+          <TabsContent value="studio">
+            <PitchStudio />
           </TabsContent>
 
           {/* Tracking Tab Placeholder */}
