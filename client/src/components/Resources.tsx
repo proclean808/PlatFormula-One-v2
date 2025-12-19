@@ -250,6 +250,15 @@ const partners = [
     domain: "hubspot.com"
   },
   {
+    name: "Vercel Accelerator",
+    offer: "$150,000 in Credits",
+    desc: "Frontend cloud platform for scaling your startup.",
+    category: "Infrastructure",
+    icon: Cloud,
+    url: "https://vercel.com/accelerator",
+    domain: "vercel.com"
+  },
+  {
     name: "Notion",
     offer: "6 Months Free",
     desc: "Connected workspace for your team.",

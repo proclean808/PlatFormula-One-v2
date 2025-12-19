@@ -142,8 +142,8 @@ function App() {
             3. Added min-w-max to ensure tabs don't shrink too small
             4. Removed any overlay/shading in dark mode by using explicit transparent backgrounds
           */}
-          <div className="w-full overflow-x-auto pb-2 mb-6 scrollbar-hide">
-            <TabsList className="inline-flex w-full min-w-max sm:w-full sm:grid sm:grid-cols-7 bg-gray-100/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-1 h-auto gap-1 rounded-xl backdrop-blur-sm">
+          <div className="w-full overflow-x-auto pb-2 mb-6 scrollbar-hide sticky top-20 z-40">
+            <TabsList className="inline-flex w-full min-w-max sm:w-full sm:grid sm:grid-cols-7 bg-white dark:bg-gray-950 border-2 border-gray-200 dark:border-gray-700 p-2 h-auto gap-2 rounded-xl shadow-xl shadow-black/5">
               <TabsTrigger 
                 value="dashboard" 
                 className="flex items-center justify-center space-x-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-emerald-500 dark:data-[state=active]:text-emerald-400 data-[state=active]:shadow-sm py-2.5 rounded-lg transition-all duration-200"
