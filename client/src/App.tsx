@@ -455,10 +455,10 @@ function App() {
             <div>
               <h4 className="font-bold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="tel:4156954606" className="hover:text-emerald-500">(415) 695-4606</a></li>
+                <li><a href="tel:4156954604" className="hover:text-emerald-500">(415) 695-4604</a></li>
                 <li>
-                  <a href="mailto:Jonathan@Behrendterprises.com" className="hover:text-emerald-500">
-                    Jonathan@Behrendterprises.com
+                  <a href="mailto:info@platformula.one" className="hover:text-emerald-500">
+                    info@platformula.one
                   </a>
                 </li>
                 <li>
