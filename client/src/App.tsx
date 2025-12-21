@@ -12,7 +12,7 @@ import { Resources } from '@/components/Resources'
 import { Builder } from '@/components/Builder'
 import { Tracking } from '@/components/Tracking'
 import { Community } from '@/components/Community'
-import { NexusYCLaunch } from '@/components/NexusYCLaunch'
+
 import { ServicesSection } from '@/components/ServicesSection'
 
 // Placeholder for Pitch Studio
@@ -111,7 +111,7 @@ function AppContent() {
 
           <div className="mt-6 min-h-[calc(100vh-12rem)]">
             <TabsContent value="dashboard" className="space-y-8 animate-in fade-in-50 duration-500">
-              <NexusYCLaunch />
+
               <Dashboard />
               <ServicesSection />
             </TabsContent>
