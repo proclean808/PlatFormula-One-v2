@@ -220,8 +220,8 @@ const HomePage = ({ setActiveTab, onOpenAuth }) => {
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-gray-600 dark:text-gray-400 mb-4 text-lg">
             Questions? Contact us at{' '}
-            <a href="mailto:info@alphabots.team" className="text-emerald-600 hover:text-emerald-700 font-medium">
-              info@alphabots.team
+            <a href="mailto:info@platformula.one" className="text-emerald-600 hover:text-emerald-700 font-medium">
+              info@platformula.one
             </a>
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-gray-500 dark:text-gray-400">
@@ -234,7 +234,7 @@ const HomePage = ({ setActiveTab, onOpenAuth }) => {
             </a>
             <span>•</span>
             <a 
-              href="https://linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=jonathan-behrendt" 
+              href="http://lnkd.in/gjMdVuAf" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-emerald-600 transition-colors"
