@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
-import { Button } from '@/components/ui/button.jsx'
-import { Badge } from '@/components/ui/badge.jsx'
-import { Input } from '@/components/ui/input.jsx'
-import { Textarea } from '@/components/ui/textarea.jsx'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { 
   Users, 
   MessageCircle, 
@@ -24,11 +24,44 @@ import {
   TrendingUp
 } from 'lucide-react'
 
+interface Post {
+  id: number;
+  author: string;
+  company: string;
+  avatar: string;
+  time: string;
+  content: string;
+  likes: number;
+  comments: number;
+  tags: string[];
+}
+
+interface Event {
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  type: string;
+  attendees: number;
+  description: string;
+}
+
+interface Mentor {
+  id: number;
+  name: string;
+  title: string;
+  company: string;
+  expertise: string[];
+  rating: number;
+  sessions: number;
+  avatar: string;
+}
+
 export function CommunityPlatform() {
   const [activeTab, setActiveTab] = useState('feed')
-  const [posts, setPosts] = useState([])
-  const [events, setEvents] = useState([])
-  const [mentors, setMentors] = useState([])
+  const [posts, setPosts] = useState<Post[]>([])
+  const [events, setEvents] = useState<Event[]>([])
+  const [mentors, setMentors] = useState<Mentor[]>([])
   const [newPost, setNewPost] = useState('')
 
   useEffect(() => {
@@ -140,7 +173,7 @@ export function CommunityPlatform() {
   const handleCreatePost = () => {
     if (!newPost.trim()) return
     
-    const post = {
+    const post: Post = {
       id: posts.length + 1,
       author: 'You',
       company: 'Your Startup',
@@ -157,7 +190,7 @@ export function CommunityPlatform() {
     alert('Post created successfully!')
   }
 
-  const handleLikePost = (postId) => {
+  const handleLikePost = (postId: number) => {
     setPosts(posts.map(post => 
       post.id === postId 
         ? { ...post, likes: post.likes + 1 }
@@ -165,11 +198,11 @@ export function CommunityPlatform() {
     ))
   }
 
-  const handleJoinEvent = (eventId) => {
+  const handleJoinEvent = (eventId: number) => {
     alert(`Joined event! You'll receive a calendar invite and reminder.`)
   }
 
-  const handleBookMentor = (mentorId) => {
+  const handleBookMentor = (mentorId: number) => {
     alert(`Booking session with mentor. This would open a calendar to schedule your 1-on-1 session.`)
   }
 
@@ -322,36 +355,41 @@ export function CommunityPlatform() {
       {activeTab === 'events' && (
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold">Upcoming Events</h3>
+            <h3 className="text-xl font-bold">Upcoming Events</h3>
             <Button variant="outline">
-              <Calendar className="w-4 h-4 mr-2" />
-              View Calendar
+              <Filter className="w-4 h-4 mr-2" />
+              Filter
             </Button>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div className="grid gap-6">
             {events.map(event => (
-              <Card key={event.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline">{event.type}</Badge>
-                    <span className="text-sm text-gray-500">{event.attendees} attending</span>
-                  </div>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                  <CardDescription>{event.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {new Date(event.date).toLocaleDateString()} at {event.time}
+              <Card key={event.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-blue-100 text-blue-800 p-3 rounded-lg text-center min-w-[80px]">
+                        <div className="text-sm font-bold uppercase">{new Date(event.date).toLocaleString('default', { month: 'short' })}</div>
+                        <div className="text-2xl font-bold">{new Date(event.date).getDate()}</div>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold mb-1">{event.title}</h4>
+                        <div className="flex items-center text-gray-500 text-sm mb-2">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {event.time}
+                          <span className="mx-2">•</span>
+                          <Video className="w-4 h-4 mr-1" />
+                          {event.type}
+                        </div>
+                        <p className="text-gray-600 mb-2">{event.description}</p>
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Users className="w-4 h-4 mr-1" />
+                          {event.attendees} attending
+                        </div>
+                      </div>
                     </div>
-                    
-                    <Button 
-                      className="w-full"
-                      onClick={() => handleJoinEvent(event.id)}
-                    >
-                      Join Event
+                    <Button onClick={() => handleJoinEvent(event.id)}>
+                      RSVP Now
                     </Button>
                   </div>
                 </CardContent>
@@ -364,53 +402,46 @@ export function CommunityPlatform() {
       {/* Mentors Tab */}
       {activeTab === 'mentors' && (
         <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold">Expert Mentors</h3>
-            <div className="flex space-x-2">
-              <Input placeholder="Search mentors..." className="w-64" />
-              <Button variant="outline">
-                <Filter className="w-4 h-4" />
-              </Button>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input placeholder="Search mentors by name, company, or expertise..." className="pl-10" />
             </div>
+            <Button variant="outline">
+              <Filter className="w-4 h-4 mr-2" />
+              Filter
+            </Button>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mentors.map(mentor => (
-              <Card key={mentor.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="text-3xl">{mentor.avatar}</div>
-                    <div>
-                      <CardTitle className="text-lg">{mentor.name}</CardTitle>
-                      <CardDescription>{mentor.title}</CardDescription>
-                      <p className="text-sm text-gray-600">{mentor.company}</p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2">Expertise</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {mentor.expertise.map(skill => (
-                        <Badge key={skill} variant="secondary" className="text-xs">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
+              <Card key={mentor.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-6 text-center">
+                  <div className="text-4xl mb-4">{mentor.avatar}</div>
+                  <h4 className="text-xl font-bold mb-1">{mentor.name}</h4>
+                  <p className="text-blue-600 font-medium mb-1">{mentor.title}</p>
+                  <p className="text-gray-500 text-sm mb-4">{mentor.company}</p>
+                  
+                  <div className="flex flex-wrap justify-center gap-2 mb-4">
+                    {mentor.expertise.map(skill => (
+                      <Badge key={skill} variant="secondary" className="text-xs">
+                        {skill}
+                      </Badge>
+                    ))}
                   </div>
                   
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-center space-x-4 mb-6 text-sm text-gray-600">
                     <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                      <span>{mentor.rating}</span>
+                      <Star className="w-4 h-4 text-yellow-400 mr-1" />
+                      {mentor.rating}
                     </div>
-                    <span className="text-gray-600">{mentor.sessions} sessions</span>
+                    <div className="flex items-center">
+                      <Video className="w-4 h-4 mr-1" />
+                      {mentor.sessions} sessions
+                    </div>
                   </div>
                   
-                  <Button 
-                    className="w-full"
-                    onClick={() => handleBookMentor(mentor.id)}
-                  >
+                  <Button className="w-full" onClick={() => handleBookMentor(mentor.id)}>
                     Book Session
                   </Button>
                 </CardContent>
@@ -419,23 +450,6 @@ export function CommunityPlatform() {
           </div>
         </div>
       )}
-
-      {/* Join Community CTA */}
-      <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">
-        <CardContent className="p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Ready to Join Our Community?</h3>
-          <p className="text-blue-100 mb-6">
-            Connect with 2,500+ founders, access expert mentors, and accelerate your startup journey
-          </p>
-          <Button 
-            size="lg" 
-            className="bg-white text-blue-600 hover:bg-gray-100"
-            onClick={handleJoinCommunity}
-          >
-            Join Community
-          </Button>
-        </CardContent>
-      </Card>
     </div>
   )
 }

@@ -3,7 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Target, Handshake, Scale, FileText, TrendingUp, DollarSign, Brain, Zap } from 'lucide-react'
 import SimplePricingTiers from './SimplePricingTiers';
 
-export default function ServicesSection({ onOpenAuth }) {
+interface ServicesSectionProps {
+  onOpenAuth?: (mode: 'login' | 'register') => void;
+}
+
+export default function ServicesSection({ onOpenAuth }: ServicesSectionProps) {
   const coreServices = [
     {
       icon: Target,
@@ -214,7 +218,7 @@ export default function ServicesSection({ onOpenAuth }) {
       {/* Pricing Tiers */}
       <div className="mt-16">
         <h2 className="text-3xl font-bold text-center mb-8">Choose Your Tier</h2>
-        <SimplePricingTiers />
+        <SimplePricingTiers onOpenAuth={onOpenAuth} />
       </div>
 
       {/* Call to Action */}
@@ -238,4 +242,3 @@ export default function ServicesSection({ onOpenAuth }) {
     </div>
   )
 }
-

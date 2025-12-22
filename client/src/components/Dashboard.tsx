@@ -5,7 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { Rocket, Users, Zap, Target, Handshake, TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react';
 import SimplePricingTiers from './SimplePricingTiers';
 
-const HomePage = ({ setActiveTab, onOpenAuth }) => {
+interface HomePageProps {
+  setActiveTab: (tab: string) => void;
+  onOpenAuth?: (mode: 'login' | 'register') => void;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ setActiveTab, onOpenAuth }) => {
   return (
     <div className="w-full">
       {/* Hero Section */}
@@ -249,4 +254,3 @@ const HomePage = ({ setActiveTab, onOpenAuth }) => {
 };
 
 export default HomePage;
-

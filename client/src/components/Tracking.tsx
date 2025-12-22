@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
-import { Button } from '@/components/ui/button.jsx'
-import { Badge } from '@/components/ui/badge.jsx'
-import { Progress } from '@/components/ui/progress.jsx'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { 
-  TrendingUp, 
-  Calendar, 
   CheckCircle, 
   Clock, 
   AlertCircle,
-  ExternalLink,
   BarChart3,
   Target,
   Users,
@@ -20,9 +16,23 @@ import {
   MessageSquare
 } from 'lucide-react'
 
+interface Application {
+  accelerator: string;
+  submittedAt: string;
+  deadline: string;
+  status: 'submitted' | 'under-review' | 'interview' | 'accepted' | 'rejected';
+}
+
+interface Analytics {
+  totalApplications: number;
+  acceptanceRate: number;
+  averageResponseTime: number;
+  successfulApplications: number;
+}
+
 export function TrackingDashboard() {
-  const [applications, setApplications] = useState([])
-  const [analytics, setAnalytics] = useState({
+  const [applications, setApplications] = useState<Application[]>([])
+  const [analytics, setAnalytics] = useState<Analytics>({
     totalApplications: 0,
     acceptanceRate: 0,
     averageResponseTime: 0,
@@ -42,7 +52,7 @@ export function TrackingDashboard() {
   const calculateAnalytics = () => {
     const savedApplications = JSON.parse(localStorage.getItem('platformula_applications') || '[]')
     const total = savedApplications.length
-    const successful = savedApplications.filter(app => app.status === 'accepted').length
+    const successful = savedApplications.filter((app: Application) => app.status === 'accepted').length
     const rate = total > 0 ? (successful / total) * 100 : 0
     
     setAnalytics({
@@ -53,7 +63,7 @@ export function TrackingDashboard() {
     })
   }
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'accepted': return 'bg-green-100 text-green-800 border-green-200'
       case 'rejected': return 'bg-red-100 text-red-800 border-red-200'
@@ -64,7 +74,7 @@ export function TrackingDashboard() {
     }
   }
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case 'accepted': return <CheckCircle className="w-4 h-4" />
       case 'rejected': return <AlertCircle className="w-4 h-4" />
@@ -75,7 +85,7 @@ export function TrackingDashboard() {
     }
   }
 
-  const handleViewDetails = (application) => {
+  const handleViewDetails = (application: Application) => {
     alert(`Viewing details for ${application.accelerator} application. This would show full application details and timeline.`)
   }
 
@@ -93,12 +103,12 @@ export function TrackingDashboard() {
         }
         return app
       })
-      setApplications(updatedApplications)
+      setApplications(updatedApplications as Application[])
       localStorage.setItem('platformula_applications', JSON.stringify(updatedApplications))
     }, 1000)
   }
 
-  const handleScheduleFollowUp = (application) => {
+  const handleScheduleFollowUp = (application: Application) => {
     alert(`Scheduling follow-up for ${application.accelerator}. This would open a calendar to set a reminder.`)
   }
 
@@ -270,9 +280,12 @@ export function TrackingDashboard() {
                         ) : application.status === 'rejected' ? (
                           <AlertCircle className="w-4 h-4" />
                         ) : (
-                          <Clock className="w-4 h-4" />
+                          <Target className="w-4 h-4" />
                         )}
-                        <span>Decision</span>
+                        <span className="capitalize">
+                          {application.status === 'accepted' ? 'Accepted' : 
+                           application.status === 'rejected' ? 'Rejected' : 'Decision'}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -283,79 +296,19 @@ export function TrackingDashboard() {
         </Card>
       ) : (
         <Card>
-          <CardContent className="text-center py-12">
-            <TrendingUp className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <Target className="w-8 h-8 text-gray-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">No Applications Yet</h3>
-            <p className="text-gray-600 mb-6">
-              Start applying to accelerator programs to track your progress here
+            <p className="text-gray-500 text-center max-w-md mb-6">
+              Start applying to accelerators using our Application Builder. Your applications will appear here automatically.
             </p>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-              Browse Accelerators
+            <Button>
+              Go to Application Builder
             </Button>
           </CardContent>
         </Card>
-      )}
-
-      {/* Insights & Recommendations */}
-      {applications.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Performance Insights</CardTitle>
-              <CardDescription>AI-powered analysis of your application performance</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-blue-800 mb-2">Application Strength</h4>
-                <Progress value={75} className="mb-2" />
-                <p className="text-sm text-blue-700">
-                  Your applications show strong technical depth and market understanding. 
-                  Consider highlighting more traction metrics.
-                </p>
-              </div>
-              
-              <div className="bg-green-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-green-800 mb-2">Response Rate</h4>
-                <p className="text-sm text-green-700">
-                  You're getting responses from {Math.round(analytics.acceptanceRate * 2)}% of applications, 
-                  which is above the industry average of 15%.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Next Steps</CardTitle>
-              <CardDescription>Recommended actions to improve your success rate</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                <CheckCircle className="w-5 h-5 text-purple-600" />
-                <div>
-                  <p className="font-medium">Follow up on pending applications</p>
-                  <p className="text-sm text-gray-600">2 applications need follow-up</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                <Target className="w-5 h-5 text-blue-600" />
-                <div>
-                  <p className="font-medium">Apply to 3 more programs</p>
-                  <p className="text-sm text-gray-600">Increase your chances with more applications</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                <Award className="w-5 h-5 text-green-600" />
-                <div>
-                  <p className="font-medium">Strengthen your pitch deck</p>
-                  <p className="text-sm text-gray-600">Schedule an expert review session</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       )}
     </div>
   )

@@ -7,13 +7,13 @@ import { Rocket, LayoutDashboard, BookOpen, Hammer, Mic2, LineChart, Users, Menu
 import { ThemeToggle } from '@/components/ThemeToggle'
 
 // Import restored components
-import { Dashboard } from '@/components/Dashboard'
+import Dashboard from '@/components/Dashboard'
 import { Resources } from '@/components/Resources'
 import { Builder } from '@/components/Builder'
-import { Tracking } from '@/components/Tracking'
-import { Community } from '@/components/Community'
+import { TrackingDashboard as Tracking } from '@/components/Tracking'
+import { CommunityPlatform as Community } from '@/components/Community'
 
-import { ServicesSection } from '@/components/ServicesSection'
+import ServicesSection from '@/components/ServicesSection'
 
 // Placeholder for Pitch Studio
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -111,8 +111,7 @@ function AppContent() {
 
           <div className="mt-6 min-h-[calc(100vh-12rem)]">
             <TabsContent value="dashboard" className="space-y-8 animate-in fade-in-50 duration-500">
-
-              <Dashboard />
+              <Dashboard setActiveTab={setActiveTab} />
               <ServicesSection />
             </TabsContent>
             
