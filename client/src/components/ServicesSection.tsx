@@ -5,9 +5,10 @@ import SimplePricingTiers from './SimplePricingTiers';
 
 interface ServicesSectionProps {
   onOpenAuth?: (mode: 'login' | 'register') => void;
+  setActiveTab?: (tab: string) => void;
 }
 
-export default function ServicesSection({ onOpenAuth }: ServicesSectionProps) {
+export default function ServicesSection({ onOpenAuth, setActiveTab }: ServicesSectionProps) {
   const coreServices = [
     {
       icon: Target,
@@ -218,7 +219,7 @@ export default function ServicesSection({ onOpenAuth }: ServicesSectionProps) {
       {/* Pricing Tiers */}
       <div className="mt-16">
         <h2 className="text-3xl font-bold text-center mb-8">Choose Your Tier</h2>
-        <SimplePricingTiers onOpenAuth={onOpenAuth} />
+        <SimplePricingTiers onOpenAuth={onOpenAuth} setActiveTab={setActiveTab} />
       </div>
 
       {/* Call to Action */}
@@ -231,7 +232,7 @@ export default function ServicesSection({ onOpenAuth }: ServicesSectionProps) {
               GenAI-powered application tools, and warm introductions to accelerators and investors.
             </p>
             <button 
-              onClick={() => onOpenAuth && onOpenAuth('register')}
+              onClick={() => setActiveTab ? setActiveTab('builder') : (onOpenAuth && onOpenAuth('register'))}
               className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-lg shadow-lg transition-all cursor-pointer"
             >
               Get Started Today

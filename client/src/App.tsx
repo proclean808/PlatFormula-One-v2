@@ -12,43 +12,14 @@ import { Resources } from '@/components/Resources'
 import { Builder } from '@/components/Builder'
 import { TrackingDashboard as Tracking } from '@/components/Tracking'
 import { CommunityPlatform as Community } from '@/components/Community'
-
+import PitchStudio from '@/components/PitchStudio'
 import ServicesSection from '@/components/ServicesSection'
-
-// Placeholder for Pitch Studio
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-
-function PitchStudio() {
-  return (
-    <div className="space-y-6 p-6">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-          Pitch Studio
-        </h2>
-        <p className="text-muted-foreground mt-2">Create, practice, and perfect your pitch</p>
-      </div>
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="hover:shadow-lg transition-all cursor-pointer border-purple-500/20">
-          <CardHeader>
-            <CardTitle className="flex items-center"><Mic2 className="mr-2 text-purple-500" /> AI Pitch Coach</CardTitle>
-            <CardDescription>Get real-time feedback on your delivery</CardDescription>
-          </CardHeader>
-        </Card>
-        <Card className="hover:shadow-lg transition-all cursor-pointer border-pink-500/20">
-          <CardHeader>
-            <CardTitle className="flex items-center"><LineChart className="mr-2 text-pink-500" /> Deck Analytics</CardTitle>
-            <CardDescription>See how investors engage with your slides</CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    </div>
-  )
-}
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  // make sure to consider if you need authentication for certain routes
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Header */}
@@ -112,7 +83,7 @@ function AppContent() {
           <div className="mt-6 min-h-[calc(100vh-12rem)]">
             <TabsContent value="dashboard" className="space-y-8 animate-in fade-in-50 duration-500">
               <Dashboard setActiveTab={setActiveTab} />
-              <ServicesSection />
+              <ServicesSection setActiveTab={setActiveTab} />
             </TabsContent>
             
             <TabsContent value="resources" className="animate-in fade-in-50 duration-500">

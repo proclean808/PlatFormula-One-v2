@@ -5,9 +5,10 @@ import { Check, X } from 'lucide-react';
 
 interface SimplePricingTiersProps {
   onOpenAuth?: (mode: 'login' | 'register') => void;
+  setActiveTab?: (tab: string) => void;
 }
 
-const SimplePricingTiers: React.FC<SimplePricingTiersProps> = ({ onOpenAuth }) => {
+const SimplePricingTiers: React.FC<SimplePricingTiersProps> = ({ onOpenAuth, setActiveTab }) => {
   const tiers = [
     {
       name: "Foundry",
@@ -27,7 +28,8 @@ const SimplePricingTiers: React.FC<SimplePricingTiersProps> = ({ onOpenAuth }) =
         "Dedicated Mentor"
       ],
       cta: "Start for Free",
-      popular: false
+      popular: false,
+      action: () => setActiveTab ? setActiveTab('builder') : (onOpenAuth && onOpenAuth('register'))
     },
     {
       name: "Agent Forge",
@@ -47,7 +49,8 @@ const SimplePricingTiers: React.FC<SimplePricingTiersProps> = ({ onOpenAuth }) =
         "Dedicated Mentor"
       ],
       cta: "Apply for Forge",
-      popular: true
+      popular: true,
+      action: () => setActiveTab ? setActiveTab('builder') : (onOpenAuth && onOpenAuth('register'))
     },
     {
       name: "Crucible",
@@ -63,7 +66,8 @@ const SimplePricingTiers: React.FC<SimplePricingTiersProps> = ({ onOpenAuth }) =
       ],
       notIncluded: [],
       cta: "Apply for Crucible",
-      popular: false
+      popular: false,
+      action: () => setActiveTab ? setActiveTab('builder') : (onOpenAuth && onOpenAuth('register'))
     }
   ];
 
@@ -114,7 +118,7 @@ const SimplePricingTiers: React.FC<SimplePricingTiersProps> = ({ onOpenAuth }) =
                   : ''
               }`}
               variant={tier.popular ? 'default' : 'outline'}
-              onClick={() => onOpenAuth && onOpenAuth('register')}
+              onClick={tier.action}
             >
               {tier.cta}
             </Button>

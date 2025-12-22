@@ -29,7 +29,7 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveTab, onOpenAuth }) => {
           <Button 
             size="lg"
             className="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white px-10 py-7 text-xl font-bold shadow-2xl shadow-emerald-500/40"
-            onClick={() => onOpenAuth && onOpenAuth('register')}
+            onClick={() => setActiveTab('builder')}
           >
             <Rocket className="w-6 h-6 mr-2" />
             Start Free with Foundry →
@@ -197,7 +197,7 @@ const HomePage: React.FC<HomePageProps> = ({ setActiveTab, onOpenAuth }) => {
 
       {/* Pricing Tiers */}
       <div className="py-16 px-4 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-        <SimplePricingTiers onOpenAuth={onOpenAuth} />
+        <SimplePricingTiers onOpenAuth={onOpenAuth} setActiveTab={setActiveTab} />
       </div>
 
       {/* Final CTA */}
