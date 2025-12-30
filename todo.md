@@ -1,5 +1,0 @@
-- [ ] List all files in the unzipped app directory recursively
-- [ ] Search for any React/Vite configuration files (vite.config.ts, package.json with react) within the unzipped structure
-- [ ] If PlatFormula.One code is found, move it to the main project directory
-- [ ] If only Angular code is found, report definitively to the user
-- [ ] Re-verify the current deployed version against user's description of "8 versions ago"
