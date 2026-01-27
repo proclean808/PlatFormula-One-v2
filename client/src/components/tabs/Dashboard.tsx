@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ArrowRight, Zap, Users, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -8,8 +9,29 @@ import { Button } from '@/components/ui/button';
  * - Large background image with gradient overlay
  * - Feature cards with glassmorphic design
  * - Call-to-action buttons
+ * - Interactive newsletter signup
  */
 export default function Dashboard() {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleNewsletterSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 3000);
+    } catch (error) {
+      console.error('Newsletter signup failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="space-y-8">
       {/* Hero Section with Background Image */}
@@ -105,6 +127,42 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Newsletter Signup */}
+      <div className="glass p-8 rounded-2xl">
+        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Stay Updated
+        </h3>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
+          Subscribe to our newsletter for the latest accelerator opportunities and startup insights
+        </p>
+        
+        <form onSubmit={handleNewsletterSignup} className="flex flex-col md:flex-row gap-4">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="flex-1 px-4 py-3 rounded-lg bg-white/80 dark:bg-slate-700/50 border border-purple-200 dark:border-purple-700 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600"
+          />
+          <Button 
+            type="submit" 
+            className="gradient-btn"
+            disabled={loading}
+          >
+            {loading ? 'Subscribing...' : 'Subscribe'}
+          </Button>
+        </form>
+
+        {subscribed && (
+          <div className="mt-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 rounded-lg">
+            <p className="text-green-800 dark:text-green-200">
+              ✓ Successfully subscribed! Check your email for confirmation.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

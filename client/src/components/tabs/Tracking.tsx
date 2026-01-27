@@ -1,4 +1,5 @@
-import { LineChart, PieChart, TrendingUp, Calendar } from 'lucide-react';
+import { useState } from 'react';
+import { LineChart, PieChart, TrendingUp, Calendar, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 /**
@@ -8,9 +9,12 @@ import { Button } from '@/components/ui/button';
  * - Progress tracking
  * - Timeline management
  * - Status updates
+ * - Add new applications
  */
 export default function Tracking() {
-  const applications = [
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ name: '', status: 'pending', submitted: '' });
+  const [localApplications, setLocalApplications] = useState([
     {
       name: 'Y Combinator',
       status: 'In Review',
@@ -39,7 +43,28 @@ export default function Tracking() {
       submitted: 'Jan 5, 2025',
       color: 'from-cyan-500 to-blue-500'
     }
-  ];
+  ]);
+
+  const handleAddApplication = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.name && formData.submitted) {
+      const newApp = {
+        name: formData.name,
+        status: formData.status === 'pending' ? 'Pending' : 'Submitted',
+        progress: formData.status === 'pending' ? 20 : 50,
+        submitted: formData.submitted,
+        color: 'from-purple-600 to-pink-500'
+      };
+      setLocalApplications([newApp, ...localApplications]);
+      setFormData({ name: '', status: 'pending', submitted: '' });
+      setShowForm(false);
+    }
+  };
+
+  const handleRemoveApplication = (index: number) => {
+    setLocalApplications(localApplications.filter((_, i) => i !== index));
+  };
+
 
   const timeline = [
     { date: 'Jan 15', event: 'Submitted to Y Combinator' },
@@ -60,9 +85,54 @@ export default function Tracking() {
         </p>
       </div>
 
+      {/* Add Application Form */}
+      {showForm && (
+        <div className="glass p-6 rounded-2xl border-2 border-purple-500">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
+              Add New Application
+            </h3>
+            <button
+              onClick={() => setShowForm(false)}
+              className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <form onSubmit={handleAddApplication} className="space-y-4">
+            <input
+              type="text"
+              placeholder="Accelerator Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-slate-700/50 border border-purple-200 dark:border-purple-700 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
+            />
+            <input
+              type="date"
+              value={formData.submitted}
+              onChange={(e) => setFormData({ ...formData, submitted: e.target.value })}
+              className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-slate-700/50 border border-purple-200 dark:border-purple-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+              required
+            />
+            <select
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              className="w-full px-4 py-2 rounded-lg bg-white/80 dark:bg-slate-700/50 border border-purple-200 dark:border-purple-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+            >
+              <option value="pending">Pending</option>
+              <option value="submitted">Submitted</option>
+            </select>
+            <Button type="submit" className="gradient-btn w-full">
+              Add Application
+            </Button>
+          </form>
+        </div>
+      )}
+
       {/* Applications Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {applications.map((app, idx) => (
+        {localApplications.map((app: any, idx: number) => (
           <div key={idx} className="glass p-6 rounded-2xl">
             <div className="flex items-start justify-between mb-4">
               <div>
@@ -96,9 +166,17 @@ export default function Tracking() {
               </div>
             </div>
 
-            <Button variant="outline" size="sm" className="w-full">
-              View Details
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="flex-1">
+                View Details
+              </Button>
+              <button
+                onClick={() => handleRemoveApplication(idx)}
+                className="px-3 py-2 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -113,10 +191,10 @@ export default function Tracking() {
           </h3>
           <div className="space-y-4">
             {[
-              { label: 'Total Applications', value: '4' },
-              { label: 'Accepted', value: '1' },
-              { label: 'In Review', value: '2' },
-              { label: 'Pending', value: '1' }
+              { label: 'Total Applications', value: localApplications.length.toString() },
+              { label: 'Accepted', value: localApplications.filter(a => a.status === 'Accepted').length.toString() },
+              { label: 'In Review', value: localApplications.filter(a => a.status === 'In Review').length.toString() },
+              { label: 'Pending', value: localApplications.filter(a => a.status === 'Pending').length.toString() }
             ].map((stat, idx) => (
               <div key={idx} className="flex justify-between items-center p-3 bg-white/50 dark:bg-slate-700/30 rounded-lg">
                 <span className="text-slate-600 dark:text-slate-400">{stat.label}</span>
@@ -163,8 +241,11 @@ export default function Tracking() {
         <p className="text-slate-600 dark:text-slate-400 mb-6">
           Add new applications and stay organized
         </p>
-        <Button className="gradient-btn">
-          Add New Application
+        <Button 
+          className="gradient-btn"
+          onClick={() => setShowForm(!showForm)}
+        >
+          {showForm ? 'Cancel' : 'Add New Application'}
         </Button>
       </div>
     </div>
