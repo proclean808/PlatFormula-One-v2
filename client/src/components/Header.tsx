@@ -23,7 +23,7 @@ export default function Header() {
           </div>
           <div className="flex flex-col">
             <span className="gradient-text font-bold text-lg leading-tight">PlatFormula</span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">AI Accelerator</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">🏆 🏎 B2B SaaS ToolKit & SDK 🏁</span>
           </div>
         </div>
 

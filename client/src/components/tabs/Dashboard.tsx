@@ -47,10 +47,10 @@ export default function Dashboard() {
         {/* Content */}
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Welcome to Your Startup Dashboard
+            🏆 🏎 AI Startup Accelerator Program & ToolKit SDK 🏁
           </h2>
           <p className="text-lg text-purple-100 mb-8 max-w-2xl">
-            Access all the tools you need to build, pitch, and scale your AI-powered startup
+            Everything Founders Need to Cross their B2B SaaS FinishLine First!
           </p>
           <Button className="gradient-btn">
             Get Started <ArrowRight className="ml-2 w-4 h-4" />
@@ -126,6 +126,39 @@ export default function Dashboard() {
               </p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* About Section */}
+      <div className="glass p-8 rounded-2xl">
+        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+          🏆 About PlatFormula.ONE
+        </h3>
+        <div className="space-y-4 text-slate-600 dark:text-slate-400">
+          <p className="text-lg leading-relaxed">
+            <strong className="gradient-text">🏎 AI Startup Accelerator Program & ToolKit SDK 🏁</strong>
+          </p>
+          <p className="leading-relaxed">
+            PlatFormula.ONE is the ultimate B2B SaaS accelerator platform designed to help founders cross the finish line first. We provide everything you need to build, pitch, track, and scale your AI-powered startup with confidence.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h4 className="font-semibold text-purple-900 dark:text-purple-200 mb-2">🛠️ Comprehensive ToolKit</h4>
+              <p className="text-sm">Access curated accelerator databases, application builders, pitch practice tools, and tracking systems.</p>
+            </div>
+            <div className="p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg border border-pink-200 dark:border-pink-800">
+              <h4 className="font-semibold text-pink-900 dark:text-pink-200 mb-2">🚀 SDK for Founders</h4>
+              <p className="text-sm">Pre-built components, templates, and frameworks to accelerate your B2B SaaS development and go-to-market strategy.</p>
+            </div>
+            <div className="p-4 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg border border-cyan-200 dark:border-cyan-800">
+              <h4 className="font-semibold text-cyan-900 dark:text-cyan-200 mb-2">🤝 Community Network</h4>
+              <p className="text-sm">Connect with fellow founders, share insights, and build relationships that drive success.</p>
+            </div>
+            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+              <h4 className="font-semibold text-green-900 dark:text-green-200 mb-2">🎯 Competitive Edge</h4>
+              <p className="text-sm">Stay ahead with AI-powered insights, real-time tracking, and data-driven decision-making tools.</p>
+            </div>
+          </div>
         </div>
       </div>
 
