@@ -20,3 +20,6 @@
 - [x] Add LinkedIn profile link to footer
 - [x] Add social media icons and links section
 - [x] Style footer with gradient accents
+
+## Add Twitter/X Link
+- [x] Add Twitter/X profile link to footer

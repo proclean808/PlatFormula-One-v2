@@ -38,7 +38,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-slate-900 dark:text-white mb-4">Connect</h4>
             <div className="flex gap-4">
-              <a href="#" className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-pink-400 transition">
+              <a href="https://x.com/JonathanBe33296" target="_blank" rel="noopener noreferrer" className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-pink-400 transition">
                 <Twitter className="w-5 h-5" />
               </a>
               <a href="https://linkedin.com/in/jonathan-behrendt" target="_blank" rel="noopener noreferrer" className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-pink-400 transition">
