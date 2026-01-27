@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ProtectedRoute from '@/components/ProtectedRoute';
 import Header from '@/components/Header';
 import Dashboard from '@/components/tabs/Dashboard';
 import Resources from '@/components/tabs/Resources';
@@ -19,7 +18,7 @@ import Footer from '@/components/Footer';
  * - Glassmorphic content containers
  * - Responsive mobile-first layout
  */
-function HomeContent() {
+export default function Home() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
@@ -111,13 +110,5 @@ function HomeContent() {
 
       <Footer />
     </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <ProtectedRoute>
-      <HomeContent />
-    </ProtectedRoute>
   );
 }
