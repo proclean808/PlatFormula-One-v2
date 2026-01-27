@@ -15,3 +15,8 @@
 - [x] Remove login/signup routes
 - [x] Make dashboard directly accessible
 - [x] Update Header to remove auth UI
+
+## Add Social Media Links
+- [x] Add LinkedIn profile link to footer
+- [x] Add social media icons and links section
+- [x] Style footer with gradient accents
