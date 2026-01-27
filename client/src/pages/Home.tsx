@@ -7,6 +7,7 @@ import Builder from '@/components/tabs/Builder';
 import PitchStudio from '@/components/tabs/PitchStudio';
 import Tracking from '@/components/tabs/Tracking';
 import Community from '@/components/tabs/Community';
+import Pricing from '@/components/tabs/Pricing';
 import Footer from '@/components/Footer';
 
 /**
@@ -46,7 +47,7 @@ export default function Home() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-8 p-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg border border-purple-200/30 dark:border-purple-800/30">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-8 p-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg border border-purple-200/30 dark:border-purple-800/30">
               <TabsTrigger 
                 value="dashboard"
                 className="text-xs md:text-sm font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-500 data-[state=active]:text-white transition-all duration-300"
@@ -83,11 +84,17 @@ export default function Home() {
               >
                 Community
               </TabsTrigger>
+              <TabsTrigger 
+                value="pricing"
+                className="text-xs md:text-sm font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-500 data-[state=active]:text-white transition-all duration-300"
+              >
+                Pricing
+              </TabsTrigger>
             </TabsList>
 
             {/* Tab Content */}
             <TabsContent value="dashboard" className="animate-fade-in">
-              <Dashboard />
+              <Dashboard onNavigateToPricing={() => setActiveTab('pricing')} />
             </TabsContent>
             <TabsContent value="resources" className="animate-fade-in">
               <Resources />
@@ -103,6 +110,9 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="community" className="animate-fade-in">
               <Community />
+            </TabsContent>
+            <TabsContent value="pricing" className="animate-fade-in">
+              <Pricing />
             </TabsContent>
           </Tabs>
         </div>

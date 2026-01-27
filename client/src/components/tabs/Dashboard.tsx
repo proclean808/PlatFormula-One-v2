@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
  * - Call-to-action buttons
  * - Interactive newsletter signup
  */
-export default function Dashboard() {
+export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing?: () => void }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function Dashboard() {
           <p className="text-lg text-purple-100 mb-8 max-w-2xl">
             Everything Founders Need to Cross their B2B SaaS FinishLine First!
           </p>
-          <Button className="gradient-btn">
+          <Button className="gradient-btn" onClick={onNavigateToPricing}>
             Get Started <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
         </div>

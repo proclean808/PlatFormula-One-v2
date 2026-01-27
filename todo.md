@@ -29,3 +29,11 @@
 - [x] Update hero section with new tagline
 - [x] Add meta description for SEO
 - [x] Create About section with mission statement
+
+## Create Pricing Tab & Button Functionality
+- [x] Create Pricing tab component with 3-tier SaaS structure
+- [x] Add Foundry (Freemium) tier
+- [x] Add Agent Forge (Pro $50) tier
+- [x] Add Crucible ($100/month) tier
+- [x] Connect all Get Started buttons to pricing tab
+- [x] Add GitHub profile link to footer

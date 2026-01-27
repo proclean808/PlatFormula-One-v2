@@ -44,7 +44,7 @@ export default function Footer() {
               <a href="https://linkedin.com/in/jonathan-behrendt" target="_blank" rel="noopener noreferrer" className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-pink-400 transition">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-pink-400 transition">
+              <a href="https://github.com/proclean808/PlatFormula-One" target="_blank" rel="noopener noreferrer" className="text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-pink-400 transition">
                 <Github className="w-5 h-5" />
               </a>
             </div>
