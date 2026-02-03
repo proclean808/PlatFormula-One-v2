@@ -37,3 +37,10 @@
 - [x] Add Crucible ($100/month) tier
 - [x] Connect all Get Started buttons to pricing tab
 - [x] Add GitHub profile link to footer
+
+## Update Resources Tab
+- [x] Extract resources from uploaded file
+- [x] Add real accelerator programs (YC, Techstars, 500 Global, etc.)
+- [x] Add color-coded links (YC=orange, Techstars=blue, others=green)
+- [x] Add investor networks and VC firms
+- [x] Add learning materials and tools
