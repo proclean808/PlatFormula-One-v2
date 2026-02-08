@@ -98,8 +98,8 @@ export default function Home() {
                   </a>
                 </p>
                 <p>
-                  <a href="tel:+14156954606" className="text-emerald-500 hover:underline">
-                    (415) 695-4606
+                  <a href="tel:+14156954604" className="text-emerald-500 hover:underline">
+                    (415) 695-4604
                   </a>
                 </p>
                 <p>

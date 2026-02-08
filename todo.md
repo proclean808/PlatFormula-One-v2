@@ -20,3 +20,7 @@
 - [x] External accelerator links (500 Global, Techstars, etc.)
 - [x] VC firm directory (a16z, Sequoia, etc.)
 - [x] Contact information with emerald green links
+
+## New Features
+- [ ] Add YC 2026 AI startups to Resources tab
+- [x] Fix footer phone number to 415-695-4604
