@@ -29,3 +29,4 @@
 
 ## Critical Issues
 - [ ] Fix published site showing "unexpected error occurred" message
+- [x] Change theme from light to dark mode
