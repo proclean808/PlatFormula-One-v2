@@ -57,3 +57,10 @@
 - [x] Add working recording functionality to Pitch Studio
 - [x] Add AI feedback simulation to Pitch Studio
 - [x] Add template selection functionality to Pitch Studio
+
+## Add Newsletter Signup to Footer
+- [x] Create Supabase table for newsletter_subscribers (SQL script created)
+- [x] Add newsletter signup form to Footer component
+- [x] Add email validation and duplicate checking
+- [x] Add success/error toast notifications
+- [x] Test newsletter signup flow (4 tests passing)
