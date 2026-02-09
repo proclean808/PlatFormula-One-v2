@@ -64,3 +64,6 @@
 - [x] Add email validation and duplicate checking
 - [x] Add success/error toast notifications
 - [x] Test newsletter signup flow (4 tests passing)
+
+## Change Theme to Dark Mode
+- [x] Update App.tsx to use dark theme by default
