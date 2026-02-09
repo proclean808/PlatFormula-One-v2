@@ -26,3 +26,6 @@
 - [x] Fix footer phone number to 415-695-4604
 - [x] Fix "Accelerator" to "Accelerators" (plural) in Resources tab
 - [x] Add 50 AI accelerators from Failory list to Resources tab
+
+## Critical Issues
+- [ ] Fix published site showing "unexpected error occurred" message
