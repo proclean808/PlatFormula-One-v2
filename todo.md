@@ -67,3 +67,8 @@
 
 ## Change Theme to Dark Mode
 - [x] Update App.tsx to use dark theme by default
+
+## Export to GitHub and Deploy to Vercel
+- [ ] Save checkpoint with dark mode
+- [ ] Export code to GitHub repository
+- [ ] Provide Vercel deployment instructions with environment variables
