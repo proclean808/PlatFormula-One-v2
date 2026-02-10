@@ -4,7 +4,7 @@
 
 1. **Go to Vercel Dashboard**: https://vercel.com/dashboard
 2. **Import Project**: Click "Add New" → "Project"
-3. **Select Repository**: Choose `proclean808/PlatFormula-One`
+3. **Select Repository**: Choose `proclean808/PlatFormula-One-v2`
 4. **Configure Project**:
    - Framework Preset: Vite
    - Root Directory: `./`

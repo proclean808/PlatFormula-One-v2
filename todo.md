@@ -69,6 +69,11 @@
 - [x] Update App.tsx to use dark theme by default
 
 ## Export to GitHub and Deploy to Vercel
-- [ ] Save checkpoint with dark mode
-- [ ] Export code to GitHub repository
-- [ ] Provide Vercel deployment instructions with environment variables
+- [x] Save checkpoint with dark mode
+- [x] Export code to GitHub repository
+- [x] Provide Vercel deployment instructions with environment variables
+
+## Create PlatFormula-One-v2 Repository
+- [x] Create new GitHub repository PlatFormula-One-v2
+- [x] Push code to v2 repository
+- [ ] Update deployment instructions for v2 repo
