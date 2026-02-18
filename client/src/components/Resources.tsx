@@ -8,6 +8,7 @@ interface Resource {
   url: string;
   description: string;
   category: "yc" | "techstars" | "accelerator" | "vc";
+  logo?: string;
 }
 
 const resources: Resource[] = [
@@ -64,6 +65,7 @@ const resources: Resource[] = [
   { name: "HAX", url: "https://hax.co", description: "Venture firm focused on hard tech startups", category: "accelerator" },
   { name: "Deepcore", url: "https://deepcore.jp/en/", description: "Tokyo-based AI and deep tech, 97 investments", category: "accelerator" },
   { name: "AI2 Incubator", url: "https://allenai.org/incubator", description: "Allen Institute's AI startup incubator", category: "accelerator" },
+  { name: "Vercel AI Accelerator", url: "https://vercel.com/blog/the-vercel-ai-accelerator-is-back-with-6-million-in-credits", description: "$6M in credits for AI startups building with Vercel", category: "accelerator", logo: "/vercel-logo.png" },
   { name: "Digital Catapult", url: "https://www.digicalcatapult.org.uk", description: "UK's leading deep tech innovation center", category: "accelerator" },
   { name: "Jolt Capital", url: "https://www.jolt.vc", description: "Paris-based deep tech investor", category: "accelerator" },
   
@@ -148,7 +150,10 @@ export default function Resources() {
               <Card key={resource.name} className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>{resource.name}</span>
+                    <span className="flex items-center gap-2">
+                      {resource.logo && <img src={resource.logo} alt={`${resource.name} logo`} className="h-5 w-5" />}
+                      {resource.name}
+                    </span>
                     <ExternalLink className="h-4 w-4 text-muted-foreground" />
                   </CardTitle>
                   <CardDescription>{resource.description}</CardDescription>
