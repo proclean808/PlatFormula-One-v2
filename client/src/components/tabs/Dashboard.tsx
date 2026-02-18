@@ -38,7 +38,7 @@ export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing
       <div 
         className="relative rounded-2xl overflow-hidden h-96 md:h-[500px] bg-cover bg-center"
         style={{
-          backgroundImage: 'url(/images/hero-gradient-abstract.png)',
+          backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310419663031081065/ulwvClWrjLPCXvVg.png)',
         }}
       >
         {/* Gradient Overlay */}

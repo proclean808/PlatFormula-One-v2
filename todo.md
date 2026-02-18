@@ -72,3 +72,9 @@
 - [ ] Save checkpoint with dark mode
 - [ ] Export code to GitHub repository
 - [ ] Provide Vercel deployment instructions with environment variables
+
+## Add Vercel AI Accelerator to Resources
+- [x] Copy Vercel logo to public assets
+- [x] Add Vercel AI Accelerator section to Resources tab
+- [x] Include main page and blog links
+- [x] Test all links work correctly

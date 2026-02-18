@@ -26,6 +26,7 @@ export default function Resources() {
     { name: 'Y Combinator', url: 'https://www.ycombinator.com/', description: 'Leading startup accelerator with $500K investment' },
     { name: 'Techstars', url: 'https://www.techstars.com/', description: 'Global network providing investment and mentorship' },
     { name: '500 Global', url: 'https://500.co/', description: 'Global VC firm and accelerator for early-stage companies' },
+    { name: 'Vercel AI Accelerator', url: 'https://vercel.com/ai-accelerator', description: '$6M in credits for AI startups', logo: '/vercel-logo.png', learnMore: 'https://vercel.com/blog/the-vercel-ai-accelerator-is-back-with-6-million-in-credits' },
     { name: 'Alchemist Accelerator', url: 'https://www.alchemistaccelerator.com/', description: 'Top program for seed-stage enterprise ventures' },
     { name: 'Plug and Play Tech Center', url: 'https://www.plugandplaytechcenter.com/', description: 'Innovation platform connecting startups with corporations' },
     { name: 'Berkeley SkyDeck', url: 'https://skydeck.berkeley.edu/', description: 'Official accelerator for UC Berkeley startups' },
@@ -66,25 +67,38 @@ export default function Resources() {
     { name: 'Figma', url: 'https://www.figma.com/', description: 'Collaborative design tool' }
   ];
 
-  const ResourceLink = ({ item }: { item: { name: string; url: string; description: string } }) => (
-    <a
-      href={item.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="p-4 bg-white/50 dark:bg-slate-700/30 rounded-lg hover:bg-white/80 dark:hover:bg-slate-700/50 transition-all group block"
-    >
+  const ResourceLink = ({ item }: { item: { name: string; url: string; description: string; logo?: string; learnMore?: string } }) => (
+    <div className="p-4 bg-white/50 dark:bg-slate-700/30 rounded-lg hover:bg-white/80 dark:hover:bg-slate-700/50 transition-all group">
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
-          <h4 className={`font-semibold transition ${getLinkColor(item.name)} flex items-center gap-2`}>
-            {item.name}
-            <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </h4>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            {item.description}
-          </p>
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <h4 className={`font-semibold transition ${getLinkColor(item.name)} flex items-center gap-2`}>
+              {item.logo && <img src={item.logo} alt={`${item.name} logo`} className="w-5 h-5 inline-block" />}
+              {item.name}
+              <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </h4>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              {item.description}
+            </p>
+          </a>
+          {item.learnMore && (
+            <a
+              href={item.learnMore}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 mt-2 inline-flex items-center gap-1"
+            >
+              Learn More <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
         </div>
       </div>
-    </a>
+    </div>
   );
 
   return (
