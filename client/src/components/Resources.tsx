@@ -13,17 +13,17 @@ interface Resource {
 
 const resources: Resource[] = [
   // Y Combinator Resources
-  { name: "Y Combinator", url: "https://www.ycombinator.com", description: "$500K standard deal for early-stage startups across all industries", category: "yc" },
+  { name: "Y Combinator", url: "https://www.ycombinator.com", description: "$500K standard deal for early-stage startups across all industries", category: "yc", logo: "/yc-logo.png" },
   { name: "YC Application", url: "https://www.ycombinator.com/apply", description: "Apply to Y Combinator's accelerator program", category: "yc" },
   { name: "Startup School", url: "https://www.startupschool.org", description: "Free online program for founders", category: "yc" },
   { name: "YC Startup Directory", url: "https://www.ycombinator.com/companies", description: "Browse 7,800+ YC-funded companies", category: "yc" },
   { name: "Hacker News", url: "https://news.ycombinator.com", description: "Tech and startup news community", category: "yc" },
   
   // Techstars
-  { name: "Techstars", url: "https://www.techstars.com", description: "$220K investment with global mentorship network (6,300+ startups)", category: "techstars" },
+  { name: "Techstars", url: "https://www.techstars.com", description: "$220K investment with global mentorship network (6,300+ startups)", category: "techstars", logo: "/techstars-logo.webp" },
   
   // Top AI Accelerators & Incubators
-  { name: "500 Global", url: "https://500.co", description: "$150K investment, 3,000+ portfolio companies including Canva", category: "accelerator" },
+  { name: "500 Global", url: "https://500.co", description: "$150K investment, 3,000+ portfolio companies including Canva", category: "accelerator", logo: "/500global-logo.png" },
   { name: "Thrive Capital", url: "https://thrivecap.com", description: "Backed Stripe, GitHub, and OpenAI with long-term capital", category: "accelerator" },
   { name: "Innovation Works", url: "https://innovationworks.org", description: "AlphaLab & Robotics Factory programs in Pittsburgh", category: "accelerator" },
   { name: "Startupbootcamp", url: "https://www.startupbootcamp.org", description: "Global network of industry-focused accelerators (FinTech, AI, HealthTech)", category: "accelerator" },
