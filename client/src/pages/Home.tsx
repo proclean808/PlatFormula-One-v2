@@ -82,7 +82,10 @@ export default function Home() {
               </SheetContent>
             </Sheet>
 
-            <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setActiveTab("dashboard")}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <Rocket className="h-6 w-6" />
               </div>
@@ -90,7 +93,7 @@ export default function Home() {
                 <h1 className="text-xl font-bold">PlatFormula.One</h1>
                 <p className="text-xs text-muted-foreground hidden sm:block">B2B SaaS AI Startup Accelerator</p>
               </div>
-            </div>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
@@ -143,14 +146,9 @@ export default function Home() {
           <div className="grid gap-8 md:grid-cols-3">
             <div>
               <h3 className="font-semibold mb-4 text-primary">Contact</h3>
-              <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="space-y-2 text-sm">
                 <p>
-                  <a href="mailto:Jonathan@Behrendterprizes.com" className="text-emerald-500 hover:underline">
-                    Jonathan@Behrendterprizes.com
-                  </a>
-                </p>
-                <p>
-                  <a href="tel:415-695-4604" className="text-emerald-500 hover:underline">
+                  <a href="tel:415-695-4604" className="text-foreground hover:text-primary transition-colors">
                     415-695-4604
                   </a>
                 </p>
@@ -158,19 +156,19 @@ export default function Home() {
             </div>
             <div>
               <h3 className="font-semibold mb-4 text-primary">Quick Links</h3>
-              <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="space-y-2 text-sm">
                 <p>
-                  <button onClick={() => setActiveTab("resources")} className="hover:text-emerald-500 transition-colors">
+                  <button onClick={() => setActiveTab("resources")} className="text-foreground hover:text-primary transition-colors">
                     Accelerator Resources
                   </button>
                 </p>
                 <p>
-                  <button onClick={() => setActiveTab("application")} className="hover:text-emerald-500 transition-colors">
+                  <button onClick={() => setActiveTab("application")} className="text-foreground hover:text-primary transition-colors">
                     Application Help
                   </button>
                 </p>
                 <p>
-                  <button onClick={() => setActiveTab("concept")} className="hover:text-emerald-500 transition-colors">
+                  <button onClick={() => setActiveTab("concept")} className="text-foreground hover:text-primary transition-colors">
                     Brand Identity Tools
                   </button>
                 </p>
@@ -178,12 +176,12 @@ export default function Home() {
             </div>
             <div>
               <h3 className="font-semibold mb-4 text-primary">About</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 PlatFormula.ONE connects B2B SaaS founders with accelerators, investors, and resources to accelerate their startup journey.
               </p>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
+          <div className="mt-8 pt-8 border-t border-border/40 text-center text-sm text-foreground">
             <p>&copy; 2026 PlatFormula.One. All rights reserved.</p>
           </div>
         </div>
