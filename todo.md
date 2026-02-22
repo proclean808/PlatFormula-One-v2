@@ -41,3 +41,4 @@
 - [x] Add Framer.ai as the last tile in Featured Platforms section to complete grid layout
 - [x] Fix Dashboard layout - even out card sizes and spacing for balanced grid alignment
 - [x] Enlarge hamburger menu icon for better visibility and mobile usability
+- [x] Make hamburger menu icon significantly larger (current size still too small)

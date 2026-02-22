@@ -43,8 +43,8 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden h-12 w-12">
-                  <Menu className="h-7 w-7" />
+                <Button variant="ghost" size="icon" className="lg:hidden h-14 w-14">
+                  <Menu className="h-10 w-10" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">
