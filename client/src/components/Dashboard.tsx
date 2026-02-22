@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Rocket, Sparkles, TrendingUp, Users } from "lucide-react";
+import { Rocket, Sparkles, TrendingUp, Users, Lightbulb, BarChart3 } from "lucide-react";
 
 interface DashboardProps {
   setActiveTab: (tab: string) => void;
@@ -30,7 +30,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         <div className="flex flex-wrap gap-4 justify-center pt-4">
           <Button 
             size="lg" 
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="bg-orange-600 hover:bg-orange-700 text-white"
             onClick={() => setActiveTab("builder")}
           >
             <Rocket className="mr-2 h-5 w-5" />
@@ -39,6 +39,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           <Button 
             size="lg" 
             variant="outline"
+            className="border-emerald-500 text-emerald-500 hover:bg-emerald-500/10"
             onClick={() => setActiveTab("resources")}
           >
             <TrendingUp className="mr-2 h-5 w-5" />
@@ -47,11 +48,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* Features Grid - Color Coded */}
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
+        {/* GREEN - Resources/Database */}
+        <Card className="border-emerald-500/30 bg-card/50 backdrop-blur hover:border-emerald-500/50 transition-colors">
           <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500 mb-4">
               <Sparkles className="h-6 w-6" />
             </div>
             <CardTitle>AI-Powered Matching</CardTitle>
@@ -62,7 +64,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           <CardContent>
             <Button 
               variant="ghost" 
-              className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10"
+              className="w-full justify-start text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10"
               onClick={() => setActiveTab("resources")}
             >
               Explore Directory →
@@ -70,9 +72,9 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
+        <Card className="border-emerald-500/30 bg-card/50 backdrop-blur hover:border-emerald-500/50 transition-colors">
           <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500 mb-4">
               <TrendingUp className="h-6 w-6" />
             </div>
             <CardTitle>Comprehensive Database</CardTitle>
@@ -83,7 +85,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           <CardContent>
             <Button 
               variant="ghost" 
-              className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10"
+              className="w-full justify-start text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10"
               onClick={() => setActiveTab("resources")}
             >
               View Database →
@@ -91,9 +93,10 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
+        {/* ORANGE - Builder Tools */}
+        <Card className="border-orange-500/30 bg-card/50 backdrop-blur hover:border-orange-500/50 transition-colors">
           <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500/10 text-orange-500 mb-4">
               <Rocket className="h-6 w-6" />
             </div>
             <CardTitle>Application Builder</CardTitle>
@@ -104,7 +107,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           <CardContent>
             <Button 
               variant="ghost" 
-              className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10"
+              className="w-full justify-start text-orange-500 hover:text-orange-400 hover:bg-orange-500/10"
               onClick={() => setActiveTab("builder")}
             >
               Start Building →
@@ -112,31 +115,54 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
+        {/* PURPLE - AI Tools */}
+        <Card className="border-purple-500/30 bg-card/50 backdrop-blur hover:border-purple-500/50 transition-colors">
           <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
-              <Users className="h-6 w-6" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-4">
+              <Lightbulb className="h-6 w-6" />
             </div>
-            <CardTitle>Pitch Studio</CardTitle>
+            <CardTitle>Concept Refinement</CardTitle>
             <CardDescription>
-              Practice and perfect your pitch with AI-powered coaching and feedback
+              Generate brand names, taglines, and positioning with AI-powered tools
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button 
               variant="ghost" 
-              className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10"
-              onClick={() => setActiveTab("pitch")}
+              className="w-full justify-start text-purple-500 hover:text-purple-400 hover:bg-purple-500/10"
+              onClick={() => setActiveTab("concept")}
             >
-              Practice Pitch →
+              Refine Concept →
             </Button>
           </CardContent>
         </Card>
 
-        <Card className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
+        <Card className="border-purple-500/30 bg-card/50 backdrop-blur hover:border-purple-500/50 transition-colors">
           <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
-              <TrendingUp className="h-6 w-6" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-4">
+              <Users className="h-6 w-6" />
+            </div>
+            <CardTitle>Application Assistant</CardTitle>
+            <CardDescription>
+              Get AI-powered help crafting compelling accelerator applications
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-purple-500 hover:text-purple-400 hover:bg-purple-500/10"
+              onClick={() => setActiveTab("application")}
+            >
+              Get Help →
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* TEAL - Tracking/Community */}
+        <Card className="border-teal-500/30 bg-card/50 backdrop-blur hover:border-teal-500/50 transition-colors">
+          <CardHeader>
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-500/10 text-teal-500 mb-4">
+              <BarChart3 className="h-6 w-6" />
             </div>
             <CardTitle>Application Tracking</CardTitle>
             <CardDescription>
@@ -146,54 +172,13 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           <CardContent>
             <Button 
               variant="ghost" 
-              className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10"
+              className="w-full justify-start text-teal-500 hover:text-teal-400 hover:bg-teal-500/10"
               onClick={() => setActiveTab("tracking")}
             >
               Track Progress →
             </Button>
           </CardContent>
         </Card>
-
-        <Card className="border-primary/20 bg-card/50 backdrop-blur hover:border-primary/40 transition-colors">
-          <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4">
-              <Users className="h-6 w-6" />
-            </div>
-            <CardTitle>Founder Community</CardTitle>
-            <CardDescription>
-              Connect with fellow founders, share experiences, and grow together
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-start text-primary hover:text-primary hover:bg-primary/10"
-              onClick={() => setActiveTab("community")}
-            >
-              Join Community →
-            </Button>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Stats Section */}
-      <section className="grid gap-6 md:grid-cols-4 py-12 border-y border-border/40">
-        <div className="text-center">
-          <div className="text-4xl font-bold text-primary">700+</div>
-          <div className="text-sm text-muted-foreground mt-2">Accelerators</div>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl font-bold text-primary">500+</div>
-          <div className="text-sm text-muted-foreground mt-2">VC Firms</div>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl font-bold text-primary">1000+</div>
-          <div className="text-sm text-muted-foreground mt-2">Angel Investors</div>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl font-bold text-primary">AI-Powered</div>
-          <div className="text-sm text-muted-foreground mt-2">Matching</div>
-        </div>
       </section>
     </div>
   );

@@ -12,14 +12,14 @@ import ApplicationAssistant from "@/components/ApplicationAssistant";
 import ConceptRefinement from "@/components/ConceptRefinement";
 
 const navigationItems = [
-  { id: "dashboard", label: "Dashboard", icon: Rocket },
-  { id: "resources", label: "Resources", icon: Database },
-  { id: "builder", label: "Builder", icon: Wrench },
-  { id: "pitch", label: "Pitch Studio", icon: Mic },
-  { id: "tracking", label: "Tracking", icon: ListChecks },
-  { id: "community", label: "Community", icon: Users },
-  { id: "application", label: "Application Assistant", icon: FileText },
-  { id: "concept", label: "Concept Refinement", icon: Lightbulb },
+  { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
+  { id: "resources", label: "Resources", icon: Database, color: "emerald" },
+  { id: "builder", label: "Builder", icon: Wrench, color: "orange" },
+  { id: "pitch", label: "Pitch Studio", icon: Mic, color: "blue" },
+  { id: "tracking", label: "Tracking", icon: ListChecks, color: "teal" },
+  { id: "community", label: "Community", icon: Users, color: "teal" },
+  { id: "application", label: "Application Assistant", icon: FileText, color: "purple" },
+  { id: "concept", label: "Concept Refinement", icon: Lightbulb, color: "purple" },
 ];
 
 export default function Home() {
@@ -62,15 +62,18 @@ export default function Home() {
                     {navigationItems.map((item) => {
                       const Icon = item.icon;
                       const isActive = activeTab === item.id;
+                      const colorClasses = {
+                        blue: isActive ? 'bg-blue-600 text-white' : 'hover:bg-blue-500/10 text-blue-400 hover:text-blue-300',
+                        emerald: isActive ? 'bg-emerald-600 text-white' : 'hover:bg-emerald-500/10 text-emerald-400 hover:text-emerald-300',
+                        orange: isActive ? 'bg-orange-600 text-white' : 'hover:bg-orange-500/10 text-orange-400 hover:text-orange-300',
+                        purple: isActive ? 'bg-purple-600 text-white' : 'hover:bg-purple-500/10 text-purple-400 hover:text-purple-300',
+                        teal: isActive ? 'bg-teal-600 text-white' : 'hover:bg-teal-500/10 text-teal-400 hover:text-teal-300',
+                      };
                       return (
                         <button
                           key={item.id}
                           onClick={() => handleNavClick(item.id)}
-                          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                            isActive
-                              ? 'bg-primary text-primary-foreground'
-                              : 'hover:bg-accent text-muted-foreground hover:text-foreground'
-                          }`}
+                          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${colorClasses[item.color as keyof typeof colorClasses]}`}
                         >
                           <Icon className="h-5 w-5" />
                           <span className="font-medium">{item.label}</span>
@@ -101,13 +104,20 @@ export default function Home() {
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
+              const colorClasses = {
+                blue: isActive ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'text-blue-400 hover:text-blue-300 hover:bg-blue-500/10',
+                emerald: isActive ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10',
+                orange: isActive ? 'bg-orange-600 hover:bg-orange-700 text-white' : 'text-orange-400 hover:text-orange-300 hover:bg-orange-500/10',
+                purple: isActive ? 'bg-purple-600 hover:bg-purple-700 text-white' : 'text-purple-400 hover:text-purple-300 hover:bg-purple-500/10',
+                teal: isActive ? 'bg-teal-600 hover:bg-teal-700 text-white' : 'text-teal-400 hover:text-teal-300 hover:bg-teal-500/10',
+              };
               return (
                 <Button
                   key={item.id}
-                  variant={isActive ? "default" : "ghost"}
+                  variant="ghost"
                   size="sm"
                   onClick={() => setActiveTab(item.id)}
-                  className="gap-2"
+                  className={`gap-2 ${colorClasses[item.color as keyof typeof colorClasses]}`}
                 >
                   <Icon className="h-4 w-4" />
                   <span className="hidden xl:inline">{item.label}</span>
