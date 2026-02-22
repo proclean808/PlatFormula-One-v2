@@ -38,3 +38,4 @@
 
 ## New Request
 - [x] Add Pear VC accelerator program to platform (research details, add to Resources and potentially Elite Programs section)
+- [x] Add Framer.ai as the last tile in Featured Platforms section to complete grid layout

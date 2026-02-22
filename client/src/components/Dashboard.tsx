@@ -186,8 +186,8 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </div>
       </section>
 
-      {/* Featured Platforms - LinkedIn & Product Hunt */}
-      <section className="grid gap-6 md:grid-cols-2 mb-8">
+      {/* Featured Platforms - LinkedIn, Product Hunt & Framer.ai */}
+      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
         {/* LinkedIn & LinkedInGenius.ai */}
         <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20">
           <CardHeader>
@@ -249,6 +249,36 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
             >
               <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white">
                 Launch on Product Hunt →
+              </Button>
+            </a>
+          </CardContent>
+        </Card>
+
+        {/* Framer.ai */}
+        <Card className="border-indigo-500/50 bg-gradient-to-br from-indigo-500/10 to-indigo-600/5 backdrop-blur hover:border-indigo-500/70 transition-all hover:shadow-lg hover:shadow-indigo-500/20">
+          <CardHeader>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-16 w-16 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-2xl">
+                F
+              </div>
+              <div>
+                <CardTitle className="text-2xl text-indigo-400">Framer.ai</CardTitle>
+                <p className="text-sm text-muted-foreground">AI-powered website builder</p>
+              </div>
+            </div>
+            <CardDescription className="text-base">
+              Build stunning, responsive websites in minutes with AI. No code required. Perfect for founders who need a professional web presence fast.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <a 
+              href="https://framer.com/ai" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                Try Framer.ai →
               </Button>
             </a>
           </CardContent>
