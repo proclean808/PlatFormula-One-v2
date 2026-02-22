@@ -30,3 +30,7 @@
 ## Critical Issues
 - [ ] Fix published site showing "unexpected error occurred" message
 - [x] Change theme from light to dark mode
+
+- [x] Create "Killer Square" featured tiles for elite programs (a16z Speedrun, Accel Atoms, YC, Berkeley SkyDeck, Alchemy)
+- [x] Add application deadline tracker with countdown timers for upcoming accelerator deadlines
+- [x] Add founder success metrics section showing platform impact and credibility stats
