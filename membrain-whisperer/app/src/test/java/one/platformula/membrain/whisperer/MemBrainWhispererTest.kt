@@ -40,10 +40,11 @@ class MemBrainWhispererTest {
 
     @Test
     fun scopeCancellation_preventsNewCoroutines() {
-        // Verify that a cancelled scope correctly stops launching new coroutines
+        // Verify that a cancelled scope is no longer active
         val job = kotlinx.coroutines.SupervisorJob()
         val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Unconfined + job)
+        assertEquals(true, scope.isActive)
         job.cancel()
-        assertEquals(true, job.isCancelled)
+        assertEquals(false, scope.isActive)
     }
 }
