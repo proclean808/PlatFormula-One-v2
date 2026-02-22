@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mic, Video, BarChart3, Award, Play, Pause, RotateCcw, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react';
+import { Mic, Video, BarChart3, Award, Play, Pause, RotateCcw, CheckCircle, AlertCircle, TrendingUp, Smartphone, Watch, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
@@ -285,6 +285,52 @@ export default function PitchStudio() {
             );
           })}
         </div>
+      </div>
+
+      {/* MemBrain Whisperer Companion App */}
+      <div className="glass p-8 rounded-2xl">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+            <Smartphone className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+              MemBrain Whisperer
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Live Meeting Co-Pilot for VC Pitches
+            </p>
+          </div>
+        </div>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">
+          Take your pitch from practice to live meetings with our Android companion app. MemBrain Whisperer runs on Samsung S25 Ultra and pairs with Galaxy Watch 7 to deliver real-time, covert AI insights during investor conversations.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+            <div className="flex items-center gap-2 mb-2">
+              <Mic className="w-4 h-4 text-green-600 dark:text-green-400" />
+              <h4 className="font-semibold text-green-900 dark:text-green-200 text-sm">Live Audio Capture</h4>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-400">16 kHz PCM capture with Gemini 2.5 Flash for real-time RAG-injected insights on CAC, LTV, and valuation</p>
+          </div>
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center gap-2 mb-2">
+              <Watch className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <h4 className="font-semibold text-blue-900 dark:text-blue-200 text-sm">Covert HUD Push</h4>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-400">5-word insights transmitted to Galaxy Watch 7 via BLE with haptic alerts — glanceable during live conversation</p>
+          </div>
+          <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              <h4 className="font-semibold text-purple-900 dark:text-purple-200 text-sm">Zero-Trust Security</h4>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-400">Biometric dead-man's switch — watch must pulse within 5 seconds or audio capture is instantly severed</p>
+          </div>
+        </div>
+        <Button variant="outline" className="w-full md:w-auto">
+          <Smartphone className="mr-2 w-4 h-4" /> View Companion App Details
+        </Button>
       </div>
 
       {/* CTA */}

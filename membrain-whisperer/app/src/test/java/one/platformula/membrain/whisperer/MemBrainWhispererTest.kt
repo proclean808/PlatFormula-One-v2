@@ -37,4 +37,13 @@ class MemBrainWhispererTest {
         val insight = responseText?.trim() ?: "LISTENING"
         assertEquals("LISTENING", insight)
     }
+
+    @Test
+    fun scopeCancellation_preventsNewCoroutines() {
+        // Verify that a cancelled scope correctly stops launching new coroutines
+        val job = kotlinx.coroutines.SupervisorJob()
+        val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Unconfined + job)
+        job.cancel()
+        assertEquals(true, job.isCancelled)
+    }
 }

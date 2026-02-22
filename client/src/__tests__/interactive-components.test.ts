@@ -131,4 +131,42 @@ describe('Interactive Components', () => {
       expect(validateForm('Y Combinator', '')).toBe(false);
     });
   });
+
+  describe('MemBrain Whisperer Companion App', () => {
+    it('should define companion app features', () => {
+      const features = [
+        { name: 'Live Audio Capture', icon: 'Mic' },
+        { name: 'Covert HUD Push', icon: 'Watch' },
+        { name: 'Zero-Trust Security', icon: 'Shield' }
+      ];
+
+      expect(features.length).toBe(3);
+      expect(features[0].name).toBe('Live Audio Capture');
+      expect(features[1].name).toBe('Covert HUD Push');
+      expect(features[2].name).toBe('Zero-Trust Security');
+    });
+
+    it('should validate biometric pulse timeout', () => {
+      const PULSE_TIMEOUT_MS = 5000;
+      const freshTimestamp = Date.now() - 1000;
+      const staleTimestamp = Date.now() - 6000;
+
+      const isFreshConnected = (Date.now() - freshTimestamp) < PULSE_TIMEOUT_MS;
+      const isStaleConnected = (Date.now() - staleTimestamp) < PULSE_TIMEOUT_MS;
+
+      expect(isFreshConnected).toBe(true);
+      expect(isStaleConnected).toBe(false);
+    });
+
+    it('should truncate insight to max 5 words for HUD display', () => {
+      const truncateInsight = (text: string, maxWords: number = 5): string => {
+        const words = text.trim().split(/\s+/);
+        return words.length <= maxWords ? text.trim() : words.slice(0, maxWords).join(' ');
+      };
+
+      expect(truncateInsight('CAC $120 LTV $1800')).toBe('CAC $120 LTV $1800');
+      expect(truncateInsight('This is a very long insight text')).toBe('This is a very long');
+      expect(truncateInsight('Short')).toBe('Short');
+    });
+  });
 });
