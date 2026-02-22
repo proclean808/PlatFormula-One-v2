@@ -1,0 +1,17 @@
+# Android build artifacts
+.gradle/
+app/build/
+build/
+
+# Local secrets — never commit
+local.properties
+
+# IDE
+.idea/
+*.iml
+*.iws
+.DS_Store
+
+# Keystore
+*.jks
+*.keystore

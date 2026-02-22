@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Audio capture for live meeting transcription -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Wearable Data Layer — BLE channel to Galaxy Watch 7 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Internet for Gemini API calls -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MemBrainWhisperer">
+
+        <activity
+            android:name=".MemBrainWhisperer"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Wearable Data Layer listener service -->
+        <service
+            android:name="com.google.android.gms.wearable.WearableListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data
+                    android:host="*"
+                    android:pathPrefix="/membrain"
+                    android:scheme="wear" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>
