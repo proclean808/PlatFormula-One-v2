@@ -68,6 +68,7 @@ const resources: Resource[] = [
   { name: "Vercel AI Accelerator", url: "https://vercel.com/blog/the-vercel-ai-accelerator-is-back-with-6-million-in-credits", description: "$6M in credits for AI startups building with Vercel", category: "accelerator", logo: "/vercel-logo.png" },
   { name: "Accel Atoms", url: "https://www.accel.com/programs/atoms", description: "Pre-seed AI cohort 2026 with up to $2M co-investment with Google AI Futures Fund", category: "accelerator" },
   { name: "a16z Speedrun", url: "https://a16z.com/speedrun/", description: "Tech, gaming, and AI accelerator with up to $1M funding and 600-person operator network", category: "accelerator" },
+  { name: "Pear VC PearX", url: "https://pear.vc/pearx/", description: "Exclusive 12-week pre-seed accelerator with $250K-$2M investment, ~20 team batches, and 90% success rate. Dedicated recruiting, sales, and fundraising support", category: "accelerator" },
   { name: "Berkeley SkyDeck IPP", url: "https://skydeck.berkeley.edu/innovation-partner-program/", description: "Innovation Partner Program with $810K in startup perks and UC Berkeley network access", category: "accelerator" },
   { name: "Digital Catapult", url: "https://www.digicalcatapult.org.uk", description: "UK's leading deep tech innovation center", category: "accelerator" },
   { name: "Jolt Capital", url: "https://www.jolt.vc", description: "Paris-based deep tech investor", category: "accelerator" },

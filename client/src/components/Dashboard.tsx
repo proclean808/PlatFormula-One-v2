@@ -148,6 +148,24 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
             </CardContent>
           </Card>
 
+          {/* PearX */}
+          <Card className="border-pink-500/50 bg-gradient-to-br from-pink-500/10 to-pink-600/5 backdrop-blur hover:border-pink-500/70 transition-all hover:shadow-lg hover:shadow-pink-500/20">
+            <CardHeader>
+              <CardTitle className="text-xl text-pink-400">Pear VC PearX</CardTitle>
+              <CardDescription>$250K-$2M + 90% raise follow-on funding</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Exclusive 12-week pre-seed accelerator with ~20 team batches. 90% success rate with dedicated recruiting, sales, and fundraising support.
+              </p>
+              <a href="https://pear.vc/pearx/" target="_blank" rel="noopener noreferrer">
+                <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white">
+                  Apply to PearX →
+                </Button>
+              </a>
+            </CardContent>
+          </Card>
+
           {/* Reo.Dev */}
           <Card className="border-purple-500/50 bg-gradient-to-br from-purple-500/10 to-purple-600/5 backdrop-blur hover:border-purple-500/70 transition-all hover:shadow-lg hover:shadow-purple-500/20">
             <CardHeader>

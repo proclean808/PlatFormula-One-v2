@@ -35,3 +35,6 @@
 - [x] Add application deadline tracker with countdown timers for upcoming accelerator deadlines
 - [x] Add founder success metrics section showing platform impact and credibility stats
 - [x] Remove duplicate Reo.Dev card from Dashboard (kept in Elite Programs section, removed from Featured Platforms)
+
+## New Request
+- [x] Add Pear VC accelerator program to platform (research details, add to Resources and potentially Elite Programs section)
