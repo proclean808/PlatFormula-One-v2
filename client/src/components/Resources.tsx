@@ -69,6 +69,9 @@ const resources: Resource[] = [
   { name: "Digital Catapult", url: "https://www.digicalcatapult.org.uk", description: "UK's leading deep tech innovation center", category: "accelerator" },
   { name: "Jolt Capital", url: "https://www.jolt.vc", description: "Paris-based deep tech investor", category: "accelerator" },
   
+  // Developer GTM Tools
+  { name: "Reo.Dev", url: "https://reo.dev", description: "AI-native GTM platform for DevTool companies. De-anonymize GitHub traffic and convert intent signals into qualified leads", category: "accelerator", logo: "/reodev-logo.jpg" },
+  
   // VCs
   { name: "AngelList", url: "https://www.angellist.com", description: "Platform for connecting with angel investors", category: "vc" },
   { name: "Andreessen Horowitz (a16z)", url: "https://a16z.com", description: "Leading VC firm for seed to growth-stage companies", category: "vc" },
