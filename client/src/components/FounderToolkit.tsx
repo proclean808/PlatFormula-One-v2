@@ -84,8 +84,36 @@ const tools: Tool[] = [
     value: "$50-$500 + 10% recurring",
     category: "sales" 
   },
+  { 
+    name: "Mailmodo", 
+    url: "https://mailmodo.com/affiliates", 
+    description: "Interactive email marketing with AMP emails for higher engagement", 
+    value: "20% recurring (up to $5K)",
+    category: "sales" 
+  },
+  { 
+    name: "Semrush", 
+    url: "https://semrush.com/affiliate", 
+    description: "SEO, content marketing, and competitive research platform", 
+    value: "$200 per sale + trial bonuses",
+    category: "sales" 
+  },
+  { 
+    name: "Thinkific", 
+    url: "https://thinkific.com/affiliates", 
+    description: "Create and sell online courses for founder education and training", 
+    value: "30% recurring (up to $1.7K)",
+    category: "sales" 
+  },
   
   // Legal & Equity
+  { 
+    name: "Firstbase.io", 
+    url: "https://firstbase.io/referral-partner-program", 
+    description: "Full-service incorporation with compliance, tax, and ongoing support", 
+    value: "$100-$150 per incorporation",
+    category: "legal" 
+  },
   { 
     name: "Stripe Atlas", 
     url: "https://stripe.com/atlas", 
