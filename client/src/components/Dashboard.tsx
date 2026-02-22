@@ -59,12 +59,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* a16z Speedrun */}
-          <Card className="border-purple-500/50 bg-gradient-to-br from-purple-500/10 to-purple-600/5 backdrop-blur hover:border-purple-500/70 transition-all hover:shadow-lg hover:shadow-purple-500/20">
+          <Card className="border-purple-500/50 bg-gradient-to-br from-purple-500/10 to-purple-600/5 backdrop-blur hover:border-purple-500/70 transition-all hover:shadow-lg hover:shadow-purple-500/20 min-h-[280px] flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl text-purple-400">a16z Speedrun</CardTitle>
               <CardDescription>Up to $1M + 600-person operator network</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 flex-1 flex flex-col justify-end">
               <p className="text-sm text-muted-foreground">
                 Tech, gaming, and AI accelerator with direct access to Andreessen Horowitz's extensive network and over $5M in partner credits.
               </p>
@@ -77,12 +77,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </Card>
 
           {/* Accel Atoms */}
-          <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20">
+          <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20 min-h-[280px] flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl text-blue-400">Accel Atoms</CardTitle>
               <CardDescription>Up to $2M co-investment with Google</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 flex-1 flex flex-col justify-end">
               <p className="text-sm text-muted-foreground">
                 AI Cohort 2026 with Google AI Futures Fund. Early access to DeepMind models and advanced compute infrastructure.
               </p>
@@ -95,12 +95,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </Card>
 
           {/* Y Combinator */}
-          <Card className="border-orange-500/50 bg-gradient-to-br from-orange-500/10 to-orange-600/5 backdrop-blur hover:border-orange-500/70 transition-all hover:shadow-lg hover:shadow-orange-500/20">
+          <Card className="border-orange-500/50 bg-gradient-to-br from-orange-500/10 to-orange-600/5 backdrop-blur hover:border-orange-500/70 transition-all hover:shadow-lg hover:shadow-orange-500/20 min-h-[280px] flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl text-orange-400">Y Combinator</CardTitle>
               <CardDescription>$500K + $500K in ecosystem deals</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 flex-1 flex flex-col justify-end">
               <p className="text-sm text-muted-foreground">
                 World's most successful accelerator. Start with Startup School to unlock deals, then apply for Spring 2026 batch.
               </p>
@@ -113,12 +113,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </Card>
 
           {/* Berkeley SkyDeck */}
-          <Card className="border-emerald-500/50 bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 backdrop-blur hover:border-emerald-500/70 transition-all hover:shadow-lg hover:shadow-emerald-500/20">
+          <Card className="border-emerald-500/50 bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 backdrop-blur hover:border-emerald-500/70 transition-all hover:shadow-lg hover:shadow-emerald-500/20 min-h-[280px] flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl text-emerald-400">Berkeley SkyDeck</CardTitle>
               <CardDescription>$810K in startup perks + UC Berkeley network</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 flex-1 flex flex-col justify-end">
               <p className="text-sm text-muted-foreground">
                 Innovation Partner Program (IPP) provides institutional credibility and access to UC Berkeley advisors.
               </p>
@@ -131,12 +131,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </Card>
 
           {/* Alchemy */}
-          <Card className="border-cyan-500/50 bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 backdrop-blur hover:border-cyan-500/70 transition-all hover:shadow-lg hover:shadow-cyan-500/20">
+          <Card className="border-cyan-500/50 bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 backdrop-blur hover:border-cyan-500/70 transition-all hover:shadow-lg hover:shadow-cyan-500/20 min-h-[280px] flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl text-cyan-400">Alchemy for Startups</CardTitle>
               <CardDescription>$10K in credits + VIP support</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 flex-1 flex flex-col justify-end">
               <p className="text-sm text-muted-foreground">
                 Web3 and AI infrastructure for building high-scale APIs. Dedicated support for founders building the future.
               </p>
@@ -149,12 +149,12 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </Card>
 
           {/* PearX */}
-          <Card className="border-pink-500/50 bg-gradient-to-br from-pink-500/10 to-pink-600/5 backdrop-blur hover:border-pink-500/70 transition-all hover:shadow-lg hover:shadow-pink-500/20">
+          <Card className="border-pink-500/50 bg-gradient-to-br from-pink-500/10 to-pink-600/5 backdrop-blur hover:border-pink-500/70 transition-all hover:shadow-lg hover:shadow-pink-500/20 min-h-[280px] flex flex-col">
             <CardHeader>
               <CardTitle className="text-xl text-pink-400">Pear VC PearX</CardTitle>
               <CardDescription>$250K-$2M + 90% raise follow-on funding</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 flex-1 flex flex-col justify-end">
               <p className="text-sm text-muted-foreground">
                 Exclusive 12-week pre-seed accelerator with ~20 team batches. 90% success rate with dedicated recruiting, sales, and fundraising support.
               </p>
@@ -165,31 +165,13 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
               </a>
             </CardContent>
           </Card>
-
-          {/* Reo.Dev */}
-          <Card className="border-purple-500/50 bg-gradient-to-br from-purple-500/10 to-purple-600/5 backdrop-blur hover:border-purple-500/70 transition-all hover:shadow-lg hover:shadow-purple-500/20">
-            <CardHeader>
-              <CardTitle className="text-xl text-purple-400">Reo.Dev</CardTitle>
-              <CardDescription>AI-native GTM for DevTool companies</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                De-anonymize GitHub traffic and convert intent signals into qualified leads. Built for developer-first companies.
-              </p>
-              <a href="https://reo.dev" target="_blank" rel="noopener noreferrer">
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                  Explore Reo.Dev →
-                </Button>
-              </a>
-            </CardContent>
-          </Card>
         </div>
       </section>
 
       {/* Featured Platforms - LinkedIn, Product Hunt & Framer.ai */}
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
         {/* LinkedIn & LinkedInGenius.ai */}
-        <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20">
+        <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20 min-h-[380px] flex flex-col">
           <CardHeader>
             <div className="flex items-center gap-4 mb-4">
               <img src="/linkedin-logo.png" alt="LinkedIn" className="h-16 w-16" />
@@ -227,7 +209,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </Card>
 
         {/* Product Hunt */}
-        <Card className="border-orange-500/50 bg-gradient-to-br from-orange-500/10 to-orange-600/5 backdrop-blur hover:border-orange-500/70 transition-all hover:shadow-lg hover:shadow-orange-500/20">
+        <Card className="border-orange-500/50 bg-gradient-to-br from-orange-500/10 to-orange-600/5 backdrop-blur hover:border-orange-500/70 transition-all hover:shadow-lg hover:shadow-orange-500/20 min-h-[380px] flex flex-col">
           <CardHeader>
             <div className="flex items-center gap-4 mb-4">
               <img src="/product-hunt-logo.png" alt="Product Hunt" className="h-16 w-16" />
@@ -255,7 +237,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </Card>
 
         {/* Framer.ai */}
-        <Card className="border-indigo-500/50 bg-gradient-to-br from-indigo-500/10 to-indigo-600/5 backdrop-blur hover:border-indigo-500/70 transition-all hover:shadow-lg hover:shadow-indigo-500/20">
+        <Card className="border-indigo-500/50 bg-gradient-to-br from-indigo-500/10 to-indigo-600/5 backdrop-blur hover:border-indigo-500/70 transition-all hover:shadow-lg hover:shadow-indigo-500/20 min-h-[380px] flex flex-col">
           <CardHeader>
             <div className="flex items-center gap-4 mb-4">
               <div className="h-16 w-16 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-2xl">
