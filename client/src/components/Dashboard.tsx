@@ -48,6 +48,75 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </div>
       </section>
 
+      {/* Featured Platforms - LinkedIn & Product Hunt */}
+      <section className="grid gap-6 md:grid-cols-2 mb-8">
+        {/* LinkedIn & LinkedInGenius.ai */}
+        <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20">
+          <CardHeader>
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/linkedin-logo.png" alt="LinkedIn" className="h-16 w-16" />
+              <div>
+                <CardTitle className="text-2xl text-blue-400">LinkedIn Essential</CardTitle>
+                <p className="text-sm text-muted-foreground">Critical for founder networking & credibility</p>
+              </div>
+            </div>
+            <CardDescription className="text-base">
+              Build your founder brand, connect with investors, and establish credibility. Enhanced by LinkedInGenius.ai for profile optimization, content generation, and growth strategies.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <a 
+              href="https://linkedin.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Go to LinkedIn →
+              </Button>
+            </a>
+            <a 
+              href="https://linkedingenius.ai" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button variant="outline" className="w-full border-blue-500 text-blue-400 hover:bg-blue-500/10">
+                Optimize with LinkedInGenius.ai →
+              </Button>
+            </a>
+          </CardContent>
+        </Card>
+
+        {/* Product Hunt */}
+        <Card className="border-orange-500/50 bg-gradient-to-br from-orange-500/10 to-orange-600/5 backdrop-blur hover:border-orange-500/70 transition-all hover:shadow-lg hover:shadow-orange-500/20">
+          <CardHeader>
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/product-hunt-logo.png" alt="Product Hunt" className="h-16 w-16" />
+              <div>
+                <CardTitle className="text-2xl text-orange-400">Launch on Product Hunt</CardTitle>
+                <p className="text-sm text-muted-foreground">Get discovered by early adopters</p>
+              </div>
+            </div>
+            <CardDescription className="text-base">
+              Launch your product to a community of tech enthusiasts, early adopters, and investors. Get feedback, traction, and visibility for your startup.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <a 
+              href="https://producthunt.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white">
+                Launch on Product Hunt →
+              </Button>
+            </a>
+          </CardContent>
+        </Card>
+      </section>
+
       {/* Features Grid - Color Coded */}
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* GREEN - Resources/Database */}
