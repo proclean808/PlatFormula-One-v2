@@ -117,7 +117,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </Card>
       </section>
 
-      {/* Features Grid - Color Coded */}
+      {/* Features Grid - Color Coded - Reordered for visual balance */}
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* GREEN - Resources/Database */}
         <Card className="border-emerald-500/30 bg-card/50 backdrop-blur hover:border-emerald-500/50 transition-colors">
@@ -141,6 +141,51 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </CardContent>
         </Card>
 
+        {/* PURPLE - AI Tools */}
+        <Card className="border-purple-500/30 bg-card/50 backdrop-blur hover:border-purple-500/50 transition-colors">
+          <CardHeader>
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-4">
+              <Lightbulb className="h-6 w-6" />
+            </div>
+            <CardTitle>Concept Refinement</CardTitle>
+            <CardDescription>
+              Generate brand names, taglines, and positioning with AI-powered tools
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-purple-500 hover:text-purple-400 hover:bg-purple-500/10"
+              onClick={() => setActiveTab("concept")}
+            >
+              Refine Concept →
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* TEAL - Tracking */}
+        <Card className="border-teal-500/30 bg-card/50 backdrop-blur hover:border-teal-500/50 transition-colors">
+          <CardHeader>
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-500/10 text-teal-500 mb-4">
+              <BarChart3 className="h-6 w-6" />
+            </div>
+            <CardTitle>Application Tracking</CardTitle>
+            <CardDescription>
+              Track all your accelerator and investor applications in one organized dashboard
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-teal-500 hover:text-teal-400 hover:bg-teal-500/10"
+              onClick={() => setActiveTab("tracking")}
+            >
+              Track Progress →
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* GREEN - Database */}
         <Card className="border-emerald-500/30 bg-card/50 backdrop-blur hover:border-emerald-500/50 transition-colors">
           <CardHeader>
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500 mb-4">
@@ -184,28 +229,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           </CardContent>
         </Card>
 
-        {/* PURPLE - AI Tools */}
-        <Card className="border-purple-500/30 bg-card/50 backdrop-blur hover:border-purple-500/50 transition-colors">
-          <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-4">
-              <Lightbulb className="h-6 w-6" />
-            </div>
-            <CardTitle>Concept Refinement</CardTitle>
-            <CardDescription>
-              Generate brand names, taglines, and positioning with AI-powered tools
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-start text-purple-500 hover:text-purple-400 hover:bg-purple-500/10"
-              onClick={() => setActiveTab("concept")}
-            >
-              Refine Concept →
-            </Button>
-          </CardContent>
-        </Card>
-
+        {/* PURPLE - Application Assistant */}
         <Card className="border-purple-500/30 bg-card/50 backdrop-blur hover:border-purple-500/50 transition-colors">
           <CardHeader>
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-4">
@@ -223,28 +247,6 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
               onClick={() => setActiveTab("application")}
             >
               Get Help →
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* TEAL - Tracking/Community */}
-        <Card className="border-teal-500/30 bg-card/50 backdrop-blur hover:border-teal-500/50 transition-colors">
-          <CardHeader>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-teal-500/10 text-teal-500 mb-4">
-              <BarChart3 className="h-6 w-6" />
-            </div>
-            <CardTitle>Application Tracking</CardTitle>
-            <CardDescription>
-              Track all your accelerator and investor applications in one organized dashboard
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-start text-teal-500 hover:text-teal-400 hover:bg-teal-500/10"
-              onClick={() => setActiveTab("tracking")}
-            >
-              Track Progress →
             </Button>
           </CardContent>
         </Card>
