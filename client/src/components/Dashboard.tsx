@@ -235,34 +235,6 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
             </a>
           </CardContent>
         </Card>
-
-        {/* Reo.Dev */}
-        <Card className="border-purple-500/50 bg-gradient-to-br from-purple-500/10 to-purple-600/5 backdrop-blur hover:border-purple-500/70 transition-all hover:shadow-lg hover:shadow-purple-500/20">
-          <CardHeader>
-            <div className="flex items-center gap-4 mb-4">
-              <img src="/reodev-logo.jpg" alt="Reo.Dev" className="h-16 w-16 rounded-lg" />
-              <div>
-                <CardTitle className="text-2xl text-purple-400">Reo.Dev for Developer GTM</CardTitle>
-                <p className="text-sm text-muted-foreground">De-anonymize GitHub traffic & intent signals</p>
-              </div>
-            </div>
-            <CardDescription className="text-base">
-              AI-native GTM platform for DevTool companies. Identify which developers are evaluating your product, understand their intent signals, and convert GitHub traffic into qualified leads.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <a 
-              href="https://reo.dev" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="block"
-            >
-              <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                Explore Reo.Dev →
-              </Button>
-            </a>
-          </CardContent>
-        </Card>
       </section>
 
       {/* Deadline Tracker */}

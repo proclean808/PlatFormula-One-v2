@@ -34,3 +34,4 @@
 - [x] Create "Killer Square" featured tiles for elite programs (a16z Speedrun, Accel Atoms, YC, Berkeley SkyDeck, Alchemy)
 - [x] Add application deadline tracker with countdown timers for upcoming accelerator deadlines
 - [x] Add founder success metrics section showing platform impact and credibility stats
+- [x] Remove duplicate Reo.Dev card from Dashboard (kept in Elite Programs section, removed from Featured Platforms)
