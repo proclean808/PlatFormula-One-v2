@@ -193,6 +193,13 @@ const tools: Tool[] = [
     value: "$10 per lead + $200 per sale",
     category: "developer" 
   },
+  { 
+    name: "Alchemy", 
+    url: "https://www.alchemy.com/partners", 
+    description: "Web3 and AI infrastructure for building high-scale APIs", 
+    value: "Up to $10K in credits + VIP support",
+    category: "developer" 
+  },
 ];
 
 const getCategoryColor = (category: Tool["category"]) => {
