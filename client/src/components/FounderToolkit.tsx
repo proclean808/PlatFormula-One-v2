@@ -1,13 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, DollarSign, TrendingUp, Scale } from "lucide-react";
+import { ExternalLink, DollarSign, TrendingUp, Scale, Code } from "lucide-react";
 
 interface Tool {
   name: string;
   url: string;
   description: string;
   value: string;
-  category: "financial" | "sales" | "legal";
+  category: "financial" | "sales" | "legal" | "developer";
 }
 
 const tools: Tool[] = [
@@ -142,6 +142,57 @@ const tools: Tool[] = [
     value: "Bundled bonuses",
     category: "legal" 
   },
+  
+  // Developer & AI Tools
+  { 
+    name: "Pinecone", 
+    url: "https://www.pinecone.io/partners/", 
+    description: "Vector database for AI/ML applications and RAG systems", 
+    value: "Qualified CPA via PartnerStack",
+    category: "developer" 
+  },
+  { 
+    name: "ElevenLabs", 
+    url: "https://elevenlabs.io/affiliates", 
+    description: "AI voice generation and text-to-speech platform", 
+    value: "22% recurring (12 months)",
+    category: "developer" 
+  },
+  { 
+    name: "Writesonic", 
+    url: "https://writesonic.com/affiliate", 
+    description: "AI content generation and SEO automation platform", 
+    value: "30% lifetime recurring",
+    category: "developer" 
+  },
+  { 
+    name: "Framer", 
+    url: "https://www.framer.com/affiliates/", 
+    description: "Professional website builder for startups and designers", 
+    value: "50% commission (12 months)",
+    category: "developer" 
+  },
+  { 
+    name: "BlackBox AI", 
+    url: "https://www.blackbox.ai/partners", 
+    description: "AI coding assistant for developers", 
+    value: "15% recurring (12 months)",
+    category: "developer" 
+  },
+  { 
+    name: "Cal.com", 
+    url: "https://cal.com/partners", 
+    description: "Open-source scheduling infrastructure for developers", 
+    value: "Recurring seat-based payouts",
+    category: "developer" 
+  },
+  { 
+    name: "FreshBooks", 
+    url: "https://www.freshbooks.com/affiliates", 
+    description: "Accounting and invoicing for service-based startups", 
+    value: "$10 per lead + $200 per sale",
+    category: "developer" 
+  },
 ];
 
 const getCategoryColor = (category: Tool["category"]) => {
@@ -170,6 +221,14 @@ const getCategoryColor = (category: Tool["category"]) => {
         hover: "hover:border-purple-500/50",
         icon: Scale
       };
+    case "developer":
+      return {
+        border: "border-orange-500/30",
+        bg: "bg-orange-500/10",
+        text: "text-orange-500",
+        hover: "hover:border-orange-500/50",
+        icon: Code
+      };
   }
 };
 
@@ -181,11 +240,13 @@ const getCategoryName = (category: Tool["category"]) => {
       return "Sales & Scaling";
     case "legal":
       return "Legal & Equity";
+    case "developer":
+      return "Developer & AI Tools";
   }
 };
 
 export function FounderToolkit() {
-  const categories: Tool["category"][] = ["financial", "sales", "legal"];
+  const categories: Tool["category"][] = ["financial", "sales", "developer", "legal"];
 
   return (
     <div className="container py-8 space-y-8">
