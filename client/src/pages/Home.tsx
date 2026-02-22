@@ -10,6 +10,7 @@ import Tracking from "@/components/Tracking";
 import Community from "@/components/Community";
 import ApplicationAssistant from "@/components/ApplicationAssistant";
 import ConceptRefinement from "@/components/ConceptRefinement";
+import { FounderToolkit } from "@/components/FounderToolkit";
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
@@ -20,6 +21,7 @@ const navigationItems = [
   { id: "community", label: "Community", icon: Users, color: "teal" },
   { id: "application", label: "Application Assistant", icon: FileText, color: "purple" },
   { id: "concept", label: "Concept Refinement", icon: Lightbulb, color: "purple" },
+  { id: "toolkit", label: "Founder Toolkit", icon: Wrench, color: "orange" },
 ];
 
 export default function Home() {
@@ -148,6 +150,7 @@ export default function Home() {
         {activeTab === "community" && <Community />}
         {activeTab === "application" && <ApplicationAssistant />}
         {activeTab === "concept" && <ConceptRefinement />}
+        {activeTab === "toolkit" && <FounderToolkit />}
       </main>
 
       {/* Footer */}
