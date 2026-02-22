@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Rocket, Database, Wrench, Mic, ListChecks, Users } from "lucide-react";
+import { Rocket, Database, Wrench, Mic, ListChecks, Users, FileText, Lightbulb } from "lucide-react";
 import Dashboard from "@/components/Dashboard";
 import Resources from "@/components/Resources";
 import Builder from "@/components/Builder";
 import PitchStudio from "@/components/PitchStudio";
 import Tracking from "@/components/Tracking";
 import Community from "@/components/Community";
+import ApplicationAssistant from "@/components/ApplicationAssistant";
+import ConceptRefinement from "@/components/ConceptRefinement";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -32,7 +34,7 @@ export default function Home() {
       {/* Main Content with Tabs */}
       <main className="container py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-8 bg-card/50 backdrop-blur">
+          <TabsList className="grid w-full grid-cols-8 mb-8 bg-card/50 backdrop-blur">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <Rocket className="h-4 w-4" />
               <span className="hidden sm:inline">Dashboard</span>
@@ -56,6 +58,14 @@ export default function Home() {
             <TabsTrigger value="community" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               <span className="hidden sm:inline">Community</span>
+            </TabsTrigger>
+            <TabsTrigger value="application" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              <span className="hidden sm:inline">Application</span>
+            </TabsTrigger>
+            <TabsTrigger value="concept" className="flex items-center gap-2">
+              <Lightbulb className="h-4 w-4" />
+              <span className="hidden sm:inline">Concept</span>
             </TabsTrigger>
           </TabsList>
 
@@ -81,6 +91,14 @@ export default function Home() {
 
           <TabsContent value="community">
             <Community />
+          </TabsContent>
+
+          <TabsContent value="application">
+            <ApplicationAssistant />
+          </TabsContent>
+
+          <TabsContent value="concept">
+            <ConceptRefinement />
           </TabsContent>
         </Tabs>
       </main>
