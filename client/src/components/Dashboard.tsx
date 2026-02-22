@@ -168,8 +168,8 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
         </div>
       </section>
 
-      {/* Featured Platforms - LinkedIn, Product Hunt & Framer.ai */}
-      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+      {/* Featured Platforms - LinkedIn, Product Hunt, Framer.ai & AngelList */}
+      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
         {/* LinkedIn & LinkedInGenius.ai */}
         <Card className="border-blue-500/50 bg-gradient-to-br from-blue-500/10 to-blue-600/5 backdrop-blur hover:border-blue-500/70 transition-all hover:shadow-lg hover:shadow-blue-500/20 min-h-[380px] flex flex-col">
           <CardHeader>
@@ -261,6 +261,46 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
             >
               <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
                 Try Framer.ai →
+              </Button>
+            </a>
+          </CardContent>
+        </Card>
+
+        {/* AngelList */}
+        <Card className="border-teal-500/50 bg-gradient-to-br from-teal-500/10 to-teal-600/5 backdrop-blur hover:border-teal-500/70 transition-all hover:shadow-lg hover:shadow-teal-500/20 min-h-[380px] flex flex-col">
+          <CardHeader>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-16 w-16 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold text-2xl">
+                AL
+              </div>
+              <div>
+                <CardTitle className="text-2xl text-teal-400">AngelList</CardTitle>
+                <p className="text-sm text-muted-foreground">Fundraising & talent platform</p>
+              </div>
+            </div>
+            <CardDescription className="text-base">
+              Connect with 17K+ investors, raise through syndicates, and hire from 10M+ startup-ready candidates. $3.5B+ deployed through the platform.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <a 
+              href="https://www.angellist.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white">
+                Explore AngelList →
+              </Button>
+            </a>
+            <a 
+              href="https://wellfound.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <Button variant="outline" className="w-full border-teal-500 text-teal-400 hover:bg-teal-500/10">
+                Find Talent on Wellfound →
               </Button>
             </a>
           </CardContent>

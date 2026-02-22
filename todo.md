@@ -42,3 +42,4 @@
 - [x] Fix Dashboard layout - even out card sizes and spacing for balanced grid alignment
 - [x] Enlarge hamburger menu icon for better visibility and mobile usability
 - [x] Make hamburger menu icon significantly larger (current size still too small)
+- [x] Add AngelList tile to Dashboard with accurate program information
