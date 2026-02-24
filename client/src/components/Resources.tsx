@@ -76,16 +76,39 @@ const resources: Resource[] = [
   // Developer GTM Tools
   { name: "Reo.Dev", url: "https://reo.dev", description: "AI-native GTM platform for DevTool companies. De-anonymize GitHub traffic and convert intent signals into qualified leads", category: "accelerator", logo: "/reodev-logo.jpg" },
   
-  // VCs
-  { name: "AngelList", url: "https://www.angellist.com", description: "Platform for connecting with angel investors", category: "vc" },
-  { name: "Andreessen Horowitz (a16z)", url: "https://a16z.com", description: "Leading VC firm for seed to growth-stage companies", category: "vc" },
-  { name: "Sequoia Capital", url: "https://www.sequoiacap.com", description: "One of the world's most influential VC firms", category: "vc" },
-  { name: "Lightspeed Venture Partners", url: "https://lsvp.com", description: "Multi-stage VC focusing on enterprise and fintech", category: "vc" },
-  { name: "Greylock", url: "https://greylock.com", description: "VC firm focused on enterprise software", category: "vc" },
-  { name: "First Round Capital", url: "https://firstround.com", description: "Top-tier seed-stage firm", category: "vc" },
-  { name: "Bessemer Venture Partners", url: "https://www.bvp.com", description: "Cross-stage investor in AI, cloud, and healthcare", category: "vc" },
-  { name: "Founders Fund", url: "https://foundersfund.com", description: "SF-based firm investing in revolutionary tech", category: "vc" },
-  { name: "Kleiner Perkins", url: "https://www.kleinerperkins.com", description: "Storied VC firm with iconic investments", category: "vc" },
+  // VCs - Pre-Seed/Seed
+  { name: "AngelList", url: "https://www.angellist.com", description: "Platform for connecting with angel investors and syndicates", category: "vc" },
+  { name: "First Round Capital", url: "https://firstround.com", description: "Top-tier seed-stage firm with First Round Review content platform", category: "vc" },
+  { name: "TQ Ventures", url: "https://www.tqventures.com", description: "Pre-seed and seed-stage VC focused on technical founders", category: "vc" },
+  { name: "e2vc", url: "https://www.e2vc.com", description: "European seed-stage VC backing ambitious tech founders", category: "vc" },
+  { name: "Inovo", url: "https://www.inovo.vc", description: "European seed and Series A investor in tech startups", category: "vc" },
+  { name: "Rockaway Ventures", url: "https://www.rockaway.com", description: "CEE-focused VC investing in seed to growth-stage companies", category: "vc" },
+  
+  // VCs - Early Stage (Series A)
+  { name: "Uncork Capital", url: "https://www.uncorkcapital.com", description: "Seed and Series A investor in software and marketplace startups", category: "vc" },
+  { name: "Samsung Next", url: "https://www.samsungnext.com", description: "Corporate VC investing in software and services across all stages", category: "vc" },
+  { name: "Encoded Ventures", url: "https://www.encoded.vc", description: "Series A-focused VC backing technical founders in B2B software", category: "vc" },
+  { name: "Elevation Capital", url: "https://www.elevationcapital.com", description: "India-focused early-stage VC (formerly SAIF Partners)", category: "vc" },
+  { name: "Lightspeed Venture Partners", url: "https://lsvp.com", description: "Multi-stage VC focusing on enterprise, fintech, and consumer", category: "vc" },
+  { name: "Bain Capital Ventures", url: "https://www.baincapitalventures.com", description: "Seed to growth-stage investor with deep operational expertise", category: "vc" },
+  { name: "Greylock", url: "https://greylock.com", description: "Classic VC firm focused on enterprise software and consumer internet", category: "vc" },
+  { name: "Norwest Venture Partners", url: "https://www.nvp.com", description: "Multi-stage VC with focus on enterprise and consumer tech", category: "vc" },
+  { name: "Two Bear Capital", url: "https://www.twobearcapital.com", description: "Early-stage VC investing in software and internet companies", category: "vc" },
+  
+  // VCs - Growth Stage (Series C/D+)
+  { name: "Infinity Ventures", url: "https://www.infinityventures.com", description: "Growth-stage investor in technology and internet companies", category: "vc" },
+  { name: "Synchrony Ventures", url: "https://www.synchronyventures.com", description: "Growth equity firm focused on healthcare and financial services", category: "vc" },
+  { name: "Andreessen Horowitz (a16z)", url: "https://a16z.com", description: "Leading VC firm investing seed to growth-stage in technology", category: "vc" },
+  { name: "NEA", url: "https://www.nea.com", description: "New Enterprise Associates - one of world's largest VCs, all stages", category: "vc" },
+  { name: "General Catalyst", url: "https://www.generalcatalyst.com", description: "Multi-stage VC backing transformational companies globally", category: "vc" },
+  { name: "Georgian Partners", url: "https://www.georgian.io", description: "Growth-stage investor in B2B software with applied AI focus", category: "vc" },
+  { name: "Sequoia Capital", url: "https://www.sequoiacap.com", description: "One of the world's most influential VCs, seed to growth-stage", category: "vc" },
+  { name: "Sapphire Ventures", url: "https://sapphireventures.com", description: "Growth-stage VC focused on B2B software companies", category: "vc" },
+  
+  // VCs - Other Notable Firms
+  { name: "Bessemer Venture Partners", url: "https://www.bvp.com", description: "Cross-stage investor with depth in AI, cloud, and healthcare", category: "vc" },
+  { name: "Founders Fund", url: "https://foundersfund.com", description: "SF-based firm investing in revolutionary technology companies", category: "vc" },
+  { name: "Kleiner Perkins", url: "https://www.kleinerperkins.com", description: "Storied VC firm with long history of iconic investments", category: "vc" },
 ];
 
 const getCategoryColor = (category: Resource["category"]) => {

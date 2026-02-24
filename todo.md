@@ -54,3 +54,4 @@
 - [x] Make dashboard stats cards clickable - link $150K+ card to Founder Toolkit tab, link deadline card to YC application
 - [x] Create daily automation task to update accelerator deadline calendar for accuracy (runs daily at 9 AM PST)
 - [x] Add $150K+ value display to Resources tab header
+- [x] Add missing VCs to Resources tab organized by stage (TQ Ventures, e2vc, Inovo, Rockaway, Uncork, Samsung Next, Encoded, Elevation, Bain Capital, Norwest, Two Bear, Infinity, Synchrony, NEA, General Catalyst, Georgian, Sapphire)
