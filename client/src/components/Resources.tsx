@@ -70,6 +70,7 @@ const resources: Resource[] = [
   { name: "a16z Speedrun", url: "https://a16z.com/speedrun/", description: "Tech, gaming, and AI accelerator with up to $1M funding and 600-person operator network", category: "accelerator" },
   { name: "Pear VC PearX", url: "https://pear.vc/pearx/", description: "Exclusive 12-week pre-seed accelerator with $250K-$2M investment, ~20 team batches, and 90% success rate. Dedicated recruiting, sales, and fundraising support", category: "accelerator" },
   { name: "TinyFish Accelerator", url: "https://www.tinyfish.ai/accelerator", description: "9-week agentic web accelerator with $2M seed pool, hosted by TinyFish and Mango Capital. 100% remote, build-in-public model with rich partner ecosystem (Google Cloud, Vercel, ElevenLabs, Fireworks.AI)", category: "accelerator" },
+  { name: "Founders, Inc (f.inc)", url: "https://f.inc/", description: "Venture studio and accelerator for ambitious founders building category-defining companies. Provides capital, resources, and hands-on support", category: "accelerator" },
   { name: "Berkeley SkyDeck IPP", url: "https://skydeck.berkeley.edu/innovation-partner-program/", description: "Innovation Partner Program with $810K in startup perks and UC Berkeley network access", category: "accelerator" },
   { name: "Digital Catapult", url: "https://www.digicalcatapult.org.uk", description: "UK's leading deep tech innovation center", category: "accelerator" },
   { name: "Jolt Capital", url: "https://www.jolt.vc", description: "Paris-based deep tech investor", category: "accelerator" },

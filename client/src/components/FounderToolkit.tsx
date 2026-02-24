@@ -437,6 +437,27 @@ const tools: Tool[] = [
     value: "Up to $10K in credits + VIP support",
     category: "developer" 
   },
+  { 
+    name: "LiveKit", 
+    url: "https://livekit.io/", 
+    description: "Real-time video, audio, and data infrastructure for developers", 
+    value: "Open-source platform",
+    category: "developer" 
+  },
+  { 
+    name: "thirdweb", 
+    url: "https://thirdweb.com/", 
+    description: "Complete Web3 development platform with smart contracts and SDKs", 
+    value: "Free tier + enterprise",
+    category: "developer" 
+  },
+  { 
+    name: "Lexica", 
+    url: "https://lexica.art/", 
+    description: "AI art search engine and Stable Diffusion image generator", 
+    value: "AI art platform",
+    category: "ai_infrastructure" 
+  },
 ];
 
 const getCategoryColor = (category: Tool["category"]) => {

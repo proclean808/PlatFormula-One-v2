@@ -57,3 +57,7 @@
 - [x] Add missing VCs to Resources tab organized by stage (TQ Ventures, e2vc, Inovo, Rockaway, Uncork, Samsung Next, Encoded, Elevation, Bain Capital, Norwest, Two Bear, Infinity, Synchrony, NEA, General Catalyst, Georgian, Sapphire)
 - [x] Research and add Tinyfish AI accelerator to Resources tab and appropriate sections
 - [x] Add LinkedIn link to footer (lnkd.in/gjMdVuAf)
+- [x] Add LiveKit (real-time video/audio infrastructure) to Developer & AI Tools in Founder Toolkit
+- [x] Add thirdweb (Web3 development platform) to Developer & AI Tools in Founder Toolkit
+- [x] Add Lexica (AI art search engine and generator) to AI Infrastructure Ecosystem in Founder Toolkit
+- [x] Add Founders Inc (f.inc accelerator) to Resources tab
