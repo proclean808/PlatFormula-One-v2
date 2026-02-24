@@ -65,3 +65,4 @@
 - [x] Add remaining F1 racing images to other tabs: 15901.jpg victory celebration (Resources), 15906.jpg pit stop (Founder Toolkit)
 - [x] Add racing images to Builder (15907.jpg), Pitch Studio (trophy-flag-47.jpeg), and other tabs
 - [x] Create new AI Models tab with 16 top SOTA AI models (GPT-4, Claude, Gemini, Llama, o1, Cursor, Devin, DALL-E 3, Midjourney, Stable Diffusion, Flux, ElevenLabs, Whisper, Command R+, Mistral Large 2)
+- [x] Research and add F6S.com accelerator platform to Resources tab

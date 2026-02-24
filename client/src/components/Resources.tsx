@@ -19,6 +19,9 @@ const resources: Resource[] = [
   { name: "YC Startup Directory", url: "https://www.ycombinator.com/companies", description: "Browse 7,800+ YC-funded companies", category: "yc" },
   { name: "Hacker News", url: "https://news.ycombinator.com", description: "Tech and startup news community", category: "yc" },
   
+  // Platform Aggregators
+  { name: "F6S", url: "https://www.f6s.com", description: "World's largest platform connecting 6M+ founders with 1000+ accelerators, investors, grants, and startup deals", category: "accelerator" },
+  
   // Techstars
   { name: "Techstars", url: "https://www.techstars.com", description: "$220K investment with global mentorship network (6,300+ startups)", category: "techstars", logo: "/techstars-logo.webp" },
   
