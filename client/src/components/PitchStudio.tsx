@@ -5,6 +5,15 @@ import { Mic, Play, Square } from "lucide-react";
 export default function PitchStudio() {
   return (
     <div className="space-y-8">
+      {/* Racing Theme Header Image */}
+      <div className="flex justify-center mb-6">
+        <img 
+          src="/trophy-flag-47.jpeg" 
+          alt="Championship Trophy" 
+          className="w-full max-w-md h-48 object-contain opacity-90 hover:opacity-100 transition-opacity"
+        />
+      </div>
+      
       <div className="space-y-4">
         <h2 className="text-3xl font-bold">Pitch Studio</h2>
         <p className="text-muted-foreground">

@@ -61,3 +61,7 @@
 - [x] Add thirdweb (Web3 development platform) to Developer & AI Tools in Founder Toolkit
 - [x] Add Lexica (AI art search engine and generator) to AI Infrastructure Ecosystem in Founder Toolkit
 - [x] Add Founders Inc (f.inc accelerator) to Resources tab
+- [x] Add Formula 1 racing images to Dashboard hero (2 car photos: speed blur 15888.webp and studio shot 15894.jpg, plus trophy with checkered flag 15883.jpg) positioned around PlatFormula.One title
+- [x] Add remaining F1 racing images to other tabs: 15901.jpg victory celebration (Resources), 15906.jpg pit stop (Founder Toolkit)
+- [x] Add racing images to Builder (15907.jpg), Pitch Studio (trophy-flag-47.jpeg), and other tabs
+- [x] Create new AI Models tab with 16 top SOTA AI models (GPT-4, Claude, Gemini, Llama, o1, Cursor, Devin, DALL-E 3, Midjourney, Stable Diffusion, Flux, ElevenLabs, Whisper, Command R+, Mistral Large 2)

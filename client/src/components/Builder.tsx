@@ -8,6 +8,15 @@ import { FileText, Lightbulb, Target, Users } from "lucide-react";
 export default function Builder() {
   return (
     <div className="space-y-8">
+      {/* Racing Theme Header Image */}
+      <div className="flex justify-center mb-6">
+        <img 
+          src="/15907.jpg" 
+          alt="Formula 1 Racing Action" 
+          className="w-full max-w-2xl h-48 object-cover rounded-lg opacity-80 hover:opacity-100 transition-opacity"
+        />
+      </div>
+      
       <div className="space-y-4">
         <h2 className="text-3xl font-bold">Application Builder</h2>
         <p className="text-muted-foreground">

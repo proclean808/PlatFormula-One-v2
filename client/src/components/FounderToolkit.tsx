@@ -525,6 +525,15 @@ export function FounderToolkit() {
 
   return (
     <div className="container py-8 space-y-8">
+      {/* Racing Theme Header Image */}
+      <div className="flex justify-center mb-6">
+        <img 
+          src="/15906.jpg" 
+          alt="Formula 1 Pit Stop" 
+          className="w-full max-w-2xl h-48 object-cover rounded-lg opacity-80 hover:opacity-100 transition-opacity"
+        />
+      </div>
+      
       <div className="space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
           Founder Toolkit

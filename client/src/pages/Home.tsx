@@ -11,6 +11,8 @@ import Community from "@/components/Community";
 import ApplicationAssistant from "@/components/ApplicationAssistant";
 import ConceptRefinement from "@/components/ConceptRefinement";
 import { FounderToolkit } from "@/components/FounderToolkit";
+import AIModels from "@/components/AIModels";
+import { Zap } from "lucide-react";
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
@@ -22,6 +24,7 @@ const navigationItems = [
   { id: "application", label: "Application Assistant", icon: FileText, color: "purple" },
   { id: "concept", label: "Concept Refinement", icon: Lightbulb, color: "purple" },
   { id: "toolkit", label: "Founder Toolkit", icon: Wrench, color: "orange" },
+  { id: "aimodels", label: "AI Models", icon: Zap, color: "purple" },
 ];
 
 export default function Home() {
@@ -151,6 +154,7 @@ export default function Home() {
         {activeTab === "application" && <ApplicationAssistant />}
         {activeTab === "concept" && <ConceptRefinement />}
         {activeTab === "toolkit" && <FounderToolkit />}
+        {activeTab === "aimodels" && <AIModels />}
       </main>
 
       {/* Footer */}

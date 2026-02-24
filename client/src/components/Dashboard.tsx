@@ -18,11 +18,42 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
           <span className="text-sm font-medium">AI-Powered Startup Acceleration</span>
         </div>
         
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-          <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            PlatFormula.One
-          </span>
-        </h1>
+        {/* Racing Theme Images */}
+        <div className="flex items-center justify-center gap-8 flex-wrap">
+          {/* Left Car - Speed Blur */}
+          <img 
+            src="/15888.webp" 
+            alt="Formula 1 Racing" 
+            className="w-32 md:w-48 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+          />
+          
+          {/* Trophy */}
+          <img 
+            src="/15883.jpg" 
+            alt="Championship Trophy" 
+            className="w-24 md:w-32 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+          />
+          
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              PlatFormula.One
+            </span>
+          </h1>
+          
+          {/* Trophy */}
+          <img 
+            src="/15883.jpg" 
+            alt="Championship Trophy" 
+            className="w-24 md:w-32 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+          />
+          
+          {/* Right Car - Studio Shot */}
+          <img 
+            src="/15894.jpg" 
+            alt="Formula 1 Car" 
+            className="w-32 md:w-48 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+          />
+        </div>
         
         <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
           The comprehensive AI-powered platform connecting B2B SaaS founders with accelerators, 

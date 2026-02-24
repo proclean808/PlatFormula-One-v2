@@ -158,6 +158,15 @@ export default function Resources() {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
+        {/* Racing Theme Header Image */}
+        <div className="flex justify-center mb-6">
+          <img 
+            src="/15901.jpg" 
+            alt="Formula 1 Victory" 
+            className="w-full max-w-2xl h-48 object-cover rounded-lg opacity-80 hover:opacity-100 transition-opacity"
+          />
+        </div>
+        
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h2 className="text-3xl font-bold">Resources Directory</h2>
