@@ -53,3 +53,4 @@
 - [x] Add next accelerator application deadline countdown to Dashboard header (YC S26: 14 days)
 - [x] Make dashboard stats cards clickable - link $150K+ card to Founder Toolkit tab, link deadline card to YC application
 - [x] Create daily automation task to update accelerator deadline calendar for accuracy (runs daily at 9 AM PST)
+- [x] Add $150K+ value display to Resources tab header

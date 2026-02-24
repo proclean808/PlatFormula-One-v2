@@ -133,10 +133,21 @@ export default function Resources() {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h2 className="text-3xl font-bold">Resources Directory</h2>
-        <p className="text-muted-foreground">
-          Explore 50+ top AI accelerators, leading VC firms, and angel investors to accelerate your startup journey.
-        </p>
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 className="text-3xl font-bold">Resources Directory</h2>
+            <p className="text-muted-foreground">
+              Explore 50+ top AI accelerators, leading VC firms, and angel investors to accelerate your startup journey.
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-muted-foreground">Total Toolkit Value</p>
+            <p className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+              $150K+
+            </p>
+            <p className="text-xs text-muted-foreground">in credits & deals</p>
+          </div>
+        </div>
         
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
