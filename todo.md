@@ -43,3 +43,8 @@
 - [x] Enlarge hamburger menu icon for better visibility and mobile usability
 - [x] Make hamburger menu icon significantly larger (current size still too small)
 - [x] Add AngelList tile to Dashboard with accurate program information
+- [x] Add comprehensive AI Infrastructure ecosystem (4 tiers, 35+ tools) to Founder Toolkit tab
+  - Tier 1: Infrastructure & Data Foundations (CoreWeave, Snowflake, Scale AI, Together AI, Fireworks AI, Chamber, Crusoe)
+  - Tier 2: Agentic Orchestration & Connectivity (Xpander.ai, Mem0, VectorShift.ai, Blaxel.ai, Temporal, Terminal Use)
+  - Tier 3: Operational & Internal Automation (Serval, Devops.io, Oximy, Mendral, Canary AI, FullSeam)
+  - Tier 4: Strategic Vertical & Developer Tools (Cursor, Devin, Lovable.dev, Jinba, Stilta, Fed10, Fenrock AI, Rhizome AI, Caretta, BeeSafe AI, Moda, Traverse, Didit)

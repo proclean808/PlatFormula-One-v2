@@ -1,13 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, DollarSign, TrendingUp, Scale, Code } from "lucide-react";
+import { ExternalLink, DollarSign, TrendingUp, Scale, Code, Cpu } from "lucide-react";
 
 interface Tool {
   name: string;
   url: string;
   description: string;
   value: string;
-  category: "financial" | "sales" | "legal" | "developer";
+  category: "financial" | "sales" | "legal" | "developer" | "ai_infrastructure";
 }
 
 const tools: Tool[] = [
@@ -143,6 +143,236 @@ const tools: Tool[] = [
     category: "legal" 
   },
   
+  // AI Infrastructure Ecosystem
+  // Tier 1: Infrastructure & Data Foundations
+  { 
+    name: "CoreWeave", 
+    url: "https://www.coreweave.com/", 
+    description: "High-performance GPU hyperscaler for massive AI workload scaling", 
+    value: "Enterprise GPU clusters",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Snowflake", 
+    url: "https://www.snowflake.com/", 
+    description: "AI Data Cloud for governed, enterprise-grade data layers", 
+    value: "Data platform",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Scale AI", 
+    url: "https://scale.com/", 
+    description: "The data engine providing RLHF and high-fidelity training datasets", 
+    value: "Training data",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Together AI", 
+    url: "https://www.together.ai/", 
+    description: "AI-native cloud for fast inference, fine-tuning, & GPU clusters", 
+    value: "AI cloud platform",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Fireworks AI", 
+    url: "https://fireworks.ai/", 
+    description: "High-speed generative AI inference platform for open-source & custom models", 
+    value: "Fast inference",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Chamber", 
+    url: "https://www.ycombinator.com/companies/chamber", 
+    description: "(YC W26) Autopiloting AI infrastructure; optimizes GPU allocation & governance", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Crusoe", 
+    url: "https://crusoeenergy.com/", 
+    description: "Sustainable HPC powered by stranded energy & methane reduction", 
+    value: "Green computing",
+    category: "ai_infrastructure" 
+  },
+  // Tier 2: Agentic Orchestration & Connectivity
+  { 
+    name: "Xpander.ai", 
+    url: "https://xpander.ai/", 
+    description: "Autonomous connectivity layer linking agents to enterprise APIs (Salesforce, AWS)", 
+    value: "Agent connectivity",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Mem0", 
+    url: "https://mem0.ai/", 
+    description: "The memory layer; enables long-term personalization & context for AI agents", 
+    value: "Agent memory",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "VectorShift.ai", 
+    url: "https://vectorshift.ai/", 
+    description: "No-code IDE for orchestrating complex, multi-agent pipelines", 
+    value: "No-code agents",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Blaxel.ai", 
+    url: "https://blaxel.ai/", 
+    description: "Global agentic infrastructure for high-speed, sandboxed execution", 
+    value: "Agent execution",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Temporal", 
+    url: "https://temporal.io/", 
+    description: "Open-source durable execution platform for resilient, long-running workflows", 
+    value: "Workflow engine",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Terminal Use", 
+    url: "https://www.ycombinator.com/companies/terminal-use", 
+    description: "(YC W26) CLI-first environment for agents to interact with filesystems securely", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  // Tier 3: Operational & Internal Automation
+  { 
+    name: "Serval", 
+    url: "https://serval.ai/", 
+    description: "AI-native ITSM that automates IT, HR, and Finance tickets into workflows", 
+    value: "ITSM automation",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Devops.io", 
+    url: "https://devops.io/", 
+    description: "Agentic DevOps platform for autonomous CI/CD & infrastructure management", 
+    value: "DevOps agents",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Oximy", 
+    url: "https://www.ycombinator.com/companies/oximy", 
+    description: "(YC W26) The system of record for governance and safety in enterprise AI usage", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Mendral", 
+    url: "https://www.ycombinator.com/companies/mendral", 
+    description: "(YC W26) AI DevOps Engineer that autonomously diagnoses and fixes CI/CD failures", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Canary AI", 
+    url: "https://www.ycombinator.com/companies/canary-ai", 
+    description: "(YC W26) The first AI QA engineer that understands codebases to catch broken user flows", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "FullSeam", 
+    url: "https://www.ycombinator.com/companies/fullseam", 
+    description: "(YC W26) AI employee for finance teams; automates AP/AR & reconciliation", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  // Tier 4: Strategic Vertical & Developer Tools
+  { 
+    name: "Cursor", 
+    url: "https://cursor.sh/", 
+    description: "The premier AI-first code editor and 'vibe coding' standard (Anysphere)", 
+    value: "AI code editor",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Devin", 
+    url: "https://www.cognition-labs.com/", 
+    description: "The world's first autonomous AI software engineer (Cognition AI)", 
+    value: "AI engineer",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Lovable.dev", 
+    url: "https://lovable.dev/", 
+    description: "Natural language-to-web app generation (full-stack co-engineer)", 
+    value: "AI web builder",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Jinba", 
+    url: "https://www.ycombinator.com/companies/jinba", 
+    description: "(YC W26) Enterprise chat-to-workflow automation; 'vibe coding' for non-technical teams", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Stilta", 
+    url: "https://www.ycombinator.com/companies/stilta", 
+    description: "(YC W26) Specialized AI for patent practitioners and intellectual property defense", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Fed10", 
+    url: "https://www.ycombinator.com/companies/fed10", 
+    description: "(YC W26) AI legislative consultants monitoring bills and policy threats in real-time", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Fenrock AI", 
+    url: "https://www.ycombinator.com/companies/fenrock-ai", 
+    description: "(YC W26) AI agents for high-stakes Financial Crime Compliance & anti-money laundering", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Rhizome AI", 
+    url: "https://www.ycombinator.com/companies/rhizome-ai", 
+    description: "(YC W26) Regulatory intelligence for healthcare compliance and FDA filings", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Caretta", 
+    url: "https://www.ycombinator.com/companies/caretta", 
+    description: "(YC W26) Real-time Sales Intelligence that assists reps during live technical calls", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "BeeSafe AI", 
+    url: "https://www.ycombinator.com/companies/beesafe-ai", 
+    description: "(YC W26) Real-time scam prevention & fraud channel shutdown for B2B", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Moda", 
+    url: "https://www.ycombinator.com/companies/moda", 
+    description: "(YC W26) 'Sentry for AI' that alerts on agent performance & intent drift", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Traverse", 
+    url: "https://www.ycombinator.com/companies/traverse", 
+    description: "(YC W26) AI SRE for complex systems that finds & fixes production incidents", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  { 
+    name: "Didit", 
+    url: "https://www.ycombinator.com/companies/didit", 
+    description: "(YC W26) Modular identity & verification layer built for the AI era", 
+    value: "YC W26",
+    category: "ai_infrastructure" 
+  },
+  
   // Developer & AI Tools
   { 
     name: "Pinecone", 
@@ -236,6 +466,14 @@ const getCategoryColor = (category: Tool["category"]) => {
         hover: "hover:border-orange-500/50",
         icon: Code
       };
+    case "ai_infrastructure":
+      return {
+        border: "border-cyan-500/30",
+        bg: "bg-cyan-500/10",
+        text: "text-cyan-500",
+        hover: "hover:border-cyan-500/50",
+        icon: Cpu
+      };
   }
 };
 
@@ -249,11 +487,13 @@ const getCategoryName = (category: Tool["category"]) => {
       return "Legal & Equity";
     case "developer":
       return "Developer & AI Tools";
+    case "ai_infrastructure":
+      return "AI Infrastructure Ecosystem";
   }
 };
 
 export function FounderToolkit() {
-  const categories: Tool["category"][] = ["financial", "sales", "developer", "legal"];
+  const categories: Tool["category"][] = ["ai_infrastructure", "financial", "sales", "developer", "legal"];
 
   return (
     <div className="container py-8 space-y-8">
