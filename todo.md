@@ -51,3 +51,5 @@
 - [x] Add Cohere to AI Infrastructure Ecosystem (enterprise AI platform for RAG, multilingual models, sovereign AI)
 - [x] Calculate total dollar value of all Founder Toolkit resources and display in Dashboard header ($150K+)
 - [x] Add next accelerator application deadline countdown to Dashboard header (YC S26: 14 days)
+- [x] Make dashboard stats cards clickable - link $150K+ card to Founder Toolkit tab, link deadline card to YC application
+- [x] Create daily automation task to update accelerator deadline calendar for accuracy (runs daily at 9 AM PST)

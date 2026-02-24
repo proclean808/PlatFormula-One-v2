@@ -51,7 +51,10 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
 
         {/* Value & Deadline Stats */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 max-w-4xl mx-auto">
-          <Card className="border-emerald-500/30 bg-emerald-500/5 flex-1 min-w-[280px]">
+          <Card 
+            className="border-emerald-500/30 bg-emerald-500/5 flex-1 min-w-[280px] cursor-pointer hover:bg-emerald-500/10 transition-colors"
+            onClick={() => setActiveTab("toolkit")}
+          >
             <CardContent className="pt-6">
               <div className="text-center space-y-2">
                 <p className="text-sm text-muted-foreground">Total Toolkit Value</p>
@@ -59,11 +62,15 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
                   $150K+
                 </p>
                 <p className="text-xs text-muted-foreground">in credits, bonuses & deals</p>
+                <p className="text-xs text-emerald-400 mt-2">→ View Founder Toolkit</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-orange-500/30 bg-orange-500/5 flex-1 min-w-[280px]">
+          <Card 
+            className="border-orange-500/30 bg-orange-500/5 flex-1 min-w-[280px] cursor-pointer hover:bg-orange-500/10 transition-colors"
+            onClick={() => window.open('https://www.ycombinator.com/apply', '_blank')}
+          >
             <CardContent className="pt-6">
               <div className="text-center space-y-2">
                 <p className="text-sm text-muted-foreground">Next YC Deadline</p>
@@ -71,6 +78,7 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
                   14 Days
                 </p>
                 <p className="text-xs text-muted-foreground">S26 Early Deadline: Mar 8, 2026</p>
+                <p className="text-xs text-orange-400 mt-2">→ Apply to Y Combinator</p>
               </div>
             </CardContent>
           </Card>
