@@ -27,13 +27,6 @@ export default function Dashboard({ setActiveTab }: DashboardProps) {
             className="w-32 md:w-48 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
           />
           
-          {/* Trophy */}
-          <img 
-            src="/15883.jpg" 
-            alt="Championship Trophy" 
-            className="w-24 md:w-32 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
-          />
-          
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
               PlatFormula.One
