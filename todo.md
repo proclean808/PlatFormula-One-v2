@@ -56,3 +56,4 @@
 - [x] Add $150K+ value display to Resources tab header
 - [x] Add missing VCs to Resources tab organized by stage (TQ Ventures, e2vc, Inovo, Rockaway, Uncork, Samsung Next, Encoded, Elevation, Bain Capital, Norwest, Two Bear, Infinity, Synchrony, NEA, General Catalyst, Georgian, Sapphire)
 - [x] Research and add Tinyfish AI accelerator to Resources tab and appropriate sections
+- [x] Add LinkedIn link to footer (lnkd.in/gjMdVuAf)
