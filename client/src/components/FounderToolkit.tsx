@@ -181,6 +181,13 @@ const tools: Tool[] = [
     category: "ai_infrastructure" 
   },
   { 
+    name: "Cohere", 
+    url: "https://cohere.com/", 
+    description: "Enterprise-focused AI platform specializing in RAG, multilingual models, and sovereign AI deployment", 
+    value: "Enterprise AI",
+    category: "ai_infrastructure" 
+  },
+  { 
     name: "Chamber", 
     url: "https://www.ycombinator.com/companies/chamber", 
     description: "(YC W26) Autopiloting AI infrastructure; optimizes GPU allocation & governance", 

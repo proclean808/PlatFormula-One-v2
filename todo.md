@@ -48,3 +48,4 @@
   - Tier 2: Agentic Orchestration & Connectivity (Xpander.ai, Mem0, VectorShift.ai, Blaxel.ai, Temporal, Terminal Use)
   - Tier 3: Operational & Internal Automation (Serval, Devops.io, Oximy, Mendral, Canary AI, FullSeam)
   - Tier 4: Strategic Vertical & Developer Tools (Cursor, Devin, Lovable.dev, Jinba, Stilta, Fed10, Fenrock AI, Rhizome AI, Caretta, BeeSafe AI, Moda, Traverse, Didit)
+- [x] Add Cohere to AI Infrastructure Ecosystem (enterprise AI platform for RAG, multilingual models, sovereign AI)
