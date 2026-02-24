@@ -49,3 +49,5 @@
   - Tier 3: Operational & Internal Automation (Serval, Devops.io, Oximy, Mendral, Canary AI, FullSeam)
   - Tier 4: Strategic Vertical & Developer Tools (Cursor, Devin, Lovable.dev, Jinba, Stilta, Fed10, Fenrock AI, Rhizome AI, Caretta, BeeSafe AI, Moda, Traverse, Didit)
 - [x] Add Cohere to AI Infrastructure Ecosystem (enterprise AI platform for RAG, multilingual models, sovereign AI)
+- [x] Calculate total dollar value of all Founder Toolkit resources and display in Dashboard header ($150K+)
+- [x] Add next accelerator application deadline countdown to Dashboard header (YC S26: 14 days)
