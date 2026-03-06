@@ -39,7 +39,10 @@ import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * PlatFormula.ONE powered by JoyceGPT
@@ -56,6 +59,11 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
     private val dataClient by lazy { Wearable.getDataClient(this) }
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var audioRecord: AudioRecord? = null
+
+    // SuperWhisper — real-time OpenAI Whisper transcription (replaces MVP mock)
+    private val whisperTranscriber by lazy {
+        WhisperTranscriber(BuildConfig.OPENAI_API_KEY)
+    }
 
     // SOTA Gemini 2.5 Flash with Contextual RAG Injection
     private val geminiModel by lazy {
@@ -146,24 +154,51 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) return
 
         isRecording = true
-        val bufferSize = AudioRecord.getMinBufferSize(16000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
-        audioRecord = AudioRecord(MediaRecorder.AudioSource.MIC, 16000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize)
-
+        val minBuffer = AudioRecord.getMinBufferSize(
+            WhisperTranscriber.SAMPLE_RATE,
+            AudioFormat.CHANNEL_IN_MONO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+        audioRecord = AudioRecord(
+            MediaRecorder.AudioSource.MIC,
+            WhisperTranscriber.SAMPLE_RATE,
+            AudioFormat.CHANNEL_IN_MONO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            maxOf(minBuffer, WhisperTranscriber.CHUNK_SAMPLES * 2)
+        )
         audioRecord?.startRecording()
 
         scope.launch {
-            // Simulated transcription buffer for MVP (Production replaces with on-device Speech-to-Text)
-            val mockInvestorAudio = listOf(
-                "Jonathan, your tech looks good, but...",
-                "What is your actual customer acquisition cost?",
-                "And how long until that pays back?"
-            )
+            // SuperWhisper: accumulate 5-second PCM chunks → Whisper API → Gemini
+            val accumulator = ShortArray(WhisperTranscriber.CHUNK_SAMPLES)
+            var accumulated = 0
+            val readBuffer = ShortArray(minBuffer / 2)
 
-            for (phrase in mockInvestorAudio) {
-                if (!isRecording) break
-                delay(3000)
-                liveTranscript = phrase
-                processWithGemini(phrase)
+            while (isRecording && audioRecord?.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
+                val read = audioRecord?.read(readBuffer, 0, readBuffer.size) ?: break
+                if (read <= 0) continue
+
+                // Fill accumulator; when full, ship chunk to Whisper
+                var srcPos = 0
+                while (srcPos < read) {
+                    val toCopy = minOf(read - srcPos, WhisperTranscriber.CHUNK_SAMPLES - accumulated)
+                    System.arraycopy(readBuffer, srcPos, accumulator, accumulated, toCopy)
+                    accumulated += toCopy
+                    srcPos += toCopy
+
+                    if (accumulated >= WhisperTranscriber.CHUNK_SAMPLES) {
+                        val chunk = accumulator.copyOf()
+                        accumulated = 0
+                        // Transcribe and feed Gemini concurrently while next chunk fills
+                        launch {
+                            val transcript = whisperTranscriber.transcribe(chunk)
+                            if (!transcript.isNullOrBlank() && isRecording) {
+                                liveTranscript = transcript
+                                processWithGemini(transcript)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

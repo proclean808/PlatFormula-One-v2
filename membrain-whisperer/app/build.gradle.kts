@@ -25,11 +25,16 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Inject Gemini API key from local.properties into BuildConfig — never hardcode
+        // Inject API keys from local.properties into BuildConfig — never hardcode
         buildConfigField(
             "String",
             "GEMINI_API_KEY",
             "\"${localProperties.getProperty("GEMINI_API_KEY", "")}\""
+        )
+        buildConfigField(
+            "String",
+            "OPENAI_API_KEY",
+            "\"${localProperties.getProperty("OPENAI_API_KEY", "")}\""
         )
     }
 
@@ -81,6 +86,9 @@ dependencies {
 
     // Google AI (Gemini) Android SDK
     implementation(libs.generativeai)
+
+    // OkHttp — multipart POST to OpenAI Whisper API
+    implementation(libs.okhttp)
 
     // Testing
     testImplementation(libs.junit)
