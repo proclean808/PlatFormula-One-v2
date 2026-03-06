@@ -1,11 +1,12 @@
 package one.platformula.membrain.whisperer
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.AudioFormat
-import android.media.AudioRecord
-import android.media.MediaRecorder
 import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,11 +59,17 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
 
     private val dataClient by lazy { Wearable.getDataClient(this) }
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private var audioRecord: AudioRecord? = null
 
-    // SuperWhisper — real-time OpenAI Whisper transcription (replaces MVP mock)
-    private val whisperTranscriber by lazy {
-        WhisperTranscriber(BuildConfig.OPENAI_API_KEY)
+    // On-device speech recognizer — SuperWhisper style, no audio leaves the device
+    private var speechRecognizer: SpeechRecognizer? = null
+    private val recognitionIntent by lazy {
+        Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US")
+            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)    // word-by-word UI updates
+            putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)     // on-device, no cloud
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        }
     }
 
     // SOTA Gemini 2.5 Flash with Contextual RAG Injection
@@ -91,7 +98,7 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        if (isGranted) startAudioCapture() else Log.e("Whisperer", "Microphone permission denied.")
+        if (isGranted) startListening() else Log.e("Whisperer", "Microphone permission denied.")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,7 +123,7 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
     override fun onPause() {
         super.onPause()
         dataClient.removeListener(this)
-        stopAudioCapture()
+        stopListening()
     }
 
     // MemBrain Biometric Lock Monitor
@@ -132,7 +139,7 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
 
                 // Instantly sever recording if biometric presence is lost
                 if (wasLocked && !isBiometricallyLocked && isRecording) {
-                    stopAudioCapture()
+                    stopListening()
                     liveTranscript = "[SYSTEM SECURED: MEMBRAIN DISCONNECTED]"
                 }
             }
@@ -147,61 +154,76 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
 
     private fun toggleRecording() {
         if (!isBiometricallyLocked) return // Zero-Trust Enforcement
-        if (isRecording) stopAudioCapture() else startAudioCapture()
+        if (isRecording) stopListening() else startListening()
     }
 
-    private fun startAudioCapture() {
+    // ── On-device speech recognition ────────────────────────────────────────
+
+    private fun startListening() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) return
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Log.e("Whisperer", "On-device speech recognition unavailable")
+            return
+        }
 
         isRecording = true
-        val minBuffer = AudioRecord.getMinBufferSize(
-            WhisperTranscriber.SAMPLE_RATE,
-            AudioFormat.CHANNEL_IN_MONO,
-            AudioFormat.ENCODING_PCM_16BIT
-        )
-        audioRecord = AudioRecord(
-            MediaRecorder.AudioSource.MIC,
-            WhisperTranscriber.SAMPLE_RATE,
-            AudioFormat.CHANNEL_IN_MONO,
-            AudioFormat.ENCODING_PCM_16BIT,
-            maxOf(minBuffer, WhisperTranscriber.CHUNK_SAMPLES * 2)
-        )
-        audioRecord?.startRecording()
-
-        scope.launch {
-            // SuperWhisper: accumulate 5-second PCM chunks → Whisper API → Gemini
-            val accumulator = ShortArray(WhisperTranscriber.CHUNK_SAMPLES)
-            var accumulated = 0
-            val readBuffer = ShortArray(minBuffer / 2)
-
-            while (isRecording && audioRecord?.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
-                val read = audioRecord?.read(readBuffer, 0, readBuffer.size) ?: break
-                if (read <= 0) continue
-
-                // Fill accumulator; when full, ship chunk to Whisper
-                var srcPos = 0
-                while (srcPos < read) {
-                    val toCopy = minOf(read - srcPos, WhisperTranscriber.CHUNK_SAMPLES - accumulated)
-                    System.arraycopy(readBuffer, srcPos, accumulator, accumulated, toCopy)
-                    accumulated += toCopy
-                    srcPos += toCopy
-
-                    if (accumulated >= WhisperTranscriber.CHUNK_SAMPLES) {
-                        val chunk = accumulator.copyOf()
-                        accumulated = 0
-                        // Transcribe and feed Gemini concurrently while next chunk fills
-                        launch {
-                            val transcript = whisperTranscriber.transcribe(chunk)
-                            if (!transcript.isNullOrBlank() && isRecording) {
-                                liveTranscript = transcript
-                                processWithGemini(transcript)
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        speechRecognizer = SpeechRecognizer.createOnDeviceSpeechRecognizer(this)
+        speechRecognizer?.setRecognitionListener(recognitionListener)
+        speechRecognizer?.startListening(recognitionIntent)
     }
+
+    private fun stopListening() {
+        isRecording = false
+        speechRecognizer?.stopListening()
+        speechRecognizer?.destroy()
+        speechRecognizer = null
+    }
+
+    /**
+     * Recognition callbacks — all run on the main thread.
+     *
+     * onPartialResults: update transcript in real-time (no Gemini call — too noisy)
+     * onResults:        sentence complete → feed to Gemini → restart for next sentence
+     */
+    private val recognitionListener = object : RecognitionListener {
+
+        override fun onPartialResults(partialResults: Bundle?) {
+            val partial = partialResults
+                ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                ?.firstOrNull()
+            if (!partial.isNullOrBlank()) liveTranscript = partial
+        }
+
+        override fun onResults(results: Bundle?) {
+            val text = results
+                ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                ?.firstOrNull()
+            if (!text.isNullOrBlank() && isRecording) {
+                liveTranscript = text
+                processWithGemini(text)
+            }
+            // Auto-restart for continuous listening
+            if (isRecording) speechRecognizer?.startListening(recognitionIntent)
+        }
+
+        override fun onError(error: Int) {
+            Log.w("Whisperer", "SpeechRecognizer error $error — restarting")
+            if (isRecording) speechRecognizer?.startListening(recognitionIntent)
+        }
+
+        override fun onEndOfSpeech() {
+            // Results will arrive via onResults; restart handled there
+        }
+
+        // Unused callbacks — required by the interface
+        override fun onReadyForSpeech(params: Bundle?) {}
+        override fun onBeginningOfSpeech() {}
+        override fun onRmsChanged(rmsdB: Float) {}
+        override fun onBufferReceived(buffer: ByteArray?) {}
+        override fun onEvent(eventType: Int, params: Bundle?) {}
+    }
+
+    // ── Gemini + Watch relay ─────────────────────────────────────────────────
 
     private fun processWithGemini(text: String) {
         scope.launch {
@@ -223,18 +245,11 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
         val putDataReq = PutDataMapRequest.create("/membrain/whisper").apply {
             dataMap.putString("insight", insight)
             dataMap.putLong("timestamp", System.currentTimeMillis())
-            dataMap.putBoolean("trigger_haptic", true) // Tells Watch 7 to vibrate
+            dataMap.putBoolean("trigger_haptic", true)
         }.asPutDataRequest()
 
-        putDataReq.setUrgent() // Force immediate Bluetooth LE dispatch
+        putDataReq.setUrgent()
         dataClient.putDataItem(putDataReq)
-    }
-
-    private fun stopAudioCapture() {
-        isRecording = false
-        audioRecord?.stop()
-        audioRecord?.release()
-        audioRecord = null
     }
 }
 
