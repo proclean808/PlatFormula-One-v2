@@ -232,12 +232,30 @@ const GitHubClient = {
     "Content-Type": "application/json",
   }),
 
+  async listRepos(token: string, perPage = 30) {
+    const res = await fetch(
+      `${this.baseUrl}/user/repos?sort=updated&per_page=${perPage}`,
+      { headers: this.headers(token) }
+    );
+    if (!res.ok) throw new Error(`GitHub listRepos: ${res.status} ${res.statusText}`);
+    return res.json() as Promise<Array<{ id: number; full_name: string; name: string; owner: { login: string }; default_branch: string; private: boolean }>>;
+  },
+
   async getRepo(owner: string, repo: string, token: string) {
     const res = await fetch(`${this.baseUrl}/repos/${owner}/${repo}`, {
       headers: this.headers(token),
     });
     if (!res.ok) throw new Error(`GitHub getRepo: ${res.status} ${res.statusText}`);
     return res.json();
+  },
+
+  async getBranches(owner: string, repo: string, token: string) {
+    const res = await fetch(
+      `${this.baseUrl}/repos/${owner}/${repo}/branches`,
+      { headers: this.headers(token) }
+    );
+    if (!res.ok) throw new Error(`GitHub getBranches: ${res.status}`);
+    return res.json() as Promise<Array<{ name: string }>>;
   },
 
   async getLatestCommit(owner: string, repo: string, branch = "main", token: string) {
@@ -247,6 +265,50 @@ const GitHubClient = {
     );
     if (!res.ok) throw new Error(`GitHub getLatestCommit: ${res.status}`);
     return res.json();
+  },
+
+  async createOrUpdateFile(
+    owner: string,
+    repo: string,
+    path: string,
+    content: string,
+    message: string,
+    branch = "main",
+    token: string,
+    sha?: string
+  ) {
+    const body: Record<string, unknown> = {
+      message,
+      content: btoa(unescape(encodeURIComponent(content))),
+      branch,
+    };
+    if (sha) body.sha = sha;
+    const res = await fetch(
+      `${this.baseUrl}/repos/${owner}/${repo}/contents/${path}`,
+      { method: "PUT", headers: this.headers(token), body: JSON.stringify(body) }
+    );
+    if (!res.ok) throw new Error(`GitHub createOrUpdateFile: ${res.status}`);
+    return res.json();
+  },
+
+  async triggerWorkflowDispatch(
+    owner: string,
+    repo: string,
+    workflowId: string,
+    ref = "main",
+    token: string,
+    inputs: Record<string, string> = {}
+  ) {
+    const res = await fetch(
+      `${this.baseUrl}/repos/${owner}/${repo}/actions/workflows/${workflowId}/dispatches`,
+      {
+        method: "POST",
+        headers: this.headers(token),
+        body: JSON.stringify({ ref, inputs }),
+      }
+    );
+    if (!res.ok) throw new Error(`GitHub triggerWorkflow: ${res.status}`);
+    return true;
   },
 
   async getWorkflowRuns(owner: string, repo: string, token: string, perPage = 3) {
@@ -472,6 +534,12 @@ export default function ClawHubOrchestrator() {
     vercelTeamId: "",
   });
 
+  // ── repo / branch picker
+  const [repoList, setRepoList] = useState<Array<{ full_name: string; name: string; owner: { login: string }; default_branch: string }>>([]);
+  const [repoListLoading, setRepoListLoading] = useState(false);
+  const [branchList, setBranchList] = useState<string[]>([]);
+  const [branchListLoading, setBranchListLoading] = useState(false);
+
   // ── sheriff gate
   const [sheriffPending, setSheriffPending] = useState(false);
   const sheriffResolveRef = useRef<((approved: boolean) => void) | null>(null);
@@ -559,6 +627,43 @@ export default function ClawHubOrchestrator() {
   function removeClaw(id: string) {
     setClaws((prev) => prev.filter((c) => c.config.id !== id));
     log(`Claw removed: ${id}`, "warn");
+  }
+
+  // ── repo / branch picker helpers
+  async function loadRepos() {
+    if (!githubToken) { log("GitHub token required to browse repos", "warn"); return; }
+    setRepoListLoading(true);
+    try {
+      const repos = await GitHubClient.listRepos(githubToken);
+      setRepoList(repos);
+      log(`Loaded ${repos.length} repos from GitHub`, "success");
+    } catch (err) {
+      log(`Failed to load repos: ${err}`, "error");
+    } finally {
+      setRepoListLoading(false);
+    }
+  }
+
+  async function selectRepo(fullName: string) {
+    const repo = repoList.find((r) => r.full_name === fullName);
+    if (!repo) return;
+    setNewClaw((prev) => ({
+      ...prev,
+      owner: repo.owner.login,
+      repo: repo.name,
+      name: prev.name || repo.name,
+      branch: repo.default_branch,
+    }));
+    setBranchList([]);
+    setBranchListLoading(true);
+    try {
+      const branches = await GitHubClient.getBranches(repo.owner.login, repo.name, githubToken);
+      setBranchList(branches.map((b) => b.name));
+    } catch {
+      setBranchList([repo.default_branch]);
+    } finally {
+      setBranchListLoading(false);
+    }
   }
 
   // ── sheriff gate (human-in-the-loop)
@@ -1168,9 +1273,42 @@ export default function ClawHubOrchestrator() {
               >
                 <Card className="border-purple-700/50 bg-purple-950/20">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm text-purple-300">New Claw</CardTitle>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-sm text-purple-300">New Claw</CardTitle>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={loadRepos}
+                        disabled={repoListLoading || !githubToken}
+                        className="gap-1 h-6 text-xs border-slate-600 text-slate-400 hover:text-slate-200"
+                      >
+                        {repoListLoading ? (
+                          <RefreshCw className="h-3 w-3 animate-spin" />
+                        ) : (
+                          <GitBranch className="h-3 w-3" />
+                        )}
+                        Browse Repos
+                      </Button>
+                    </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
+                    {/* Repo Picker */}
+                    {repoList.length > 0 && (
+                      <div className="space-y-1">
+                        <Label className="text-xs text-slate-400">Select Repository</Label>
+                        <select
+                          className="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs h-8 rounded-md px-2 focus:outline-none focus:border-purple-600"
+                          defaultValue=""
+                          onChange={(e) => { if (e.target.value) selectRepo(e.target.value); }}
+                        >
+                          <option value="">— pick a repo to auto-fill —</option>
+                          {repoList.map((r) => (
+                            <option key={r.full_name} value={r.full_name}>{r.full_name}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
                         <Label className="text-xs text-slate-400">Claw Name</Label>
@@ -1200,13 +1338,28 @@ export default function ClawHubOrchestrator() {
                         />
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-xs text-slate-400">Branch</Label>
-                        <Input
-                          value={newClaw.branch || "main"}
-                          onChange={(e) => setNewClaw({ ...newClaw, branch: e.target.value })}
-                          placeholder="main"
-                          className="bg-slate-800 border-slate-700 text-slate-200 text-xs h-8"
-                        />
+                        <Label className="text-xs text-slate-400">
+                          Branch
+                          {branchListLoading && <RefreshCw className="inline h-2.5 w-2.5 animate-spin ml-1" />}
+                        </Label>
+                        {branchList.length > 1 ? (
+                          <select
+                            className="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs h-8 rounded-md px-2 focus:outline-none focus:border-purple-600"
+                            value={newClaw.branch || "main"}
+                            onChange={(e) => setNewClaw({ ...newClaw, branch: e.target.value })}
+                          >
+                            {branchList.map((b) => (
+                              <option key={b} value={b}>{b}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <Input
+                            value={newClaw.branch || "main"}
+                            onChange={(e) => setNewClaw({ ...newClaw, branch: e.target.value })}
+                            placeholder="main"
+                            className="bg-slate-800 border-slate-700 text-slate-200 text-xs h-8"
+                          />
+                        )}
                       </div>
                       <div className="space-y-1">
                         <Label className="text-xs text-slate-400">Vercel Project ID</Label>
@@ -1239,7 +1392,7 @@ export default function ClawHubOrchestrator() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => setShowAddClaw(false)}
+                        onClick={() => { setShowAddClaw(false); setRepoList([]); setBranchList([]); }}
                         className="text-xs h-7 text-slate-400"
                       >
                         Cancel
