@@ -12,7 +12,8 @@ import ApplicationAssistant from "@/components/ApplicationAssistant";
 import ConceptRefinement from "@/components/ConceptRefinement";
 import { FounderToolkit } from "@/components/FounderToolkit";
 import AIModels from "@/components/AIModels";
-import { Zap } from "lucide-react";
+import ClawHubOrchestrator from "@/components/ClawHubOrchestrator";
+import { Zap, Layers } from "lucide-react";
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
@@ -25,6 +26,7 @@ const navigationItems = [
   { id: "concept", label: "Concept Refinement", icon: Lightbulb, color: "purple" },
   { id: "toolkit", label: "Founder Toolkit", icon: Wrench, color: "orange" },
   { id: "aimodels", label: "AI Models", icon: Zap, color: "purple" },
+  { id: "clawhub", label: "ClawHub", icon: Layers, color: "purple" },
 ];
 
 export default function Home() {
@@ -155,6 +157,7 @@ export default function Home() {
         {activeTab === "concept" && <ConceptRefinement />}
         {activeTab === "toolkit" && <FounderToolkit />}
         {activeTab === "aimodels" && <AIModels />}
+        {activeTab === "clawhub" && <ClawHubOrchestrator />}
       </main>
 
       {/* Footer */}
