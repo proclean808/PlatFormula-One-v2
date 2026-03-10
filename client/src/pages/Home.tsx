@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Rocket, Database, Wrench, Mic, ListChecks, Users, FileText, Lightbulb, Menu } from "lucide-react";
+import { Rocket, Database, Wrench, Mic, ListChecks, Users, FileText, Lightbulb, Menu, Zap, Target } from "lucide-react";
 import Dashboard from "@/components/Dashboard";
 import Resources from "@/components/Resources";
 import Builder from "@/components/Builder";
@@ -12,7 +12,7 @@ import ApplicationAssistant from "@/components/ApplicationAssistant";
 import ConceptRefinement from "@/components/ConceptRefinement";
 import { FounderToolkit } from "@/components/FounderToolkit";
 import AIModels from "@/components/AIModels";
-import { Zap } from "lucide-react";
+import LeadHarvester from "@/components/LeadHarvester";
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
@@ -25,6 +25,7 @@ const navigationItems = [
   { id: "concept", label: "Concept Refinement", icon: Lightbulb, color: "purple" },
   { id: "toolkit", label: "Founder Toolkit", icon: Wrench, color: "orange" },
   { id: "aimodels", label: "AI Models", icon: Zap, color: "purple" },
+  { id: "leadharvester", label: "Lead Harvester", icon: Target, color: "emerald" },
 ];
 
 export default function Home() {
@@ -155,6 +156,7 @@ export default function Home() {
         {activeTab === "concept" && <ConceptRefinement />}
         {activeTab === "toolkit" && <FounderToolkit />}
         {activeTab === "aimodels" && <AIModels />}
+        {activeTab === "leadharvester" && <LeadHarvester />}
       </main>
 
       {/* Footer */}
