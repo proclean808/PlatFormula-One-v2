@@ -1,0 +1,32 @@
+# Factory.ai Skilled Droid Pipeline — Python Dependencies
+# =========================================================
+# Install: pip install -r factory_ai/requirements.txt
+
+# Core orchestration
+ray[default]>=2.10.0          # Distributed actor framework (head node + workers)
+
+# YAML manifest parsing
+PyYAML>=6.0.1
+
+# Ollama Python client (optional — droid_actor uses subprocess by default)
+# Uncomment if you prefer the native client over subprocess:
+# ollama>=0.2.1
+
+# Vector stores (install whichever backend you use)
+# chromadb>=0.5.0             # Local embedded vector DB (recommended for edge)
+# weaviate-client>=4.5.0      # Managed / self-hosted vector DB
+
+# Memory layers
+# redis>=5.0.0                # Short-term agent memory / task queue
+# mem0ai>=0.0.20              # Hierarchical agent memory (mem0)
+
+# Database
+# psycopg2-binary>=2.9.9      # PostgreSQL support
+
+# Observability (optional)
+# prometheus-client>=0.20.0   # Metrics export for Grafana dashboards
+# opentelemetry-sdk>=1.24.0   # Distributed tracing
+
+# Samsung S25 Ultra / Termux requirements
+# (install via: pkg install python clang)
+# All packages above are pure Python or have pre-built wheels for ARM64

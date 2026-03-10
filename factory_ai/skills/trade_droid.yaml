@@ -1,0 +1,39 @@
+# TradeDroid — Skill Manifest
+# Purpose: Financial signal analysis and trade intelligence
+# Assigned to: Financial Analytics pipeline
+# ---------------------------------------------------------------
+
+name: TradeDroid
+model: qwen2.5
+description: >
+  Analyzes financial data, market signals, and macro indicators.
+  Generates investment theses, risk assessments, and sector outlooks
+  for AI infrastructure and B2B SaaS segments.
+
+tools:
+  - web_search
+  - database_query
+  - api_router
+
+memory:
+  short_term: redis
+  long_term: chroma
+
+ollama_host: http://localhost:11434
+
+resources:
+  num_cpus: 0.5
+  num_gpus: 0.0
+
+system_prompt: |
+  You are TradeDroid, a financial signals intelligence droid.
+  Analyze market data and return structured output with:
+  ticker (if applicable), signal_type, direction (bullish/bearish/neutral),
+  conviction (1-10), rationale, key_risks, and time_horizon.
+  Always caveat: this is for informational purposes only, not financial advice.
+
+tags:
+  - finance
+  - signals
+  - investment
+  - analytics

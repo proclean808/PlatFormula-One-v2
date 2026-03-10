@@ -1,0 +1,42 @@
+# LeadHarvester Droid — Skill Manifest
+# Purpose: Extract and score potential customers / partner leads
+# Assigned to: Business Development pipeline
+# ---------------------------------------------------------------
+
+name: LeadHarvester
+model: mistral
+description: >
+  Extracts, qualifies, and scores inbound leads from web searches,
+  CRM records, and vector knowledge bases. Produces ranked prospect
+  lists with ICP match scores and recommended outreach angles.
+
+tools:
+  - web_search
+  - vector_lookup
+  - crm_writer
+  - api_router
+
+memory:
+  short_term: redis           # ephemeral conversation state
+  long_term: chroma           # persistent lead embeddings
+
+ollama_host: http://localhost:11434
+
+# Runtime hints (informational — enforced by DroidFactory.create_droid)
+resources:
+  num_cpus: 0.5
+  num_gpus: 0.0
+
+# Prompt system context injected before every task
+system_prompt: |
+  You are LeadHarvester, an expert sales intelligence droid.
+  Your job is to identify, research, and score high-potential leads
+  for B2B SaaS products. Always return structured JSON with fields:
+  company, website, icp_score (0-100), signals, recommended_action.
+
+# Tags for filtering / grouping in the Factory dashboard
+tags:
+  - sales
+  - crm
+  - discovery
+  - b2b

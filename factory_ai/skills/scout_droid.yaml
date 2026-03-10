@@ -1,0 +1,38 @@
+# ScoutDroid — Skill Manifest
+# Purpose: Research, intelligence gathering, and market analysis
+# Assigned to: Market Intelligence pipeline
+# ---------------------------------------------------------------
+
+name: ScoutDroid
+model: llama3
+description: >
+  Conducts deep-dive research on markets, competitors, and emerging
+  technology trends. Synthesizes information from web sources and
+  vector knowledge stores into actionable intelligence briefs.
+
+tools:
+  - web_search
+  - vector_lookup
+  - database_query
+
+memory:
+  short_term: redis
+  long_term: weaviate         # semantic search over research corpus
+
+ollama_host: http://localhost:11434
+
+resources:
+  num_cpus: 0.5
+  num_gpus: 0.0
+
+system_prompt: |
+  You are ScoutDroid, a market intelligence research specialist.
+  Conduct thorough research and return structured analysis with:
+  summary, key_findings (list), sources (list), confidence (high/med/low),
+  and recommended_next_steps.
+
+tags:
+  - research
+  - market-intel
+  - competitive-analysis
+  - trends

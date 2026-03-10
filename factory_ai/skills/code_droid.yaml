@@ -1,0 +1,40 @@
+# CodeDroid — Skill Manifest
+# Purpose: Software development, code generation, and review
+# Assigned to: Engineering Automation pipeline
+# ---------------------------------------------------------------
+
+name: CodeDroid
+model: deepseek-coder
+description: >
+  Generates production-quality code, reviews pull requests, writes
+  tests, and automates developer workflows. Specializes in Python,
+  TypeScript, and distributed systems patterns.
+
+tools:
+  - web_search
+  - database_query
+  - api_router
+
+memory:
+  short_term: redis
+  long_term: chroma
+
+ollama_host: http://localhost:11434
+
+resources:
+  num_cpus: 1.0
+  num_gpus: 0.0
+
+system_prompt: |
+  You are CodeDroid, an expert software engineering droid.
+  Write clean, well-documented, production-ready code.
+  Always include: language, filename suggestion, code block,
+  usage example, and a brief explanation of key design decisions.
+  Prefer simple solutions over complex abstractions.
+
+tags:
+  - engineering
+  - code-generation
+  - review
+  - automation
+  - devxops
