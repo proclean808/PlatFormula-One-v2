@@ -1,32 +1,35 @@
-# Factory.ai Skilled Droid Pipeline — Python Dependencies
-# =========================================================
-# Install: pip install -r factory_ai/requirements.txt
+# Factory.ai Skilled Droid Pipeline v2 — Python Dependencies
+# ============================================================
+# Install all:     pip install -r factory_ai/requirements.txt
+# Minimal (edge):  pip install ray[default] PyYAML
+# Full stack:      pip install -r factory_ai/requirements.txt
 
-# Core orchestration
+# ── Core orchestration ─────────────────────────────────────
 ray[default]>=2.10.0          # Distributed actor framework (head node + workers)
+PyYAML>=6.0.1                 # Skill manifest parsing
 
-# YAML manifest parsing
-PyYAML>=6.0.1
+# ── Memory Layer (Tier 2 + 3) ──────────────────────────────
+# chromadb>=0.5.0             # Tier-2: local embedded vector DB (recommended)
+# weaviate-client>=4.5.0      # Tier-2: managed / self-hosted alternative
+# duckdb>=0.10.0              # Tier-3: episodic task log (in-process OLAP)
 
-# Ollama Python client (optional — droid_actor uses subprocess by default)
-# Uncomment if you prefer the native client over subprocess:
-# ollama>=0.2.1
+# ── Agent Messaging ────────────────────────────────────────
+# redis>=5.0.0                # Redis Streams message bus (droid-to-droid comms)
+#                             # Fallback: in-memory queue (no install needed)
 
-# Vector stores (install whichever backend you use)
-# chromadb>=0.5.0             # Local embedded vector DB (recommended for edge)
-# weaviate-client>=4.5.0      # Managed / self-hosted vector DB
+# ── Tool Plugins ───────────────────────────────────────────
+# psycopg2-binary>=2.9.9      # PostgreSQL backend for database_query tool
+# ollama>=0.2.1               # Native Ollama client (optional vs subprocess)
 
-# Memory layers
-# redis>=5.0.0                # Short-term agent memory / task queue
-# mem0ai>=0.0.20              # Hierarchical agent memory (mem0)
+# ── Observability ──────────────────────────────────────────
+# prometheus-client>=0.20.0   # Metrics export → Grafana dashboards
+# opentelemetry-sdk>=1.24.0   # Distributed tracing across Ray actors
 
-# Database
-# psycopg2-binary>=2.9.9      # PostgreSQL support
+# ── System utilities ───────────────────────────────────────
+# psutil>=5.9.0               # RAM/CPU introspection in node_setup.py
 
-# Observability (optional)
-# prometheus-client>=0.20.0   # Metrics export for Grafana dashboards
-# opentelemetry-sdk>=1.24.0   # Distributed tracing
-
-# Samsung S25 Ultra / Termux requirements
-# (install via: pkg install python clang)
-# All packages above are pure Python or have pre-built wheels for ARM64
+# ── Samsung Galaxy S25 Ultra / Termux ──────────────────────
+# Install Python first: pkg install python clang
+# All packages above have pre-built ARM64 wheels or are pure Python.
+# Recommended minimal install for S25 Ultra:
+#   pip install ray PyYAML redis chromadb

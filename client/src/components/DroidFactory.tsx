@@ -9,7 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Bot, Cpu, Zap, Activity, Terminal, GitBranch, Layers, Play,
   Plus, Trash2, RefreshCw, Server, Smartphone, BarChart3, Code2,
-  Search, Database, Globe, Radio,
+  Search, Database, Globe, Radio, Brain, MessageSquare, Route,
+  ArrowRight, Inbox, Send, Gauge, BookOpen,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -23,6 +24,37 @@ interface DroidStatus {
   status: "online" | "busy" | "offline";
   task_count: number;
   spawned_at: string;
+  use_gpu?: boolean;
+  memory_enabled?: boolean;
+  messaging_enabled?: boolean;
+  vector_memories?: number;
+  episodic_tasks?: number;
+}
+
+interface RouteDecision {
+  droid: string;
+  model: string;
+  category: string;
+  confidence: number;
+}
+
+interface RouterEntry {
+  dispatch_id: number;
+  prompt: string;
+  target: string;
+  category: string;
+  confidence: number;
+  elapsed_ms: number;
+  timestamp: number;
+}
+
+interface BusMessage {
+  msg_id: string;
+  from_droid: string;
+  to_droid: string;
+  type: string;
+  payload: unknown;
+  timestamp: number;
 }
 
 interface TaskRecord {
@@ -119,6 +151,25 @@ function DroidCard({
           ))}
           {droid.tools.length === 0 && (
             <span className="text-xs text-muted-foreground">No tools</span>
+          )}
+        </div>
+
+        {/* Capability badges */}
+        <div className="flex flex-wrap gap-1">
+          {droid.use_gpu && (
+            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+              <Zap className="h-2.5 w-2.5" /> GPU
+            </span>
+          )}
+          {droid.memory_enabled && (
+            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <Brain className="h-2.5 w-2.5" /> mem
+            </span>
+          )}
+          {droid.messaging_enabled && (
+            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <MessageSquare className="h-2.5 w-2.5" /> bus
+            </span>
           )}
         </div>
 
@@ -285,6 +336,25 @@ export default function DroidFactory() {
   const [dispatchResult, setDispatchResult] = useState<TaskRecord | null>(null);
   const [dispatchLoading, setDispatchLoading] = useState(false);
 
+  // Router state
+  const [routerPrompt, setRouterPrompt]       = useState("");
+  const [routerDecision, setRouterDecision]   = useState<RouteDecision | null>(null);
+  const [routerLog, setRouterLog]             = useState<RouterEntry[]>([]);
+  const [routerLoading, setRouterLoading]     = useState(false);
+  const [routerAutoDispatch, setRouterAutoDispatch] = useState(false);
+
+  // Memory state
+  const [memDroid, setMemDroid]               = useState("");
+  const [memStats, setMemStats]               = useState<Record<string, unknown> | null>(null);
+
+  // Messaging state
+  const [msgFrom, setMsgFrom]                 = useState("");
+  const [msgTo, setMsgTo]                     = useState("*");
+  const [msgPayload, setMsgPayload]           = useState("");
+  const [msgType, setMsgType]                 = useState("data");
+  const [msgInbox, setMsgInbox]               = useState<BusMessage[]>([]);
+  const [busStats, setBusStats]               = useState<Record<string, unknown> | null>(null);
+
   // ------------------------------------------------------------------
   // Data fetching
   // ------------------------------------------------------------------
@@ -316,13 +386,31 @@ export default function DroidFactory() {
     } catch { /* ignore */ }
   }, []);
 
+  const fetchRouterLog = useCallback(async () => {
+    try {
+      const res = await fetch("/api/factory/router/log?limit=15");
+      if (res.ok) { const d = await res.json(); setRouterLog(d.log ?? []); }
+    } catch { /* ignore */ }
+  }, []);
+
+  const fetchBusStats = useCallback(async () => {
+    try {
+      const res = await fetch("/api/factory/messages/stats");
+      if (res.ok) setBusStats(await res.json());
+    } catch { /* ignore */ }
+  }, []);
+
   useEffect(() => {
     fetchDroids();
     fetchHistory();
     fetchCluster();
-    const id = setInterval(() => { fetchDroids(); fetchHistory(); }, 5000);
+    fetchRouterLog();
+    fetchBusStats();
+    const id = setInterval(() => {
+      fetchDroids(); fetchHistory(); fetchRouterLog(); fetchBusStats();
+    }, 5000);
     return () => clearInterval(id);
-  }, [fetchDroids, fetchHistory, fetchCluster]);
+  }, [fetchDroids, fetchHistory, fetchCluster, fetchRouterLog, fetchBusStats]);
 
   // ------------------------------------------------------------------
   // Actions
@@ -384,6 +472,62 @@ export default function DroidFactory() {
     setSpawnTools(prev => prev.includes(tool) ? prev.filter(t => t !== tool) : [...prev, tool]);
   };
 
+  const handleRouterClassify = async () => {
+    if (!routerPrompt.trim()) return;
+    setRouterLoading(true);
+    setRouterDecision(null);
+    try {
+      const endpoint = routerAutoDispatch ? "/api/factory/router/dispatch" : "/api/factory/router/classify";
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: routerPrompt }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRouterDecision(data.decision ?? data.routing ?? data);
+        if (routerAutoDispatch) { await fetchHistory(); await fetchDroids(); }
+        await fetchRouterLog();
+      }
+    } finally {
+      setRouterLoading(false);
+    }
+  };
+
+  const handleFetchMemory = async (droidName: string) => {
+    if (!droidName) return;
+    try {
+      const res = await fetch(`/api/factory/memory/${encodeURIComponent(droidName)}`);
+      if (res.ok) setMemStats(await res.json());
+    } catch { /* ignore */ }
+  };
+
+  const handleEnableMemory = async (droidName: string) => {
+    if (!droidName) return;
+    await fetch(`/api/factory/memory/${encodeURIComponent(droidName)}/enable`, { method: "POST" });
+    await fetchDroids();
+    await handleFetchMemory(droidName);
+  };
+
+  const handlePublishMessage = async () => {
+    if (!msgFrom || !msgTo || !msgPayload.trim()) return;
+    await fetch("/api/factory/messages/publish", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ from_droid: msgFrom, to_droid: msgTo, payload: msgPayload, type: msgType }),
+    });
+    setMsgPayload("");
+    await fetchBusStats();
+  };
+
+  const handleReadInbox = async (droidName: string) => {
+    if (!droidName) return;
+    try {
+      const res = await fetch(`/api/factory/messages/${encodeURIComponent(droidName)}/inbox?limit=10`);
+      if (res.ok) { const d = await res.json(); setMsgInbox(d.messages ?? []); }
+    } catch { /* ignore */ }
+  };
+
   // ------------------------------------------------------------------
   // Render
   // ------------------------------------------------------------------
@@ -430,10 +574,13 @@ export default function DroidFactory() {
 
       {/* Main tabs */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab}>
-        <TabsList className="grid grid-cols-4 w-full sm:w-auto">
+        <TabsList className="flex flex-wrap gap-1 h-auto w-full sm:w-auto">
           <TabsTrigger value="registry" className="text-xs">Droid Registry</TabsTrigger>
-          <TabsTrigger value="spawn"    className="text-xs">Spawn Droids</TabsTrigger>
-          <TabsTrigger value="dispatch" className="text-xs">Dispatch Task</TabsTrigger>
+          <TabsTrigger value="spawn"    className="text-xs">Spawn</TabsTrigger>
+          <TabsTrigger value="dispatch" className="text-xs">Dispatch</TabsTrigger>
+          <TabsTrigger value="router"   className="text-xs flex items-center gap-1"><Route className="h-3 w-3" />Router</TabsTrigger>
+          <TabsTrigger value="memory"   className="text-xs flex items-center gap-1"><Brain className="h-3 w-3" />Memory</TabsTrigger>
+          <TabsTrigger value="messaging" className="text-xs flex items-center gap-1"><MessageSquare className="h-3 w-3" />Messaging</TabsTrigger>
           <TabsTrigger value="cluster"  className="text-xs">Cluster</TabsTrigger>
         </TabsList>
 
@@ -723,6 +870,392 @@ export default function DroidFactory() {
           </div>
         </TabsContent>
 
+        {/* ── Router ── */}
+        <TabsContent value="router" className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="border-border/50">
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Route className="h-4 w-4 text-primary" /> RouterDroid — Intelligent Dispatch
+                </CardTitle>
+                <CardDescription>
+                  Classifies prompts and auto-routes to the best available droid (KeywordRouter).
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Task Prompt</label>
+                  <Textarea
+                    placeholder="e.g. Write a Python function to parse JSON..."
+                    value={routerPrompt}
+                    onChange={e => setRouterPrompt(e.target.value)}
+                    className="text-sm min-h-[80px] resize-none"
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {["Write a Python retry function", "Analyze AI stock signals", "Find proptech leads", "Research LLM trends"].map(q => (
+                    <button key={q} onClick={() => setRouterPrompt(q)}
+                      className="text-xs px-2 py-1 rounded-md bg-muted/40 text-muted-foreground border border-border/50 hover:bg-muted/60 transition-colors">
+                      {q}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer">
+                    <input type="checkbox" checked={routerAutoDispatch}
+                      onChange={e => setRouterAutoDispatch(e.target.checked)}
+                      className="rounded border-border" />
+                    Auto-dispatch after classify
+                  </label>
+                </div>
+
+                <Button onClick={handleRouterClassify} disabled={!routerPrompt.trim() || routerLoading}
+                  className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30">
+                  {routerLoading ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Route className="h-4 w-4 mr-2" />}
+                  {routerAutoDispatch ? "Classify + Dispatch" : "Classify Only"}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <div className="space-y-4">
+              {routerDecision && (
+                <Card className="border-primary/20 bg-primary/5">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <ArrowRight className="h-4 w-4 text-primary" /> Routing Decision
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    {[
+                      ["Target Droid", (routerDecision as any).droid ?? "—"],
+                      ["Model",        (routerDecision as any).model ?? "—"],
+                      ["Category",     (routerDecision as any).category ?? "—"],
+                      ["Confidence",   typeof (routerDecision as any).confidence === "number" ? `${Math.round((routerDecision as any).confidence * 100)}%` : "—"],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{k}</span>
+                        <span className={`font-medium font-mono ${k === "Target Droid" ? "text-primary" : ""}`}>{v}</span>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Routing rules reference */}
+              <Card className="border-border/40">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <BookOpen className="h-3.5 w-3.5 text-muted-foreground" /> Routing Table
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {[
+                      { category: "code",     keywords: "code, function, implement, deploy…", droid: "CodeDroid",     model: "deepseek-coder", color: "emerald" },
+                      { category: "finance",  keywords: "stock, trade, signal, invest…",       droid: "TradeDroid",    model: "qwen2.5",        color: "blue"    },
+                      { category: "leads",    keywords: "lead, crm, sales, prospect…",         droid: "LeadHarvester", model: "mistral",        color: "purple"  },
+                      { category: "research", keywords: "research, analyze, trends, find…",    droid: "ScoutDroid",    model: "llama3",         color: "orange"  },
+                    ].map(r => (
+                      <div key={r.category} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
+                        <span className={`w-1.5 h-1.5 rounded-full bg-${r.color}-400 shrink-0`} />
+                        <div className="flex-1 min-w-0">
+                          <span className="text-xs font-medium capitalize">{r.category}</span>
+                          <span className="text-xs text-muted-foreground ml-1">· {r.keywords}</span>
+                        </div>
+                        <span className="text-xs font-mono text-primary shrink-0">{r.droid}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Router log */}
+          {routerLog.length > 0 && (
+            <Card className="border-border/40">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Gauge className="h-3.5 w-3.5 text-primary" /> Recent Routing Decisions ({routerLog.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-1.5">
+                  {routerLog.slice(0, 8).map(entry => (
+                    <div key={entry.dispatch_id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/20 text-xs">
+                      <span className="text-muted-foreground font-mono w-8">#{entry.dispatch_id}</span>
+                      <span className="flex-1 truncate text-muted-foreground">{entry.prompt}</span>
+                      <span className="text-primary font-medium shrink-0">{entry.target}</span>
+                      <span className="text-muted-foreground shrink-0">{entry.category}</span>
+                      <span className="text-muted-foreground shrink-0">{entry.elapsed_ms}ms</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* ── Memory ── */}
+        <TabsContent value="memory" className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="border-border/50">
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Brain className="h-4 w-4 text-primary" /> Droid Memory Inspector
+                </CardTitle>
+                <CardDescription>
+                  Three-tier memory: ring buffer · Chroma vectors · DuckDB episodic log
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Select Droid</label>
+                  <Select value={memDroid} onValueChange={v => { setMemDroid(v); handleFetchMemory(v); }}>
+                    <SelectTrigger className="h-8 text-sm">
+                      <SelectValue placeholder="Choose a droid…" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {droids.filter(d => d.name !== "RouterDroid").map(d => (
+                        <SelectItem key={d.name} value={d.name} className="text-sm">{d.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button size="sm" variant="outline" className="flex-1 h-7 text-xs"
+                    onClick={() => handleFetchMemory(memDroid)} disabled={!memDroid}>
+                    <RefreshCw className="h-3 w-3 mr-1" /> Inspect
+                  </Button>
+                  <Button size="sm" className="flex-1 h-7 text-xs bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30"
+                    onClick={() => handleEnableMemory(memDroid)} disabled={!memDroid}>
+                    <Brain className="h-3 w-3 mr-1" /> Enable Memory
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {memStats ? (
+              <div className="space-y-3">
+                {/* Vector memory */}
+                <Card className="border-purple-500/20 bg-purple-500/5">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <Database className="h-3.5 w-3.5 text-purple-400" /> Tier-2: Chroma Vector Memory
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    {[
+                      ["Backend",     (memStats as any).vector_memory?.backend ?? "—"],
+                      ["Stored",      `${(memStats as any).vector_memory?.count ?? 0} vectors`],
+                      ["Persist dir", (memStats as any).vector_memory?.persist_dir ?? "—"],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">{k}</span>
+                        <span className="font-mono text-purple-300">{v}</span>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                {/* Episodic log */}
+                <Card className="border-emerald-500/20 bg-emerald-500/5">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <BookOpen className="h-3.5 w-3.5 text-emerald-400" /> Tier-3: DuckDB Episodic Log
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    {[
+                      ["Backend",      (memStats as any).episodic_log?.backend ?? "—"],
+                      ["Episodes",     `${(memStats as any).episodic_log?.episodes ?? 0} tasks`],
+                      ["Avg latency",  `${(memStats as any).episodic_log?.avg_ms ?? 0}ms`],
+                      ["Success rate", `${(memStats as any).episodic_log?.success_rate ?? 0}%`],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">{k}</span>
+                        <span className="font-mono text-emerald-300">{v}</span>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            ) : (
+              <Card className="border-dashed border-border/40">
+                <CardContent className="py-12 text-center space-y-2">
+                  <Brain className="h-8 w-8 mx-auto text-muted-foreground/30" />
+                  <p className="text-sm text-muted-foreground">Select a droid to inspect its memory</p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Memory architecture diagram */}
+          <Card className="border-border/40">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Memory Architecture</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <pre className="text-xs font-mono text-muted-foreground">{`SkilledDroid memory stack
+  ├── Tier 1: short_term_buffer   (in-actor ring buf, 20 entries, always on)
+  ├── Tier 2: vector_memory       (Chroma embeddings, persistent, semantic recall)
+  └── Tier 3: episodic_log        (DuckDB fact store, structured, aggregatable)
+
+Recall flow:
+  new prompt → query Tier 2 → inject top-K memories → augmented prompt → Ollama
+
+Enable memory:  droid.enable_memory()
+Recall:         droid.recall("AI proptech startups", top_k=5)
+Episodic stats: droid.get_episodic_stats()`}</pre>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* ── Messaging ── */}
+        <TabsContent value="messaging" className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Publish panel */}
+            <Card className="border-border/50">
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Send className="h-4 w-4 text-primary" /> Publish Message
+                </CardTitle>
+                <CardDescription>
+                  Send structured data between droids via Redis Streams.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-muted-foreground">From</label>
+                    <Select value={msgFrom} onValueChange={setMsgFrom}>
+                      <SelectTrigger className="h-8 text-sm"><SelectValue placeholder="Sender…" /></SelectTrigger>
+                      <SelectContent>
+                        {droids.map(d => <SelectItem key={d.name} value={d.name} className="text-sm">{d.name}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-muted-foreground">To</label>
+                    <Select value={msgTo} onValueChange={setMsgTo}>
+                      <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="*" className="text-sm">* (broadcast)</SelectItem>
+                        {droids.map(d => <SelectItem key={d.name} value={d.name} className="text-sm">{d.name}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Message Type</label>
+                  <Select value={msgType} onValueChange={setMsgType}>
+                    <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {["data", "request", "signal", "task_result"].map(t => (
+                        <SelectItem key={t} value={t} className="text-sm">{t}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Payload</label>
+                  <Textarea
+                    placeholder='e.g. {"research": "Top AI proptech startups Q1 2026"}'
+                    value={msgPayload}
+                    onChange={e => setMsgPayload(e.target.value)}
+                    className="text-sm min-h-[80px] resize-none font-mono"
+                  />
+                </div>
+
+                <Button onClick={handlePublishMessage}
+                  disabled={!msgFrom || !msgTo || !msgPayload.trim()}
+                  className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 text-sm">
+                  <Send className="h-3.5 w-3.5 mr-2" /> Publish to {msgTo === "*" ? "all droids" : msgTo}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Inbox + stats */}
+            <div className="space-y-4">
+              <Card className="border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Inbox className="h-4 w-4 text-primary" /> Read Inbox
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex gap-2">
+                    <Select value={msgFrom} onValueChange={v => { setMsgFrom(v); handleReadInbox(v); }}>
+                      <SelectTrigger className="h-8 text-sm flex-1"><SelectValue placeholder="Select droid…" /></SelectTrigger>
+                      <SelectContent>
+                        {droids.map(d => <SelectItem key={d.name} value={d.name} className="text-sm">{d.name}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm" variant="outline" className="h-8 text-xs"
+                      onClick={() => handleReadInbox(msgFrom)} disabled={!msgFrom}>
+                      <RefreshCw className="h-3 w-3" />
+                    </Button>
+                  </div>
+
+                  {msgInbox.length > 0 ? (
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {msgInbox.map(msg => (
+                        <div key={msg.msg_id} className="p-2 rounded-lg bg-muted/20 border border-border/40 text-xs">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="flex items-center gap-1 text-primary font-medium">
+                              <ArrowRight className="h-3 w-3" />{msg.from_droid}
+                            </span>
+                            <Badge variant="outline" className="text-xs px-1 py-0">{msg.type}</Badge>
+                          </div>
+                          <p className="text-muted-foreground font-mono truncate">
+                            {typeof msg.payload === "string" ? msg.payload : JSON.stringify(msg.payload)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-muted-foreground text-center py-4">Inbox empty</p>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Bus stats */}
+              {busStats && (
+                <Card className="border-border/40 bg-card/30">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <Radio className="h-3.5 w-3.5 text-primary" /> Message Bus Stats
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    {[
+                      ["Backend",    (busStats as any).backend ?? "memory"],
+                      ["Broadcast",  `${(busStats as any).broadcast_depth ?? 0} messages`],
+                      ["Total msgs", `${(busStats as any).total_messages ?? 0}`],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">{k}</span>
+                        <span className="font-mono text-primary">{v}</span>
+                      </div>
+                    ))}
+                    <pre className="text-xs font-mono mt-3 p-2 bg-background/60 rounded border border-border/30 text-muted-foreground">
+{`# Stream keys (Redis)
+factory:droid:<name>:inbox
+factory:droid:<name>:outbox
+factory:broadcast`}
+                    </pre>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+        </TabsContent>
+
         {/* ── Cluster ── */}
         <TabsContent value="cluster" className="mt-4 space-y-4">
           {cluster ? (
@@ -784,16 +1317,20 @@ RAY_ADDRESS=ray://YOUR_HEAD_NODE:10001
 
 # Ollama runtime
 OLLAMA_HOST=http://localhost:11434
+OLLAMA_GPU=1          # enable GPU acceleration
 
-# Vector store (choose one)
-WEAVIATE_URL=http://localhost:8080
-# OR: Chroma runs embedded (no URL needed)
+# Memory layer
+FACTORY_MEM_DIR=/var/factory/memory   # Chroma persist dir
+FACTORY_DB_PATH=/var/factory/eps.db   # DuckDB episodic log
+
+# Messaging (Redis Streams)
+REDIS_URL=redis://localhost:6379/0
+
+# Vector store
+WEAVIATE_URL=http://localhost:8080    # or use embedded Chroma
 
 # Search (optional)
-SERPAPI_KEY=your_key_here
-
-# Database
-FACTORY_DB_PATH=/var/db/factory.sqlite`}
+SERPAPI_KEY=your_key_here`}
               </pre>
             </CardContent>
           </Card>

@@ -1,0 +1,153 @@
+# ============================================================================
+# Factory.ai Distributed Ray Cluster Configuration
+# ============================================================================
+# Converts the single-device S25 Ultra build into a multi-machine AI swarm.
+#
+# Device roles:
+#   S25 Ultra  → Ray Head Node  (control plane, light inference, CLI)
+#   Laptop     → CPU Worker     (utility droids, tools, routing)
+#   GPU Box    → GPU Worker     (deep reasoning droids, Ollama GPU mode)
+#   Cloud VM   → Spot Worker    (burst capacity, autoscale target)
+#
+# Deploy:
+#   On S25 Ultra / Head:   ray start --head --dashboard-host=0.0.0.0 --port=6379
+#   On each worker:        ray start --address=HEAD_IP:6379
+#   From anywhere:         python factory_ai/deploy_droids.py --ray-address auto
+#
+# Scaling targets (realistic estimates):
+#   S25 Ultra alone:  2–3 concurrent models,  8–12 lightweight actors
+#   + Laptop (16GB):  5–6 concurrent models,  20–30 actors
+#   + GPU Box (24GB): 8–10 concurrent models, 40–60 actors
+#   + Cloud GPU:      unlimited (autoscale)
+# ============================================================================
+
+cluster_name: factory-ai-swarm
+
+# ----------------------------------------------------------------------------
+# Head node — Samsung Galaxy S25 Ultra (or any always-on host)
+# ----------------------------------------------------------------------------
+head_node:
+  device: samsung_galaxy_s25_ultra   # or "linux_server", "mac_mini", etc.
+  resources:
+    CPU: 8          # Snapdragon X Elite or equivalent ARM cores
+    memory_gb: 12   # usable RAM in Termux / Ubuntu on Android
+  ray_port: 6379
+  dashboard_port: 8265
+  client_port: 10001   # ray.init("ray://HEAD_IP:10001") for remote clients
+  ollama:
+    models: [llama3, mistral]    # lightweight models for edge inference
+    gpu: false                   # Qualcomm GPU not yet supported by Ollama
+  droids:
+    - ScoutDroid    # llama3  — research tasks
+    - LeadHarvester # mistral — CRM tasks
+    - RouterDroid   # no model — routing only (CPU)
+
+# ----------------------------------------------------------------------------
+# Worker nodes
+# ----------------------------------------------------------------------------
+worker_nodes:
+
+  # CPU Worker — development laptop / desktop
+  - id: worker-cpu-0
+    device: laptop_or_desktop
+    resources:
+      CPU: 8
+      memory_gb: 16
+    ollama:
+      models: [qwen2.5, mistral, llama3]
+      gpu: false
+    droids:
+      - TradeDroid    # qwen2.5  — finance tasks
+      - LeadHarvester # mistral  — CRM tasks
+    autoscale:
+      min: 1
+      max: 2
+
+  # GPU Worker — dedicated GPU box (RTX 3090 / A100 / etc.)
+  - id: worker-gpu-0
+    device: gpu_server
+    resources:
+      CPU: 16
+      GPU: 1         # mapped to Ray num_gpus
+      memory_gb: 32
+    ollama:
+      models: [deepseek-coder, qwen2.5, llama3, mistral]
+      gpu: true      # OLLAMA_GPU=1 — CUDA / Metal acceleration
+    droids:
+      - CodeDroid     # deepseek-coder — full GPU acceleration
+      - TradeDroid    # qwen2.5        — complex reasoning
+    ray_resources:
+      "accelerator_type:GPU": 1
+    autoscale:
+      min: 1
+      max: 4
+
+  # Spot / Cloud Worker — autoscale burst capacity
+  - id: worker-cloud-0
+    device: cloud_gpu_vm   # e.g. Lambda Labs A10G, RunPod, Vast.ai
+    resources:
+      CPU: 16
+      GPU: 1
+      memory_gb: 24
+    ollama:
+      models: [llama3, qwen2.5, deepseek-coder]
+      gpu: true
+    autoscale:
+      min: 0          # scale to zero when idle
+      max: 10         # burst up to 10 replicas
+      idle_timeout: 300   # terminate after 5 min idle
+
+# ----------------------------------------------------------------------------
+# Autoscaling policy
+# ----------------------------------------------------------------------------
+autoscaling:
+  enabled: true
+  target_utilization: 0.7   # scale up when >70% of actors are busy
+  scale_up_delay: 30        # seconds before launching new workers
+  scale_down_delay: 120     # seconds idle before terminating workers
+  max_workers: 20
+
+# ----------------------------------------------------------------------------
+# Droid distribution matrix
+# Task category → preferred worker type
+# ----------------------------------------------------------------------------
+routing_affinity:
+  code:     worker-gpu-0      # deepseek-coder runs best on GPU
+  finance:  worker-cpu-0      # qwen2.5 is fast on CPU
+  leads:    head_node         # mistral is small, runs on S25 Ultra
+  research: worker-cpu-0      # llama3 medium, CPU-comfortable
+
+# ----------------------------------------------------------------------------
+# Shared services
+# ----------------------------------------------------------------------------
+services:
+  redis:
+    host: head_node
+    port: 6379
+    purpose: message_bus + short_term_memory
+  chroma:
+    host: head_node
+    port: 8000
+    persist_dir: /var/factory/vector_memory
+    purpose: long_term_vector_memory
+  prometheus:
+    host: head_node
+    port: 9090
+    scrape_interval: 15s
+  grafana:
+    host: head_node
+    port: 3001
+    dashboard: factory_ai_overview
+
+# ----------------------------------------------------------------------------
+# Environment variables required on all nodes
+# ----------------------------------------------------------------------------
+env:
+  RAY_ADDRESS: "auto"
+  OLLAMA_HOST: "http://localhost:11434"
+  FACTORY_MEM_DIR: "/var/factory/memory"
+  FACTORY_DB_PATH: "/var/factory/episodes.db"
+  REDIS_URL: "redis://HEAD_IP:6379/0"
+  WEAVIATE_URL: "http://HEAD_IP:8080"
+  # Optional — for real web search:
+  # SERPAPI_KEY: "your_key_here"
