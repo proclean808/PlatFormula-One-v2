@@ -38,6 +38,34 @@ interface TaskRecord {
 const droids = new Map<string, DroidStatus>();
 const taskHistory: TaskRecord[] = [];
 
+// ---------------------------------------------------------------------------
+// SSE (Server-Sent Events) — real-time swarm event bus
+// ---------------------------------------------------------------------------
+interface SwarmEvent {
+  type: "task_completed" | "droid_spawned" | "droid_killed" | "route_decision" |
+        "memory_store" | "message_published" | "status_change" | "heartbeat";
+  payload: unknown;
+  ts: number;
+}
+
+const sseClients = new Set<{ res: import("express").Response; id: number }>();
+let sseClientId = 0;
+const eventLog: SwarmEvent[] = [];
+
+function pushEvent(type: SwarmEvent["type"], payload: unknown) {
+  const ev: SwarmEvent = { type, payload, ts: Date.now() };
+  if (eventLog.length >= 200) eventLog.shift();
+  eventLog.push(ev);
+  const data = `data: ${JSON.stringify(ev)}\n\n`;
+  sseClients.forEach(client => {
+    try { client.res.write(data); } catch { sseClients.delete(client); }
+  });
+}
+
+// Memory activity timeline — used by MemoryGraph chart
+interface MemoryTick { t: number; vectors: number; episodes: number }
+const memoryTimeline: MemoryTick[] = [];
+
 // Message bus: channel → message list
 interface BusMessage {
   msg_id: string;
@@ -160,6 +188,7 @@ async function startServer() {
     };
     droids.set(name, droid);
     console.log(`[Factory] Droid spawned: ${name} (model=${model})`);
+    pushEvent("droid_spawned", { name, model });
     res.status(201).json({ message: `Droid ${name} spawned`, droid });
   });
 
@@ -223,8 +252,13 @@ async function startServer() {
     if (taskHistory.length >= 200) taskHistory.shift();
     taskHistory.push(record);
 
+    pushEvent("task_completed", { task_id: record.task_id, droid: droidName, elapsed_ms });
+
     // Restore to online after simulated work
-    setTimeout(() => { droid.status = "online"; }, elapsed_ms);
+    setTimeout(() => {
+      droid.status = "online";
+      pushEvent("status_change", { droid: droidName, status: "online" });
+    }, elapsed_ms);
 
     res.json(record);
   });
@@ -236,6 +270,7 @@ async function startServer() {
       return res.status(404).json({ error: `Droid not found: ${name}` });
     }
     console.log(`[Factory] Droid killed: ${name}`);
+    pushEvent("droid_killed", { name });
     res.json({ message: `Droid ${name} terminated` });
   });
 
@@ -445,6 +480,155 @@ async function startServer() {
       total_droids: droids.size,
     });
   });
+
+  // ── SSE event stream ─────────────────────────────────────────────────────
+
+  /** GET /api/factory/events — real-time Server-Sent Events stream */
+  app.get("/api/factory/events", (req, res) => {
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.flushHeaders();
+
+    const clientId = ++sseClientId;
+    const client = { res, id: clientId };
+    sseClients.add(client);
+
+    // Send event backlog (last 30) to new subscriber
+    const backlog = eventLog.slice(-30);
+    res.write(`data: ${JSON.stringify({ type: "backlog", payload: backlog, ts: Date.now() })}\n\n`);
+
+    const heartbeat = setInterval(() => {
+      try {
+        res.write(`data: ${JSON.stringify({ type: "heartbeat", payload: { clients: sseClients.size }, ts: Date.now() })}\n\n`);
+      } catch { clearInterval(heartbeat); sseClients.delete(client); }
+    }, 5000);
+
+    req.on("close", () => { clearInterval(heartbeat); sseClients.delete(client); });
+  });
+
+  /** GET /api/factory/swarm/topology — full swarm state snapshot for visual graph */
+  app.get("/api/factory/swarm/topology", (_req, res) => {
+    const droidList = Array.from(droids.values());
+    const busyCount = droidList.filter(d => d.status === "busy").length;
+    const gpuCount  = droidList.filter(d => d.use_gpu).length;
+    const memCount  = droidList.filter(d => d.memory_enabled).length;
+    const totalTasks = droidList.reduce((s, d) => s + d.task_count, 0);
+
+    // Synthetic per-node CPU load based on busy droids
+    const nodes = [
+      {
+        id: "head",
+        label: "S25 Ultra",
+        type: "head",
+        address: process.env.RAY_ADDRESS ?? "auto",
+        status: "connected",
+        cpu_pct: Math.min(10 + busyCount * 5, 95),
+        memory_gb: 12,
+        memory_used_gb: 2 + busyCount * 0.8,
+        droids: droidList.filter(d => ["RouterDroid", "LeadHarvester"].includes(d.name)).map(d => d.name),
+        ollama_models: ["mistral", "llama3"],
+        gpu: false,
+      },
+      {
+        id: "worker-cpu-0",
+        label: "CPU Worker",
+        type: "cpu",
+        status: "ready",
+        cpu_pct: Math.min(15 + busyCount * 8, 95),
+        memory_gb: 16,
+        memory_used_gb: 3 + busyCount * 1.2,
+        droids: droidList.filter(d => ["ScoutDroid", "TradeDroid"].includes(d.name)).map(d => d.name),
+        ollama_models: ["llama3", "qwen2.5"],
+        gpu: false,
+      },
+      {
+        id: "worker-gpu-0",
+        label: "GPU Worker",
+        type: "gpu",
+        status: gpuCount > 0 ? "ready" : "standby",
+        cpu_pct: Math.min(5 + gpuCount * 20, 95),
+        memory_gb: 32,
+        memory_used_gb: 4 + gpuCount * 2,
+        droids: droidList.filter(d => d.use_gpu).map(d => d.name),
+        ollama_models: ["deepseek-coder", "qwen2.5"],
+        gpu: true,
+        gpu_pct: gpuCount > 0 ? Math.min(30 + busyCount * 15, 95) : 0,
+      },
+      {
+        id: "worker-edge-0",
+        label: "Cloud Spot",
+        type: "cloud",
+        status: "standby",
+        cpu_pct: 0,
+        memory_gb: 24,
+        memory_used_gb: 0,
+        droids: [],
+        ollama_models: [],
+        gpu: true,
+        gpu_pct: 0,
+      },
+    ];
+
+    // Build edges (RouterDroid → each worker droid)
+    const edges = droidList
+      .filter(d => d.name !== "RouterDroid")
+      .map(d => ({
+        from: "RouterDroid",
+        to:   d.name,
+        active: d.status === "busy",
+        category: d.name === "CodeDroid" ? "code"
+                : d.name === "TradeDroid" ? "finance"
+                : d.name === "LeadHarvester" ? "leads"
+                : "research",
+      }));
+
+    // Recent task throughput per droid
+    const throughput = droidList.map(d => ({
+      name:       d.name,
+      tasks:      d.task_count,
+      status:     d.status,
+      model:      d.model,
+      use_gpu:    d.use_gpu ?? false,
+    }));
+
+    res.json({
+      nodes,
+      edges,
+      droids: droidList,
+      throughput,
+      summary: {
+        total_droids: droids.size,
+        busy:         busyCount,
+        total_tasks:  totalTasks,
+        gpu_droids:   gpuCount,
+        mem_droids:   memCount,
+        sse_clients:  sseClients.size,
+      },
+      event_log: eventLog.slice(-20).reverse(),
+    });
+  });
+
+  /** GET /api/factory/memory/events — memory activity timeline */
+  app.get("/api/factory/memory/events", (_req, res) => {
+    // Build a synthetic 60-point timeline (last 60 "ticks")
+    const droidList = Array.from(droids.values());
+    const totalTasks = droidList.reduce((s, d) => s + d.task_count, 0);
+    const now = Date.now();
+    // Use existing timeline + synthesize missing points
+    const timeline = Array.from({ length: 20 }, (_, i) => ({
+      t:        now - (19 - i) * 3000,
+      label:    new Date(now - (19 - i) * 3000).toLocaleTimeString(),
+      vectors:  Math.max(0, totalTasks * i + Math.floor(Math.random() * 3)),
+      episodes: Math.max(0, totalTasks + i),
+      tasks:    Math.floor(Math.random() * 3),
+    }));
+    res.json({ timeline, total_vectors: totalTasks * 2, total_episodes: totalTasks });
+  });
+
+  // Heartbeat to keep SSE connections alive (every 25s)
+  setInterval(() => pushEvent("heartbeat", { droids: droids.size, tasks: taskHistory.length }), 25000);
 
   // ── Static + SPA fallback ───────────────────────────────────────────────
 
