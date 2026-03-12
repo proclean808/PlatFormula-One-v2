@@ -630,6 +630,175 @@ async function startServer() {
   // Heartbeat to keep SSE connections alive (every 25s)
   setInterval(() => pushEvent("heartbeat", { droids: droids.size, tasks: taskHistory.length }), 25000);
 
+  // ── HomeService Pipeline API ────────────────────────────────────────────
+
+  // In-memory lead store (mirrors a real CRM in prod)
+  interface LeadRecord {
+    lead_id: string;
+    channel: string;
+    contact: string;
+    address: string;
+    raw_input: string;
+    qualification_score: number;
+    tier: "hot" | "warm" | "cold";
+    job_type: string;
+    urgency: "emergency" | "routine" | "estimate";
+    system_type: string;
+    lead_score: "hot" | "warm" | "cold";
+    recommended_action: string;
+    dispatch_status: "pending" | "dispatched" | "nurture" | "disqualified";
+    technician?: string;
+    eta_minutes?: number;
+    followup_step: string;
+    created_at: number;
+    updated_at: number;
+  }
+
+  const leads = new Map<string, LeadRecord>();
+
+  function scoreKeywords(text: string): { score: number; tier: "hot"|"warm"|"cold"; urgency: "emergency"|"routine"|"estimate"; job_type: string; system_type: string } {
+    const t = text.toLowerCase();
+    const emergencyWords = ["not working","no heat","no ac","no air","gas smell","flooding","leak","emergency","newborn","baby","no hot water","completely broken"];
+    const hotWords = ["today","asap","urgent","right now","immediately","broke","stopped","broken"];
+    const coldWords = ["cheapest","just a quote","compare prices","how much","estimate only","shopping around"];
+    const systemTypes: [RegExp, string][] = [
+      [/heat pump/i, "heat_pump"], [/furnace/i, "furnace"], [/boiler/i, "boiler"],
+      [/mini.?split/i, "mini_split"], [/central ac|central air/i, "central_ac"],
+      [/ac|air conditioning|a\/c/i, "central_ac"], [/hvac/i, "central_ac"],
+    ];
+
+    let score = 50;
+    let urgency: "emergency"|"routine"|"estimate" = "routine";
+    let job_type = "service_call";
+
+    if (emergencyWords.some(w => t.includes(w))) { score += 35; urgency = "emergency"; }
+    else if (hotWords.some(w => t.includes(w))) { score += 20; }
+    if (coldWords.some(w => t.includes(w))) { score -= 25; urgency = "estimate"; job_type = "estimate"; }
+    if (t.includes("maintenance") || t.includes("annual") || t.includes("tune")) { job_type = "maintenance"; score += 5; }
+    if (t.includes("replace") || t.includes("new system") || t.includes("install")) { job_type = "replacement"; score += 15; }
+    if (t.includes("homeowner") || t.includes("my home") || t.includes("my house")) score += 10;
+
+    score = Math.min(100, Math.max(0, score));
+    const tier: "hot"|"warm"|"cold" = score >= 70 ? "hot" : score >= 45 ? "warm" : "cold";
+
+    let system_type = "central_ac";
+    for (const [re, st] of systemTypes) { if (re.test(text)) { system_type = st; break; } }
+
+    return { score, tier, urgency, job_type, system_type };
+  }
+
+  // Sample technician pool
+  const TECHNICIANS = [
+    { id: "T001", name: "Carlos Rivera", zone: "South Austin", busy: false, rating: 4.9 },
+    { id: "T002", name: "Aisha Johnson", zone: "North Austin", busy: false, rating: 4.8 },
+    { id: "T003", name: "Mike Patterson", zone: "East Austin", busy: true,  rating: 4.7 },
+    { id: "T004", name: "Priya Nair",     zone: "West Austin", busy: false, rating: 4.9 },
+  ];
+
+  /** POST /api/homeservice/leads — ingest a new lead */
+  app.post("/api/homeservice/leads", (req, res) => {
+    const { raw_input, channel = "website", contact = "Unknown", address = "" } = req.body;
+    if (!raw_input) return res.status(400).json({ error: "raw_input required" });
+
+    const lead_id = Math.random().toString(36).slice(2, 10).toUpperCase();
+    const { score, tier, urgency, job_type, system_type } = scoreKeywords(raw_input);
+    const recommended_action = score < 25 ? "disqualify" : score >= 60 ? "book_immediately" : "nurture";
+
+    const lead: LeadRecord = {
+      lead_id, channel, contact, address, raw_input,
+      qualification_score: score, tier, urgency, job_type, system_type,
+      lead_score: tier,
+      recommended_action,
+      dispatch_status: recommended_action === "disqualify" ? "disqualified" : "pending",
+      followup_step: "t0",
+      created_at: Date.now(),
+      updated_at: Date.now(),
+    };
+    leads.set(lead_id, lead);
+    pushEvent("lead_ingested", { lead_id, channel, tier, urgency, score });
+    res.json({ lead_id, tier, urgency, score, recommended_action });
+  });
+
+  /** POST /api/homeservice/leads/:id/dispatch — assign a technician */
+  app.post("/api/homeservice/leads/:id/dispatch", (req, res) => {
+    const lead = leads.get(req.params.id);
+    if (!lead) return res.status(404).json({ error: "Lead not found" });
+
+    const available = TECHNICIANS.filter(t => !t.busy);
+    if (!available.length) return res.status(503).json({ error: "No technicians available" });
+
+    const tech = lead.urgency === "emergency"
+      ? available[0]  // first available for emergency
+      : available.reduce((a, b) => (a.rating > b.rating ? a : b));  // highest rated otherwise
+
+    const etaMinutes = lead.urgency === "emergency" ? 20 + Math.floor(Math.random() * 20) : 60 + Math.floor(Math.random() * 120);
+    lead.technician = tech.name;
+    lead.eta_minutes = etaMinutes;
+    lead.dispatch_status = "dispatched";
+    lead.updated_at = Date.now();
+    tech.busy = true;
+
+    pushEvent("lead_dispatched", { lead_id: lead.lead_id, technician: tech.name, eta_minutes: etaMinutes, urgency: lead.urgency });
+    res.json({ lead_id: lead.lead_id, technician: tech.name, eta_minutes: etaMinutes, zone: tech.zone });
+  });
+
+  /** GET /api/homeservice/leads — list all leads with optional filter */
+  app.get("/api/homeservice/leads", (req, res) => {
+    const { tier, status, channel } = req.query as Record<string, string>;
+    let result = Array.from(leads.values()).sort((a, b) => b.created_at - a.created_at);
+    if (tier) result = result.filter(l => l.tier === tier);
+    if (status) result = result.filter(l => l.dispatch_status === status);
+    if (channel) result = result.filter(l => l.channel === channel);
+    res.json({ leads: result, total: result.length });
+  });
+
+  /** GET /api/homeservice/leads/:id — single lead detail */
+  app.get("/api/homeservice/leads/:id", (req, res) => {
+    const lead = leads.get(req.params.id);
+    if (!lead) return res.status(404).json({ error: "Lead not found" });
+    res.json(lead);
+  });
+
+  /** GET /api/homeservice/stats — pipeline KPIs */
+  app.get("/api/homeservice/stats", (_req, res) => {
+    const all = Array.from(leads.values());
+    const total = all.length;
+    const hot = all.filter(l => l.tier === "hot").length;
+    const warm = all.filter(l => l.tier === "warm").length;
+    const cold = all.filter(l => l.tier === "cold").length;
+    const dispatched = all.filter(l => l.dispatch_status === "dispatched").length;
+    const disqualified = all.filter(l => l.dispatch_status === "disqualified").length;
+    const bookRate = total > 0 ? Math.round((dispatched / total) * 100) : 0;
+    const available = TECHNICIANS.filter(t => !t.busy).length;
+    const channels: Record<string, number> = {};
+    for (const l of all) channels[l.channel] = (channels[l.channel] || 0) + 1;
+    res.json({ total, hot, warm, cold, dispatched, disqualified, book_rate: bookRate, technicians_available: available, channels });
+  });
+
+  /** GET /api/homeservice/technicians — fleet status */
+  app.get("/api/homeservice/technicians", (_req, res) => {
+    res.json({ technicians: TECHNICIANS });
+  });
+
+  /** POST /api/homeservice/leads/:id/followup — advance nurture sequence */
+  app.post("/api/homeservice/leads/:id/followup", (req, res) => {
+    const lead = leads.get(req.params.id);
+    if (!lead) return res.status(404).json({ error: "Lead not found" });
+    const steps = ["t0", "t24h", "t72h", "t7d"];
+    const idx = steps.indexOf(lead.followup_step);
+    const nextStep = steps[Math.min(idx + 1, steps.length - 1)];
+    lead.followup_step = nextStep;
+    lead.updated_at = Date.now();
+    const messages: Record<string, string> = {
+      t0: `Hi ${lead.contact.split(" ")[0]}, thanks for reaching out! We received your request and will contact you shortly.`,
+      t24h: `Hi ${lead.contact.split(" ")[0]}, just checking in on your ${lead.system_type.replace("_"," ")} request. Ready to schedule?`,
+      t72h: `Your estimate is ready, ${lead.contact.split(" ")[0]}. Book today and lock in this week's pricing!`,
+      t7d: `Final notice: we still have availability this week for your ${lead.system_type.replace("_"," ")} service. Reply YES to confirm.`,
+    };
+    pushEvent("followup_sent", { lead_id: lead.lead_id, step: nextStep, channel: "sms" });
+    res.json({ lead_id: lead.lead_id, step: nextStep, message: messages[nextStep] });
+  });
+
   // ── Static + SPA fallback ───────────────────────────────────────────────
 
   const staticPath = path.resolve(__dirname, "..", "public");

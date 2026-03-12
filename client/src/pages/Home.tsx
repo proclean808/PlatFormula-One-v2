@@ -14,7 +14,9 @@ import { FounderToolkit } from "@/components/FounderToolkit";
 import AIModels from "@/components/AIModels";
 import DroidFactory from "@/components/DroidFactory";
 import SwarmConsole from "@/components/SwarmConsole";
-import { Zap, Bot, Radio } from "lucide-react";
+import HomeServiceConsole from "@/components/HomeServiceConsole";
+import MarketIntel from "@/components/MarketIntel";
+import { Zap, Bot, Radio, Wrench as WrenchIcon, BarChart2 } from "lucide-react";
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
@@ -28,7 +30,9 @@ const navigationItems = [
   { id: "toolkit", label: "Founder Toolkit", icon: Wrench, color: "orange" },
   { id: "aimodels", label: "AI Models", icon: Zap, color: "purple" },
   { id: "factory", label: "Droid Factory",   icon: Bot,   color: "emerald" },
-  { id: "swarm",   label: "Swarm Console",   icon: Radio, color: "blue"    },
+  { id: "swarm",        label: "Swarm Console",    icon: Radio,       color: "blue"    },
+  { id: "homeservice", label: "HomeService AI",   icon: WrenchIcon,  color: "orange"  },
+  { id: "marketintel", label: "Market Intel",     icon: BarChart2,   color: "cyan"    },
 ];
 
 export default function Home() {
@@ -160,7 +164,9 @@ export default function Home() {
         {activeTab === "toolkit" && <FounderToolkit />}
         {activeTab === "aimodels" && <AIModels />}
         {activeTab === "factory" && <DroidFactory />}
-        {activeTab === "swarm"   && <SwarmConsole />}
+        {activeTab === "swarm"       && <SwarmConsole />}
+        {activeTab === "homeservice" && <HomeServiceConsole />}
+        {activeTab === "marketintel" && <MarketIntel />}
       </main>
 
       {/* Footer */}
