@@ -12,7 +12,8 @@ import ApplicationAssistant from "@/components/ApplicationAssistant";
 import ConceptRefinement from "@/components/ConceptRefinement";
 import { FounderToolkit } from "@/components/FounderToolkit";
 import AIModels from "@/components/AIModels";
-import { Zap } from "lucide-react";
+import JoyceGPT from "@/components/JoyceGPT";
+import { Zap, BrainCircuit } from "lucide-react";
 import { LoginModal, RegisterModal } from "@/components/AuthModals";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -27,6 +28,7 @@ const navigationItems = [
   { id: "concept", label: "Concept Refinement", icon: Lightbulb, color: "purple" },
   { id: "toolkit", label: "Founder Toolkit", icon: Wrench, color: "orange" },
   { id: "aimodels", label: "AI Models", icon: Zap, color: "purple" },
+  { id: "joycegpt", label: "JoyceGPT", icon: BrainCircuit, color: "orange" },
 ];
 
 export default function Home() {
@@ -208,6 +210,7 @@ export default function Home() {
         {activeTab === "concept" && <ConceptRefinement />}
         {activeTab === "toolkit" && <FounderToolkit />}
         {activeTab === "aimodels" && <AIModels />}
+        {activeTab === "joycegpt" && <JoyceGPT />}
       </main>
 
       {/* Footer */}
