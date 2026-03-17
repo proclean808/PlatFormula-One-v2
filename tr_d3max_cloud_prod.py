@@ -7,7 +7,7 @@ pip install openai asyncio python-dotenv fastapi uvicorn statistics
 
 Run:
 Local: python3 tr_d3max_cloud_prod.py
-API: uvicorn tr_d3max_cloud_prod:app --host 0.0.0.0 --port 8000
+API: uvicorn tr_d3max_cloud_prod:app --host 0.0.0.0 --port 8001
 """
 
 import asyncio
@@ -473,7 +473,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "server":
         # Run as API server
         import uvicorn
-        uvicorn.run(app, host="0.0.0.0", port=8000)
+        uvicorn.run(app, host="0.0.0.0", port=8001)
     else:
         # Run as CLI
         asyncio.run(main())
