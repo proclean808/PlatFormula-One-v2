@@ -94,6 +94,7 @@ export default function JoyceGPT() {
         { id: 'system', text: `Latency: ${normalized.latency_ms ?? 'n/a'} ms` },
         { id: 'system', text: `Quorum: ${normalized.quorum_passed}` },
         { id: 'system', text: `SLA: ${normalized.sla_passed}` },
+        { id: 'system', text: `Risk Detection: ${normalized.risk_detected ? 'HIGH' : 'LOW'}` },
       ]);
 
       if (normalized.status === 'ok') {
