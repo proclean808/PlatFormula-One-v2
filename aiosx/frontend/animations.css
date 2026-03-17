@@ -1,0 +1,100 @@
+@keyframes brandPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+  }
+  50% {
+    transform: scale(1.18);
+    box-shadow: 0 0 24px rgba(34, 197, 94, 1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+  }
+}
+
+@keyframes micWave {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes gradientDrift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes nodeGlowIdle {
+  0% {
+    box-shadow: 0 0 0 rgba(148, 163, 184, 0.0);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(148, 163, 184, 0.28);
+  }
+}
+
+@keyframes nodeGlowRunning {
+  0% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(56, 189, 248, 0.95);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+}
+
+@keyframes nodeGlowSuccess {
+  0% {
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(22, 163, 74, 1);
+  }
+}
+
+@keyframes nodeGlowError {
+  0% {
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 26px rgba(248, 113, 113, 1);
+  }
+}
+
+.node-idle {
+  animation: nodeGlowIdle 1.7s ease-in-out alternate infinite;
+}
+
+.node-running {
+  animation: nodeGlowRunning 1.3s ease-in-out infinite;
+}
+
+.node-success {
+  animation: nodeGlowSuccess 1.4s ease-in-out alternate infinite;
+}
+
+.node-error {
+  animation: nodeGlowError 1.2s ease-in-out alternate infinite;
+}
+
+.voice-speaking {
+  animation: gradientDrift 8s linear infinite;
+}
