@@ -14,7 +14,7 @@ import {
   Activity,
 } from 'lucide-react';
 
-const N8N_WEBHOOK = 'http://localhost:5678/webhook/trd3max';
+const FASTAPI_INFER = 'http://localhost:49999/infer';
 
 type QuorumStatus = 'idle' | 'debating' | 'resolved' | 'flagged' | 'error';
 
@@ -58,7 +58,7 @@ export default function JoyceGPT() {
   });
 
   const startQuorumDebate = useCallback(async () => {
-    if (!query.trim()) return;
+    if (!query?.trim()) return;
 
     setIsSimulating(true);
     setQuorumStatus('debating');
@@ -66,7 +66,7 @@ export default function JoyceGPT() {
     setVoteCount({ openai: null, anthropic: null, gemini: null });
 
     try {
-      const res = await fetch(N8N_WEBHOOK, {
+      const res = await fetch(FASTAPI_INFER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
@@ -75,30 +75,47 @@ export default function JoyceGPT() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
+      const normalized = {
+        winner: data.verdict?.winning_advocate || 'unknown',
+        final: data.verdict?.final_answer || 'No output returned.',
+        justification: data.verdict?.justification || '',
+        status: data.status === 'success' && data.quorum_passed ? 'ok' : 'error',
+        risk_detected: false,
+        scores: {},
+        latency_ms: data.latency_ms ?? null,
+        quorum_passed: !!data.quorum_passed,
+        sla_passed: !!data.sla_passed,
+      };
+
       setMessages([
-        { id: 'openai', text: `Winner: ${data.winner ?? 'Undefined'}` },
-        { id: 'system', text: `Final Resolution: ${data.final ?? 'No output'}` },
-        { id: 'system', text: `Confidence Scores: ${JSON.stringify(data.scores ?? {})}` },
-        { id: 'system', text: `Risk Detection: ${data.risk_detected ? 'HIGH' : 'LOW'}` },
+        { id: 'system', text: `Winner: ${normalized.winner}` },
+        { id: 'system', text: `Final: ${normalized.final}` },
+        { id: 'system', text: `Justification: ${normalized.justification}` },
+        { id: 'system', text: `Latency: ${normalized.latency_ms ?? 'n/a'} ms` },
+        { id: 'system', text: `Quorum: ${normalized.quorum_passed}` },
+        { id: 'system', text: `SLA: ${normalized.sla_passed}` },
       ]);
 
-      if (data.status === 'ok') {
+      if (normalized.status === 'ok') {
         setQuorumStatus('resolved');
-        setVoteCount({ openai: true, anthropic: !data.risk_detected, gemini: true });
-      } else if (data.status === 'redacted') {
-        setQuorumStatus('flagged');
-        setVoteCount({ openai: true, anthropic: false, gemini: true });
+        setVoteCount({
+          openai: normalized.winner === 'openai',
+          anthropic: normalized.winner === 'anthropic',
+          gemini: normalized.winner === 'gemini',
+        });
       } else {
         setQuorumStatus('error');
+        setVoteCount({ openai: null, anthropic: null, gemini: null });
       }
-    } catch {
+    } catch (err) {
       setMessages([
         {
           id: 'system',
-          text: 'Execution Error: Failed to reach n8n gateway. Ensure local tunnel is active.',
+          text: `Execution error: ${err instanceof Error ? err.message : String(err)}`,
         },
       ]);
       setQuorumStatus('error');
+      setVoteCount({ openai: null, anthropic: null, gemini: null });
     } finally {
       setIsSimulating(false);
     }
@@ -214,7 +231,7 @@ export default function JoyceGPT() {
                 >
                   <div className="relative z-10 flex items-center justify-center gap-3">
                     <Play size={18} fill="currentColor" />
-                    {isSimulating ? 'Processing…' : 'Execute n8n Quorum'}
+                    {isSimulating ? 'Processing…' : 'Execute Quorum'}
                   </div>
                 </button>
               </div>
@@ -305,7 +322,7 @@ export default function JoyceGPT() {
                         Execution Failed
                       </h4>
                       <p className="text-[10px] text-red-500/60 font-bold uppercase tracking-widest">
-                        Check n8n gateway · localhost:5678
+                        Check FastAPI gateway · localhost:49999
                       </p>
                     </div>
                   )}
@@ -367,7 +384,7 @@ export default function JoyceGPT() {
               <div className="space-y-3">
                 <div className="flex items-center gap-4 text-slate-500 font-mono text-[10px]">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                  <span>NODE GATEWAY: http://localhost:5678/webhook/trd3max</span>
+                  <span>NODE GATEWAY: http://localhost:49999/infer</span>
                 </div>
                 <div className="flex items-center gap-4 text-slate-600 font-mono text-[10px]">
                   <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />

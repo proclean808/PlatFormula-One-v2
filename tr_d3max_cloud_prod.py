@@ -7,7 +7,7 @@ pip install openai asyncio python-dotenv fastapi uvicorn statistics
 
 Run:
 Local: python3 tr_d3max_cloud_prod.py
-API: uvicorn tr_d3max_cloud_prod:app --host 0.0.0.0 --port 8001
+API: uvicorn tr_d3max_cloud_prod:app --host 0.0.0.0 --port 49999
 """
 
 import asyncio
@@ -20,6 +20,7 @@ from typing import List, Dict, Optional
 
 from openai import AsyncOpenAI
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Configure logging (investor-clarity level)
@@ -397,6 +398,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["POST", "GET"],
+    allow_headers=["Content-Type"],
+)
+
 
 class InferenceRequest(BaseModel):
     query: str
@@ -473,7 +481,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "server":
         # Run as API server
         import uvicorn
-        uvicorn.run(app, host="0.0.0.0", port=8001)
+        uvicorn.run(app, host="0.0.0.0", port=49999)
     else:
         # Run as CLI
         asyncio.run(main())
