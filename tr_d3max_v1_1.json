@@ -1,0 +1,366 @@
+{
+  "name": "TR-D3Max v1.1",
+  "nodes": [
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "parameters": {
+        "path": "trd3max",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000002",
+      "name": "Set Context",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [470, 300],
+      "parameters": {
+        "mode": "manual",
+        "fields": {
+          "values": [
+            {
+              "name": "query",
+              "type": "stringValue",
+              "value": "={{ $json.body.query }}"
+            },
+            {
+              "name": "cradle",
+              "type": "objectValue",
+              "value": "={{ ({ role: 'founder', constraints: ['no PII', 'concise'], memory: 'MemBrain L1' }) }}"
+            }
+          ]
+        },
+        "include": "none"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000003",
+      "name": "OpenAI Optimist",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 120],
+      "continueOnFail": true,
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENAI_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0, input: $json.query }) }}",
+        "options": {
+          "timeout": 8000
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000004",
+      "name": "Tag OpenAI",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [940, 120],
+      "continueOnFail": true,
+      "parameters": {
+        "mode": "manual",
+        "fields": {
+          "values": [
+            {
+              "name": "_source",
+              "type": "stringValue",
+              "value": "openai"
+            }
+          ]
+        },
+        "include": "all"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000005",
+      "name": "Claude Auditor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 300],
+      "continueOnFail": true,
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{ $env.ANTHROPIC_API_KEY }}"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ model: 'claude-3-5-sonnet-20241022', max_tokens: 300, temperature: 0, messages: [{ role: 'user', content: [{ type: 'text', text: 'Audit for risk, PII, flaws: ' + $json.query }] }] }) }}",
+        "options": {
+          "timeout": 8000
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000006",
+      "name": "Tag Claude",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [940, 300],
+      "continueOnFail": true,
+      "parameters": {
+        "mode": "manual",
+        "fields": {
+          "values": [
+            {
+              "name": "_source",
+              "type": "stringValue",
+              "value": "claude"
+            }
+          ]
+        },
+        "include": "all"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000007",
+      "name": "Gemini Contrarian",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [700, 480],
+      "continueOnFail": true,
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ contents: [{ parts: [{ text: 'Challenge assumptions: ' + $json.query }] }], generationConfig: { temperature: 0 } }) }}",
+        "options": {
+          "timeout": 8000
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000008",
+      "name": "Tag Gemini",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [940, 480],
+      "continueOnFail": true,
+      "parameters": {
+        "mode": "manual",
+        "fields": {
+          "values": [
+            {
+              "name": "_source",
+              "type": "stringValue",
+              "value": "gemini"
+            }
+          ]
+        },
+        "include": "all"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000009",
+      "name": "Merge Responses",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1180, 300],
+      "parameters": {
+        "mode": "append"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000010",
+      "name": "Deterministic Judge",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1400, 300],
+      "parameters": {
+        "jsCode": "// ── TR-D3Max Deterministic Judge ──────────────────────────\n\nconst items = $input.all();\nconst query = $('Webhook').first().json.body?.query || '';\n\n// ── Text extraction ────────────────────────────────────────\nfunction extractOpenAI(d) {\n  try {\n    return d?.output?.[0]?.content?.[0]?.text ||\n           d?.choices?.[0]?.message?.content || '';\n  } catch(e) { return ''; }\n}\n\nfunction extractClaude(d) {\n  try { return d?.content?.[0]?.text || ''; }\n  catch(e) { return ''; }\n}\n\nfunction extractGemini(d) {\n  try {\n    return d?.candidates?.[0]?.content?.parts?.[0]?.text || '';\n  } catch(e) { return ''; }\n}\n\n// ── Scoring ────────────────────────────────────────────────\nfunction score(text) {\n  let s = 0;\n  if (text.length > 80) s++;\n  const uncertain = ['maybe', 'perhaps', 'might', 'possibly', 'unclear', 'not sure'];\n  if (!uncertain.some(w => text.toLowerCase().includes(w))) s++;\n  if (/[-•*]|\\d+\\./.test(text)) s++;\n  return s;\n}\n\n// ── PII redaction ──────────────────────────────────────────\nfunction redact(text) {\n  return text\n    .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/g, '[REDACTED]')\n    .replace(/(\\+?1[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}/g, '[REDACTED]')\n    .replace(/\\b\\d{3}-\\d{2}-\\d{4}\\b/g, '[REDACTED]')\n    .replace(/\\b\\d{1,5}\\s+\\w+\\s+(street|st|avenue|ave|road|rd|blvd|drive|dr)\\b/gi, '[REDACTED]');\n}\n\n// ── Route by _source tag ───────────────────────────────────\nlet openaiText = '', claudeText = '', geminiText = '';\n\nfor (const item of items) {\n  const d = item.json || {};\n  if (d._source === 'openai')  openaiText  = extractOpenAI(d);\n  else if (d._source === 'claude') claudeText  = extractClaude(d);\n  else if (d._source === 'gemini') geminiText  = extractGemini(d);\n}\n\n// ── Select winner ──────────────────────────────────────────\nconst sO = score(openaiText);\nconst sC = score(claudeText);\nconst sG = score(geminiText);\n\nconst candidates = [\n  { name: 'Optimist (GPT)',        text: openaiText, score: sO },\n  { name: 'Auditor (Claude)',      text: claudeText, score: sC },\n  { name: 'Contrarian (Gemini)',   text: geminiText, score: sG },\n];\n\ncandidates.sort((a, b) => b.score - a.score || b.text.length - a.text.length);\nconst winner = candidates[0];\nlet finalText = winner.text;\n\nif (!finalText) {\n  // Fallback to first non-empty\n  finalText = candidates.find(c => c.text)?.text || '';\n}\n\n// ── Risk / PII detection via auditor ──────────────────────\nconst auditLow = claudeText.toLowerCase();\nconst piiKeywords = ['pii', 'leak', 'privacy', 'secret'];\nconst riskDetected = piiKeywords.some(k => auditLow.includes(k));\n\nlet status = 'ok';\nif (riskDetected) {\n  finalText = redact(finalText);\n  status = 'redacted';\n}\n\nif (!finalText) {\n  status = 'error';\n  finalText = 'No valid model responses received.';\n}\n\nreturn [{\n  json: {\n    status,\n    final: finalText,\n    winner: winner.name,\n    scores: { optimist: sO, auditor: sC, contrarian: sG },\n    risk_detected: riskDetected,\n    query,\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000011",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1620, 300],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Context": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Optimist",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Claude Auditor",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gemini Contrarian",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Optimist": {
+      "main": [
+        [
+          {
+            "node": "Tag OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude Auditor": {
+      "main": [
+        [
+          {
+            "node": "Tag Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag Claude": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Gemini Contrarian": {
+      "main": [
+        [
+          {
+            "node": "Tag Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag Gemini": {
+      "main": [
+        [
+          {
+            "node": "Merge Responses",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge Responses": {
+      "main": [
+        [
+          {
+            "node": "Deterministic Judge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deterministic Judge": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateId": "tr-d3max-v1.1",
+    "instanceId": "tr-d3max"
+  }
+}
