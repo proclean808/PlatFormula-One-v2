@@ -1,7 +1,9 @@
+import cookieParser from "cookie-parser";
 import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { createAuthRouter } from "./auth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,6 +11,12 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  app.use(express.json());
+  app.use(cookieParser());
+
+  // Auth API routes
+  app.use("/api/auth", createAuthRouter());
 
   // Serve static files - in production, files are in the same dist folder
   const staticPath = path.resolve(__dirname, "..", "public");

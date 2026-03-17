@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Rocket, Database, Wrench, Mic, ListChecks, Users, FileText, Lightbulb, Menu } from "lucide-react";
+import { Rocket, Database, Wrench, Mic, ListChecks, Users, FileText, Lightbulb, Menu, LogOut, User } from "lucide-react";
 import Dashboard from "@/components/Dashboard";
 import Resources from "@/components/Resources";
 import Builder from "@/components/Builder";
@@ -13,6 +13,8 @@ import ConceptRefinement from "@/components/ConceptRefinement";
 import { FounderToolkit } from "@/components/FounderToolkit";
 import AIModels from "@/components/AIModels";
 import { Zap } from "lucide-react";
+import { LoginModal, RegisterModal } from "@/components/AuthModals";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: Rocket, color: "blue" },
@@ -30,6 +32,9 @@ const navigationItems = [
 export default function Home() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const { user, logout } = useAuth();
 
   const handleNavClick = (tabId: string) => {
     setActiveTab(tabId);
@@ -131,17 +136,65 @@ export default function Home() {
             })}
           </nav>
 
-          {/* Current Page Indicator (Mobile) */}
-          <div className="lg:hidden flex items-center gap-2 text-sm font-medium">
-            {currentNav && (
+          {/* Auth / User Section */}
+          <div className="flex items-center gap-2">
+            {/* Current Page Indicator (Mobile, only when not showing auth) */}
+            <div className="lg:hidden flex items-center gap-2 text-sm font-medium mr-1">
+              {currentNav && (
+                <>
+                  <currentNav.icon className="h-4 w-4 text-primary" />
+                  <span className="hidden sm:inline">{currentNav.label}</span>
+                </>
+              )}
+            </div>
+
+            {user ? (
               <>
-                <currentNav.icon className="h-4 w-4 text-primary" />
-                <span className="hidden sm:inline">{currentNav.label}</span>
+                <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                  <User className="h-4 w-4" />
+                  <span>{user.name}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => logout()}
+                  className="gap-2 text-muted-foreground hover:text-foreground"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sign Out</span>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowLogin(true)}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => setShowRegister(true)}
+                >
+                  Sign Up
+                </Button>
               </>
             )}
           </div>
         </div>
       </header>
+
+      <LoginModal
+        open={showLogin}
+        onClose={() => setShowLogin(false)}
+        onSwitchToRegister={() => { setShowLogin(false); setShowRegister(true); }}
+      />
+      <RegisterModal
+        open={showRegister}
+        onClose={() => setShowRegister(false)}
+        onSwitchToLogin={() => { setShowRegister(false); setShowLogin(true); }}
+      />
 
       {/* Main Content */}
       <main className="container py-6">
