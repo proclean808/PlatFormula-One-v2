@@ -126,6 +126,11 @@ class MemBrainWhisperer : ComponentActivity(), DataClient.OnDataChangedListener 
         stopListening()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
+
     // MemBrain Biometric Lock Monitor
     override fun onDataChanged(dataEvents: DataEventBuffer) {
         for (event in dataEvents) {
