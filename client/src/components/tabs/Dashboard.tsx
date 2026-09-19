@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, Zap, Users, TrendingUp } from 'lucide-react';
+import { ArrowRight, Zap, Users, TrendingUp, Browser, ShieldCheck, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 /**
@@ -106,16 +106,22 @@ export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing
         })}
       </div>
 
+      <div className="grid md:grid-cols-3 gap-4">
+        <div className="glass p-5"><Browser className="w-6 h-6 text-purple-500 mb-3"/><h3 className="font-bold">Observable Browser</h3><p className="text-sm text-slate-500 mt-1">Research, source capture and human/agent handoff through the Tool Dock.</p></div>
+        <div className="glass p-5"><Database className="w-6 h-6 text-purple-500 mb-3"/><h3 className="font-bold">Current Opportunity Data</h3><p className="text-sm text-slate-500 mt-1">Accelerator deadlines, startup programs, credits and AI-native donor patterns refreshed from current sources.</p></div>
+        <div className="glass p-5"><ShieldCheck className="w-6 h-6 text-purple-500 mb-3"/><h3 className="font-bold">Authorized Execution</h3><p className="text-sm text-slate-500 mt-1">Research can propose; consequential execution remains gated and receipt-backed.</p></div>
+      </div>
+
       {/* Stats Section */}
       <div className="glass p-8 rounded-2xl">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-          Platform Statistics
+          Live Platform State
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { label: 'Active Startups', value: '2,500+' },
-            { label: 'Success Rate', value: '78%' },
-            { label: 'Total Funding', value: '$150M+' }
+            { label: 'Control Surface', value: 'Joyce' },
+            { label: 'Live Opportunity Registry', value: '2026' },
+            { label: 'Execution Policy', value: 'Fail-closed' }
           ].map((stat, idx) => (
             <div key={idx} className="text-center">
               <div className="gradient-text text-4xl font-bold mb-2">
