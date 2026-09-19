@@ -40,17 +40,19 @@ type JsonRpcResponse = { result?: unknown; error?: { message?: string } };
 
 export class ShopifyStorefrontMcpProvider implements CommerceProvider {
   id = 'shopify-storefront-mcp';
-  private endpoint: string;
+  private storefrontEndpoint: string;
+  private catalogEndpoint: string;
 
   constructor(storeDomain: string) {
     const host = storeDomain.replace(/^https?:\/\//, '').replace(/\/$/, '');
-    this.endpoint = `https://${host}/api/mcp`;
+    this.storefrontEndpoint = `https://${host}/api/mcp`;
+    this.catalogEndpoint = `https://${host}/api/ucp/mcp`;
   }
 
-  private async call(tool: string, args: Record<string, unknown>): Promise<CommerceToolResult> {
+  private async call(endpoint: string, tool: string, args: Record<string, unknown>): Promise<CommerceToolResult> {
     const observedAt = new Date().toISOString();
     try {
-      const response = await fetch(this.endpoint, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
         body: JSON.stringify({ jsonrpc: '2.0', id: crypto.randomUUID(), method: 'tools/call', params: { name: tool, arguments: args } }),
@@ -65,16 +67,16 @@ export class ShopifyStorefrontMcpProvider implements CommerceProvider {
   }
 
   async search(query: string) {
-    return this.call('search_shop_catalog', { query }) as Promise<CommerceToolResult<CommerceProduct[]>>;
+    return this.call(this.catalogEndpoint, 'search_catalog', { catalog: { query } }) as Promise<CommerceToolResult<CommerceProduct[]>>;
   }
 
   async cart(operation: 'get' | 'add' | 'remove' | 'update', input: Record<string, unknown>) {
-    const tool = ({ get: 'get_cart', add: 'add_cart_lines', remove: 'remove_cart_lines', update: 'update_cart_lines' } as const)[operation];
-    return this.call(tool, input);
+    if (operation === 'get') return this.call(this.storefrontEndpoint, 'get_cart', input);
+    return this.call(this.storefrontEndpoint, 'update_cart', input);
   }
 
   async policy(query: string) {
-    return this.call('search_shop_policies_and_faqs', { query });
+    return this.call(this.storefrontEndpoint, 'search_shop_policies_and_faqs', { query });
   }
 }
 
