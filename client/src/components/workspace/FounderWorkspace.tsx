@@ -1,152 +1,102 @@
 import { useMemo, useState } from 'react';
-import { Bot, Browser, CheckCircle2, ExternalLink, Layers3, Mic, Search, Send, Sparkles, TerminalSquare } from 'lucide-react';
+import { Bot, Browser, CheckCircle2, Circle, ExternalLink, FileCheck2, Layers3, Mic, Search, Send, ShieldCheck, Sparkles, TerminalSquare, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ToolDock from '@/components/workspace/ToolDock';
 
-type Candidate = {
-  name: string;
-  category: string;
-  url: string;
-  reason: string;
-  status: 'researching' | 'qualified' | 'selected';
-};
+type CandidateStatus = 'researching' | 'qualified' | 'accepted' | 'rejected';
+type Candidate = { id: string; name: string; category: string; url: string; reason: string; evidence: string[]; status: CandidateStatus };
+type Stage = { id: string; label: string; state: 'pending' | 'active' | 'complete' };
 
-const seedCandidates: Candidate[] = [
-  { name: 'Browser Use', category: 'Browser automation', url: 'https://github.com/browser-use/browser-use', reason: 'Agent browser control with a broad OSS ecosystem.', status: 'qualified' },
-  { name: 'Hermes Agent', category: 'Agent runtime', url: 'https://github.com/NousResearch/hermes-agent', reason: 'Skills, memory, subagents, tools, scheduling and multiple execution backends.', status: 'selected' },
-  { name: 'Vercel Sandbox', category: 'Execution', url: 'https://vercel.com/sandbox', reason: 'Disposable isolated execution environment for builds and agent work.', status: 'qualified' },
+const initialStages: Stage[] = [
+  ['founder','Founder Profile'],['problem','Problem'],['evidence','Evidence'],['competitors','Competitors'],
+  ['customer','Customer'],['programs','Programs'],['resources','Resources'],['stack','Stack'],
+  ['experiments','Experiments'],['build','Build'],['deployment','Deployment'],['gtm','GTM'],['funding','Funding'],
+].map(([id,label], index) => ({ id, label, state: index < 2 ? 'complete' : index === 2 ? 'active' : 'pending' }));
+
+const initialCandidates: Candidate[] = [
+  { id:'browser-use', name:'Browser Use', category:'Browser automation', url:'https://github.com/browser-use/browser-use', reason:'Candidate adapter for observable agent browser control.', evidence:['Official repository','Browser automation surface'], status:'qualified' },
+  { id:'hermes', name:'Hermes Agent', category:'Agent runtime', url:'https://github.com/NousResearch/hermes-agent', reason:'Candidate work-plane runtime for skills, tools and delegated agents.', evidence:['Official repository','Local/runtime integration candidate'], status:'accepted' },
+  { id:'vercel', name:'Vercel', category:'Build + deployment', url:'https://vercel.com', reason:'Existing deployment target and execution integration point.', evidence:['Official service','Current PlatFormula deployment target'], status:'qualified' },
 ];
 
 export default function FounderWorkspace({ onOpenResources }: { onOpenResources?: () => void }) {
-  const [message, setMessage] = useState('');
-  const [activity, setActivity] = useState([
-    'Founder workspace ready',
-    'Waiting for an objective',
-  ]);
-  const [candidates, setCandidates] = useState(seedCandidates);
-  const [selectedUrl, setSelectedUrl] = useState(seedCandidates[0].url);
+  const [message,setMessage]=useState('');
+  const [objective,setObjective]=useState('Turn founder intent into verified venture state and executable work.');
+  const [stages,setStages]=useState(initialStages);
+  const [candidates,setCandidates]=useState(initialCandidates);
+  const [selectedId,setSelectedId]=useState(initialCandidates[0].id);
+  const [activity,setActivity]=useState(['ThreadLocker state loaded','Evidence stage active','Waiting for founder objective']);
+  const selected=useMemo(()=>candidates.find(c=>c.id===selectedId)??candidates[0],[candidates,selectedId]);
 
-  const selected = useMemo(() => candidates.find(c => c.url === selectedUrl) ?? candidates[0], [candidates, selectedUrl]);
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const objective = message.trim();
-    if (!objective) return;
-    setActivity(prev => [
-      `Objective captured: ${objective}`,
-      'Research worker hook queued',
-      'Resource qualification hook queued',
-      'Shared-browser handoff hook ready',
-      ...prev,
-    ].slice(0, 8));
+  const log=(item:string)=>setActivity(prev=>[item,...prev].slice(0,10));
+  const submit=(e:React.FormEvent)=>{
+    e.preventDefault(); const value=message.trim(); if(!value)return;
+    setObjective(value);
+    setStages(prev=>prev.map(s=>s.id==='evidence'?{...s,state:'active'}:s));
+    log('OBSERVED → work item created from Joyce conversation');
+    log('Research request queued for browser execution and source capture');
     setMessage('');
   };
-
-  const selectCandidate = (url: string) => {
-    setSelectedUrl(url);
-    setCandidates(prev => prev.map(c => ({ ...c, status: c.url === url ? 'selected' : c.status === 'selected' ? 'qualified' : c.status })));
-    setActivity(prev => [`Selected candidate: ${candidates.find(c => c.url === url)?.name ?? url}`, ...prev].slice(0, 8));
+  const decide=(id:string,status:'accepted'|'rejected')=>{
+    setCandidates(prev=>prev.map(c=>c.id===id?{...c,status}:c));
+    setSelectedId(id);
+    log(`${status.toUpperCase()} → ${candidates.find(c=>c.id===id)?.name ?? id}; ThreadLocker receipt staged`);
   };
 
-  return (
-    <section className="space-y-6" aria-label="Founder workspace">
-      <div className="glass rounded-2xl p-6 md:p-8 border border-purple-500/20">
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="lg:w-[38%] space-y-5">
-            <div>
-              <div className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-300 mb-3">
-                <Sparkles className="w-4 h-4" /> Founder Intelligence Workspace
-              </div>
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Tell Joyce what you're building.</h2>
-              <p className="mt-3 text-slate-600 dark:text-slate-300">
-                Conversation becomes research, qualified resources, a working stack, build tasks and evidence.
-              </p>
+  return <section className="space-y-6" aria-label="Founder workspace">
+    <div className="glass rounded-2xl p-5 md:p-7 border border-purple-500/20">
+      <div className="flex flex-col xl:flex-row gap-5">
+        <div className="xl:w-[36%] space-y-4">
+          <div>
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 dark:text-purple-300"><Sparkles className="w-4 h-4"/> Joyce · Venture Control Surface</div>
+            <h2 className="text-3xl font-bold mt-2">Conversation becomes canonical venture state.</h2>
+            <p className="text-sm text-slate-500 mt-2">Joyce observes intent. Research produces evidence. You authorize decisions. Execution follows only after authorization.</p>
+          </div>
+          <div className="rounded-xl border p-4 bg-white/60 dark:bg-slate-900/50">
+            <div className="text-xs uppercase tracking-wide text-slate-500">Current objective</div>
+            <div className="font-semibold mt-1">{objective}</div>
+          </div>
+          <form onSubmit={submit} className="space-y-3">
+            <textarea value={message} onChange={e=>setMessage(e.target.value)} rows={4} placeholder="Tell Joyce the objective, constraint, decision or question…" className="w-full rounded-xl border border-purple-200 dark:border-purple-800 bg-white/80 dark:bg-slate-900/70 p-4 outline-none focus:ring-2 focus:ring-purple-500"/>
+            <div className="flex gap-2"><Button type="submit" className="gradient-btn flex-1"><Send className="w-4 h-4 mr-2"/>Create work item</Button><Button type="button" variant="outline"><Mic className="w-4 h-4 mr-2"/>Voice</Button></div>
+          </form>
+          <div className="rounded-xl border p-3 text-xs space-y-2">
+            <div className="font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4"/>Logic Lattice</div>
+            <div>OBSERVED → PROPOSED → AUTHORIZED → EXECUTED → VERIFIED → COMMITTED</div>
+            <div className="text-slate-500">No candidate selection is treated as execution authority.</div>
+          </div>
+        </div>
+
+        <div className="xl:w-[64%] space-y-4">
+          <div className="rounded-2xl overflow-hidden border border-slate-700 bg-slate-950">
+            <div className="h-11 px-4 flex items-center justify-between border-b border-slate-800 text-slate-200">
+              <div className="flex items-center gap-2"><Browser className="w-4 h-4"/><span className="text-sm">Observable research surface</span></div>
+              <a href={selected.url} target="_blank" rel="noreferrer" className="text-xs inline-flex items-center gap-1">Open source <ExternalLink className="w-3 h-3"/></a>
             </div>
-
-            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 p-4">
-              <div className="flex items-center gap-2 mb-3 font-semibold"><Bot className="w-4 h-4" /> Joyce</div>
-              <p className="text-sm text-slate-600 dark:text-slate-300">
-                What are you building, what do you already have, and what would you like working next?
-              </p>
-            </div>
-
-            <form onSubmit={submit} className="space-y-3">
-              <textarea
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-                rows={4}
-                placeholder="Example: I need an outbound stack that works with our existing CRM and I want to see the best candidates."
-                className="w-full rounded-xl border border-purple-200 dark:border-purple-800 bg-white/80 dark:bg-slate-900/70 p-4 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-purple-500"
-              />
-              <div className="flex gap-2">
-                <Button type="submit" className="gradient-btn flex-1"><Send className="w-4 h-4 mr-2" /> Start Work</Button>
-                <Button type="button" variant="outline" aria-label="Voice session hook"><Mic className="w-4 h-4 mr-2" /> Voice</Button>
+            <div className="p-5 min-h-[250px]">
+              <div className="flex items-start justify-between gap-4">
+                <div><div className="text-xs text-purple-300">{selected.category}</div><h3 className="text-2xl text-white font-bold mt-1">{selected.name}</h3><p className="text-slate-400 mt-2">{selected.reason}</p></div>
+                <span className="text-xs rounded-full border border-slate-700 px-3 py-1 text-slate-300">{selected.status}</span>
               </div>
-            </form>
-
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              <div className="rounded-lg bg-purple-500/10 p-3"><Search className="w-4 h-4 mb-1" /> Research</div>
-              <div className="rounded-lg bg-purple-500/10 p-3"><Browser className="w-4 h-4 mb-1" /> Browser</div>
-              <div className="rounded-lg bg-purple-500/10 p-3"><TerminalSquare className="w-4 h-4 mb-1" /> Build</div>
+              <div className="grid md:grid-cols-2 gap-3 mt-5">{selected.evidence.map(e=><div key={e} className="rounded-lg bg-slate-900 border border-slate-800 p-3 text-sm text-slate-300 flex gap-2"><FileCheck2 className="w-4 h-4 text-purple-400 shrink-0"/>{e}</div>)}</div>
+              <div className="mt-5 rounded-lg border border-dashed border-purple-500/40 p-4 text-sm text-purple-200">Runtime boundary: browser adapter supplies session/view/control URLs; this UI never fabricates browsing results.</div>
             </div>
           </div>
-
-          <div className="lg:w-[62%] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950 min-h-[520px]">
-            <div className="h-11 px-4 flex items-center justify-between border-b border-slate-800 bg-slate-900 text-slate-200">
-              <div className="flex items-center gap-2"><Browser className="w-4 h-4" /><span className="text-sm">Live research browser</span></div>
-              <a href={selected.url} target="_blank" rel="noreferrer" className="text-xs inline-flex items-center gap-1 hover:text-white">Open site <ExternalLink className="w-3 h-3" /></a>
-            </div>
-            <div className="h-[390px] flex items-center justify-center p-8 text-center bg-gradient-to-br from-slate-950 to-slate-900">
-              <div className="max-w-lg">
-                <Browser className="w-14 h-14 mx-auto text-purple-400 mb-4" />
-                <h3 className="text-xl font-bold text-white">{selected.name}</h3>
-                <p className="text-slate-400 mt-2">{selected.reason}</p>
-                <p className="text-xs text-slate-500 mt-5 break-all">{selected.url}</p>
-                <div className="mt-6 rounded-lg border border-dashed border-purple-500/40 p-4 text-sm text-purple-200">
-                  Shared-browser mount point — Browser Use / CDP / noVNC / Vercel Computer Use adapter.
-                </div>
-              </div>
-            </div>
-            <div className="p-4 grid sm:grid-cols-3 gap-3 bg-slate-900">
-              {candidates.map(candidate => (
-                <button key={candidate.url} onClick={() => selectCandidate(candidate.url)} className="text-left rounded-lg border border-slate-700 p-3 hover:border-purple-500 transition">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-semibold text-white text-sm">{candidate.name}</span>
-                    {candidate.status === 'selected' && <CheckCircle2 className="w-4 h-4 text-green-400" />}
-                  </div>
-                  <span className="text-xs text-slate-400">{candidate.category}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          <div className="grid md:grid-cols-3 gap-3">{candidates.map(c=><button key={c.id} onClick={()=>setSelectedId(c.id)} className={"text-left rounded-xl border p-3 "+(selectedId===c.id?'border-purple-500':'border-slate-300 dark:border-slate-700')}><div className="font-semibold">{c.name}</div><div className="text-xs text-slate-500">{c.category}</div><div className="mt-3 flex gap-2"><Button type="button" size="sm" onClick={e=>{e.stopPropagation();decide(c.id,'accepted')}}><CheckCircle2 className="w-3 h-3 mr-1"/>Accept</Button><Button type="button" size="sm" variant="outline" onClick={e=>{e.stopPropagation();decide(c.id,'rejected')}}><XCircle className="w-3 h-3 mr-1"/>Reject</Button></div></button>)}</div>
         </div>
       </div>
+    </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="glass rounded-2xl p-6">
-          <div className="flex items-center gap-2 mb-4"><Layers3 className="w-5 h-5 text-purple-500" /><h3 className="font-bold text-lg">Working stack</h3></div>
-          <div className="space-y-3">
-            {candidates.filter(c => c.status === 'selected' || c.status === 'qualified').map(c => (
-              <div key={c.url} className="flex items-center justify-between rounded-lg bg-white/50 dark:bg-slate-800/60 p-3">
-                <div><div className="font-semibold">{c.name}</div><div className="text-xs text-slate-500">{c.category}</div></div>
-                <Button size="sm" variant={c.status === 'selected' ? 'default' : 'outline'} onClick={() => selectCandidate(c.url)}>{c.status === 'selected' ? 'Selected' : 'Use'}</Button>
-              </div>
-            ))}
-          </div>
-          <Button variant="outline" className="w-full mt-4" onClick={onOpenResources}>Open Resource Registry</Button>
-        </div>
+    <ToolDock />
 
-        <div className="glass rounded-2xl p-6">
-          <h3 className="font-bold text-lg mb-4">Agent activity</h3>
-          <div className="space-y-2">
-            {activity.map((item, idx) => (
-              <div key={idx} className="flex gap-2 text-sm text-slate-600 dark:text-slate-300"><span className="text-purple-500">●</span><span>{item}</span></div>
-            ))}
-          </div>
-          <div className="mt-5 text-xs text-slate-500">
-            Hooks: conversation → work item → research/resource/browser/build workers → verification → ThreadLocker receipt.
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+    <div className="glass rounded-2xl p-5">
+      <div className="flex items-center gap-2 mb-4"><Layers3 className="w-5 h-5 text-purple-500"/><h3 className="font-bold">Persistent venture state</h3></div>
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-2">{stages.map(s=><div key={s.id} className="rounded-lg border p-3 text-xs"><div className="flex items-center gap-2">{s.state==='complete'?<CheckCircle2 className="w-4 h-4 text-green-500"/>:s.state==='active'?<Search className="w-4 h-4 text-purple-500"/>:<Circle className="w-4 h-4 text-slate-400"/>}<span className="font-semibold">{s.label}</span></div><div className="mt-1 text-slate-500">{s.state}</div></div>)}</div>
+    </div>
+
+    <div className="grid lg:grid-cols-2 gap-6">
+      <div className="glass rounded-2xl p-5"><h3 className="font-bold mb-3 flex gap-2"><TerminalSquare className="w-5 h-5"/>Agent / execution activity</h3><div className="space-y-2">{activity.map((a,i)=><div key={i} className="text-sm flex gap-2"><span className="text-purple-500">●</span>{a}</div>)}</div></div>
+      <div className="glass rounded-2xl p-5"><h3 className="font-bold mb-3">Control-plane boundaries</h3><div className="text-sm space-y-2 text-slate-600 dark:text-slate-300"><div>Joyce = interaction surface</div><div>ThreadLocker = canonical venture state</div><div>PiecePipe = ingestion + normalization</div><div>Hermes = work plane</div><div>Logic Lattice = authorization</div><div>Browser / build / deploy = execution</div><div>Evidence ledger = receipts + verification</div></div><Button variant="outline" className="w-full mt-4" onClick={onOpenResources}>Open Resource Registry</Button></div>
+    </div>
+  </section>;
 }
