@@ -1,212 +1,31 @@
-import { BookOpen, Database, FileText, Link as LinkIcon, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { CalendarDays, Cloud, ExternalLink, Rocket, Sparkles } from 'lucide-react';
 
-/**
- * Resources Tab Component
- * 
- * Design: Real accelerator database and learning resources
- * - Color-coded links: YC=orange, Techstars=blue, others=green
- * - Real accelerator programs with URLs
- * - YC resources hub
- * - Investor networks
- */
-export default function Resources() {
-  // Color coding: YC=orange, Techstars=blue, others=green
-  const getLinkColor = (name: string) => {
-    if (name.toLowerCase().includes('y combinator') || name.toLowerCase().includes('yc ')) {
-      return 'text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300';
-    }
-    if (name.toLowerCase().includes('techstars')) {
-      return 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300';
-    }
-    return 'text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300';
-  };
-
-  const accelerators = [
-    { name: 'Y Combinator', url: 'https://www.ycombinator.com/', description: 'Leading startup accelerator with $500K investment' },
-    { name: 'Techstars', url: 'https://www.techstars.com/', description: 'Global network providing investment and mentorship' },
-    { name: '500 Global', url: 'https://500.co/', description: 'Global VC firm and accelerator for early-stage companies' },
-    { name: 'Vercel AI Accelerator', url: 'https://vercel.com/ai-accelerator', description: '$6M in credits for AI startups', logo: '/vercel-logo.png', learnMore: 'https://vercel.com/blog/the-vercel-ai-accelerator-is-back-with-6-million-in-credits' },
-    { name: 'Alchemist Accelerator', url: 'https://www.alchemistaccelerator.com/', description: 'Top program for seed-stage enterprise ventures' },
-    { name: 'Plug and Play Tech Center', url: 'https://www.plugandplaytechcenter.com/', description: 'Innovation platform connecting startups with corporations' },
-    { name: 'Berkeley SkyDeck', url: 'https://skydeck.berkeley.edu/', description: 'Official accelerator for UC Berkeley startups' },
-    { name: 'AngelPad', url: 'https://angelpad.com/', description: 'Seed-stage accelerator with hands-on approach' },
-    { name: 'Founder Institute', url: 'https://fi.co/', description: 'Global pre-seed accelerator with structured guidance' },
-    { name: 'HAX', url: 'https://hax.co/', description: 'Venture firm focused on hard tech startups' }
-  ];
-
-  const ycResources = [
-    { name: 'YC Application', url: 'https://www.ycombinator.com/apply', description: 'Apply to Y Combinator' },
-    { name: 'Startup School', url: 'https://www.startupschool.org', description: 'Free online course for founders' },
-    { name: 'YC Co-Founder Matching', url: 'https://www.ycombinator.com/cofounder-matching', description: 'Find your co-founder' },
-    { name: 'YC Startup Directory', url: 'https://www.ycombinator.com/companies', description: 'Browse YC companies' },
-    { name: 'YC Startup Library', url: 'https://www.ycombinator.com/library', description: 'Essential startup resources' },
-    { name: 'Hacker News', url: 'https://news.ycombinator.com', description: 'Tech news and community' },
-    { name: 'YC Safe Documents', url: 'https://www.ycombinator.com/documents', description: 'Standard financing documents' },
-    { name: 'YC YouTube Channel', url: 'https://www.youtube.com/c/ycombinator', description: 'Startup advice videos' }
-  ];
-
-  const investors = [
-    { name: 'AngelList', url: 'https://www.angellist.com/', description: 'Connect with angel investors and syndicates' },
-    { name: 'Andreessen Horowitz (a16z)', url: 'https://a16z.com/', description: 'Leading VC investing in technology companies' },
-    { name: 'Sequoia Capital', url: 'https://www.sequoiacap.com/', description: 'World\'s most influential VC firm' },
-    { name: 'Lightspeed Venture Partners', url: 'https://lsvp.com/', description: 'Multi-stage firm for enterprise and fintech' },
-    { name: 'Greylock', url: 'https://greylock.com/', description: 'Focus on enterprise software and consumer internet' },
-    { name: 'First Round Capital', url: 'https://firstround.com/', description: 'Top-tier seed-stage firm' },
-    { name: 'Bessemer Venture Partners', url: 'https://www.bvp.com/', description: 'Cross-stage investor in AI, cloud, healthcare' },
-    { name: 'Founders Fund', url: 'https://foundersfund.com/', description: 'Investing in revolutionary technology' },
-    { name: 'Kleiner Perkins', url: 'https://www.kleinerperkins.com/', description: 'Storied VC with iconic portfolio' }
-  ];
-
-  const tools = [
-    { name: 'Crunchbase', url: 'https://www.crunchbase.com/', description: 'Startup and investor database' },
-    { name: 'Product Hunt', url: 'https://www.producthunt.com/', description: 'Launch and discover new products' },
-    { name: 'Indie Hackers', url: 'https://www.indiehackers.com/', description: 'Community for independent founders' },
-    { name: 'Stripe Atlas', url: 'https://stripe.com/atlas', description: 'Incorporate your startup' },
-    { name: 'Notion', url: 'https://www.notion.so/', description: 'All-in-one workspace' },
-    { name: 'Figma', url: 'https://www.figma.com/', description: 'Collaborative design tool' }
-  ];
-
-  const ResourceLink = ({ item }: { item: { name: string; url: string; description: string; logo?: string; learnMore?: string } }) => (
-    <div className="p-4 bg-white/50 dark:bg-slate-700/30 rounded-lg hover:bg-white/80 dark:hover:bg-slate-700/50 transition-all group">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1">
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block"
-          >
-            <h4 className={`font-semibold transition ${getLinkColor(item.name)} flex items-center gap-2`}>
-              {item.logo && <img src={item.logo} alt={`${item.name} logo`} className="w-5 h-5 inline-block" />}
-              {item.name}
-              <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </h4>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              {item.description}
-            </p>
-          </a>
-          {item.learnMore && (
-            <a
-              href={item.learnMore}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 mt-2 inline-flex items-center gap-1"
-            >
-              Learn More <ExternalLink className="w-3 h-3" />
-            </a>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-          Accelerator Database & Resources
-        </h2>
-        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Access real accelerator programs, investor networks, and tools to accelerate your startup journey
-        </p>
-        <div className="flex items-center justify-center gap-6 mt-4 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-            <span className="text-slate-600 dark:text-slate-400">Y Combinator</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-            <span className="text-slate-600 dark:text-slate-400">Techstars</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span className="text-slate-600 dark:text-slate-400">Other Programs</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Accelerator Programs */}
-      <div className="glass p-8 rounded-2xl">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center">
-            <Database className="w-6 h-6 text-white" />
-          </div>
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Top Accelerator Programs
-          </h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {accelerators.map((item, idx) => (
-            <ResourceLink key={idx} item={item} />
-          ))}
-        </div>
-      </div>
-
-      {/* Y Combinator Resources */}
-      <div className="glass p-8 rounded-2xl">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
-          </div>
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Y Combinator Resources Hub
-          </h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {ycResources.map((item, idx) => (
-            <ResourceLink key={idx} item={item} />
-          ))}
-        </div>
-      </div>
-
-      {/* Investor Networks */}
-      <div className="glass p-8 rounded-2xl">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-            <LinkIcon className="w-6 h-6 text-white" />
-          </div>
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Venture Capital & Investor Networks
-          </h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {investors.map((item, idx) => (
-            <ResourceLink key={idx} item={item} />
-          ))}
-        </div>
-      </div>
-
-      {/* Tools & Platforms */}
-      <div className="glass p-8 rounded-2xl">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center">
-            <FileText className="w-6 h-6 text-white" />
-          </div>
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Essential Tools & Platforms
-          </h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {tools.map((item, idx) => (
-            <ResourceLink key={idx} item={item} />
-          ))}
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="glass p-8 rounded-2xl text-center">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-          Ready to Apply?
-        </h3>
-        <p className="text-slate-600 dark:text-slate-400 mb-6">
-          Use our AI-powered application builder to craft winning applications for top accelerators
-        </p>
-        <Button className="gradient-btn">
-          Start Building Your Application
-        </Button>
-      </div>
-    </div>
-  );
-}
+type Item={name:string;url:string;description:string;deadline?:string;status?:string;tag?:string};
+const accelerator:Item[]=[
+{name:'Y Combinator — Winter 2027',url:'https://www.ycombinator.com/apply',description:'San Francisco batch, January–March 2027.',deadline:'Nov 2, 2026 · 8pm PT',status:'Applications open',tag:'$500K standard YC deal'},
+{name:'Techstars Anywhere',url:'https://www.techstars.com/accelerators/anywhere',description:'Remote-first North America program; starts Mar 8, 2027.',deadline:'Nov 18, 2026',status:'Applications open',tag:'3-month accelerator'},
+{name:'Founder Institute — SF Agentic',url:'https://fi.co/program/san_francisco',description:'AI-agent-focused pre-seed program; kickoff Nov 3, 2026.',deadline:'Early Sep 29 · Final Oct 27, 2026',status:'Applications open',tag:'Agentic program'},
+{name:'500 Global Flagship',url:'https://flagship.aplica.500.co/',description:'Palo Alto early-stage flagship accelerator.',status:'Verify current batch before applying',tag:'Flagship'},
+{name:'Alchemist Accelerator',url:'https://www.alchemistaccelerator.com/',description:'Enterprise/B2B accelerator with rolling application deadlines.',deadline:'Rolling review',status:'Rolling',tag:'Enterprise + B2B'},
+{name:'Berkeley SkyDeck',url:'https://skydeck.berkeley.edu/program/',description:'Batch 23 runs Nov 2, 2026–Apr 15, 2027; $210K investment for cohort startups.',deadline:'Batch 23 closed Aug 21, 2026',status:'Track next batch',tag:'Bay Area'},
+];
+const aiAccelerators:Item[]=[
+{name:'AIAR',url:'https://aiar.co/',description:'White-label objective-driven AI acceleration: value proposition, discovery, validation and MVP.',tag:'Idea → revenue'},
+{name:'Simsy AI',url:'https://simsy.ai/startup-ecosystem',description:'Venture-studio platform with application/assessment through ideation, BMC, launch and ecosystem programs.',tag:'110-step playbook'},
+{name:'Launchology',url:'https://www.launchology.co/',description:'AI co-founder, self-paced accelerator, founder workspace, pitch assets and investor matching.',tag:'80+ lessons / 10 modules'},
+{name:'Mozaiks',url:'https://www.mozaiks.ai/',description:'Agentic runtime plus human review, staged validation, infrastructure, monetization and distribution.',tag:'Build → Monetize → Grow'},
+];
+const credits:Item[]=[
+{name:'NVIDIA Inception',url:'https://www.nvidia.com/en-us/startups/',description:'Free startup program with technical resources, partner offers, investor exposure and GTM benefits.',deadline:'No deadline / no cohorts',status:'Rolling',tag:'AI infrastructure'},
+{name:'AWS Activate',url:'https://startups.aws.com/lp/aws-activate-credits?lang=en-US',description:'Founders package $1K; eligible provider-affiliated startups can receive up to $100K.',status:'Applications available',tag:'Cloud credits'},
+{name:'Microsoft for Startups',url:'https://www.microsoft.com/en-us/startups',description:'Startup benefits and Azure activation; new application flow moved into Azure in 2026.',status:'Current program',tag:'Azure + AI'},
+];
+function Card({x}:{x:Item}){return <a href={x.url} target="_blank" rel="noreferrer" className="block rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:border-purple-500 hover:-translate-y-0.5 transition bg-white/50 dark:bg-slate-800/40"><div className="flex justify-between gap-3"><div className="font-bold">{x.name}</div><ExternalLink className="w-4 h-4 shrink-0"/></div><p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{x.description}</p>{x.deadline&&<div className="mt-3 text-sm font-semibold flex gap-2"><CalendarDays className="w-4 h-4"/>{x.deadline}</div>}<div className="flex flex-wrap gap-2 mt-3">{x.status&&<span className="text-xs rounded-full bg-green-500/10 px-2 py-1">{x.status}</span>}{x.tag&&<span className="text-xs rounded-full bg-purple-500/10 px-2 py-1">{x.tag}</span>}</div></a>}
+function Section({title,icon:Icon,items}:{title:string;icon:any;items:Item[]}){return <div className="glass p-6 rounded-2xl"><h3 className="text-2xl font-bold mb-5 flex gap-3 items-center"><Icon className="w-6 h-6 text-purple-500"/>{title}</h3><div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">{items.map(x=><Card key={x.name} x={x}/>)}</div></div>}
+export default function Resources(){return <div className="space-y-7">
+ <div><h2 className="text-3xl md:text-4xl font-bold">Live Founder Opportunity Registry</h2><p className="text-slate-500 mt-2">Current programs, deadlines, AI-native accelerator patterns and startup infrastructure. Dates must be re-verified from the linked official source before submission.</p><div className="text-xs text-slate-500 mt-2">Registry refresh: September 19, 2026</div></div>
+ <Section title="Applications & Accelerators" icon={Rocket} items={accelerator}/>
+ <Section title="AI-Native Accelerator Donor Set" icon={Sparkles} items={aiAccelerators}/>
+ <Section title="Credits, Compute & Startup Programs" icon={Cloud} items={credits}/>
+ <div className="glass p-6 rounded-2xl"><h3 className="text-xl font-bold">Feature set PlatFormula.ONE should absorb</h3><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">{['Objective-driven founder journey','Customer discovery + experiment design','Persistent founder/company intelligence','AI co-founder with artifact generation','Application assessment + matching','MVP build + deployment','Monetization + payments','Investor matching + pitch assets','Human review + authorization gates','Program/mentor/community layer','GTM + distribution campaigns','Evidence-backed progress tracking'].map(x=><div key={x} className="rounded-lg border p-3 text-sm">{x}</div>)}</div></div>
+ </div>}
