@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Bot, Browser, CheckCircle2, Circle, ExternalLink, FileCheck2, Layers3, Mic, Search, Send, ShieldCheck, Sparkles, TerminalSquare, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ToolDock from '@/components/workspace/ToolDock';
 
 type CandidateStatus = 'researching' | 'qualified' | 'accepted' | 'rejected';
 type Candidate = { id: string; name: string; category: string; url: string; reason: string; evidence: string[]; status: CandidateStatus };
@@ -85,6 +86,8 @@ export default function FounderWorkspace({ onOpenResources }: { onOpenResources?
         </div>
       </div>
     </div>
+
+    <ToolDock />
 
     <div className="glass rounded-2xl p-5">
       <div className="flex items-center gap-2 mb-4"><Layers3 className="w-5 h-5 text-purple-500"/><h3 className="font-bold">Persistent venture state</h3></div>
