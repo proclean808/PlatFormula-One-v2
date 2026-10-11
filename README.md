@@ -33,6 +33,16 @@ These are recovered design directions, not a newly approved definition of the bu
 - **ChatGPT-ThreadLocker** preserves response exports, sources, manifests, and work evidence. Its canonical-repo correction designates this repository as the build source.
 - Related repositories and prototype components are evidence or donors until explicitly admitted; owning or forking them does not establish integration.
 
+## Live product breadth confirmed by browser on 2026-10-11
+
+The live site positions delivery beyond accelerator applications:
+
+- **Venture Vision:** in-house venture builds, a claimed library of 300+ proprietary concepts, co-build partnerships, and licensing/rebranding for launch. The page is explicitly marked **Coming Soon**; the concept count and delivery availability were not independently verified.
+- **Venture Vault:** proposed confidential workspace, IP storage, investor collaboration, immersive Power Pitch Decks, founder avatars, data rooms, and an investor discovery feed. The page is explicitly marked **Coming Soon**. Encryption, access control, investor vetting, avatar generation, and data-room automation are marketing claims, not runtime-verified capabilities.
+- Live pricing places Venture Vision portfolio access in Pro and Studio, with Venture Vault exclusive to Studio.
+- The homepage says the stack assembled around a founder is replicated and handed over with a roadmap, and claims 80% pre-built. Treat this as advertised delivery intent; do not use the percentage as a proven result.
+- Therefore a description confined to application forms, directories, or business-plan generation omits the venture-building, co-build, licensing, and investor-presentation offering visible on the current site.
+
 ## What this repository actually contains
 
 React/TypeScript client with Vite, Tailwind, and an Express static server. Source modules include Dashboard, Resources, Builder, Pitch Studio, Tracking, Community, Pricing, authentication-related components, and a Supabase client.
