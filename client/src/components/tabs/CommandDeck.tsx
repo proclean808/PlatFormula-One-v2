@@ -11,6 +11,13 @@ const providers: Array<{ id: Provider; name: string; model: string; launchUrl: s
   { id: 'gemini', name: 'Gemini', model: 'gemini-3-flash', launchUrl: 'https://gemini.google.com/app' },
 ];
 
+const ventureLoop = [
+  ['Validate', 'Customer, pain, alternatives, evidence'],
+  ['Plan', 'Offer, moat, economics, milestones'],
+  ['Build', 'Product, assets, pitch, operating stack'],
+  ['Launch', 'Distribution, applications, measurement'],
+] as const;
+
 export default function CommandDeck() {
   const [provider, setProvider] = useState<Provider>('openai');
   const [intent, setIntent] = useState('');
@@ -64,6 +71,18 @@ export default function CommandDeck() {
               </CardContent>
             </Card>
           </button>
+        ))}
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {ventureLoop.map(([name, output], index) => (
+          <Card key={name} className="gap-3 py-4">
+            <CardHeader className="px-4">
+              <CardDescription>Stage {index + 1}</CardDescription>
+              <CardTitle>{name}</CardTitle>
+            </CardHeader>
+            <CardContent className="px-4 text-sm text-slate-600 dark:text-slate-300">{output}</CardContent>
+          </Card>
         ))}
       </div>
 
