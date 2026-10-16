@@ -8,6 +8,7 @@ import PitchStudio from '@/components/tabs/PitchStudio';
 import Tracking from '@/components/tabs/Tracking';
 import Community from '@/components/tabs/Community';
 import Pricing from '@/components/tabs/Pricing';
+import CommandDeck from '@/components/tabs/CommandDeck';
 import Footer from '@/components/Footer';
 
 /**
@@ -47,7 +48,13 @@ export default function Home() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-8 p-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg border border-purple-200/30 dark:border-purple-800/30">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8 p-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg border border-purple-200/30 dark:border-purple-800/30">
+              <TabsTrigger
+                value="command"
+                className="text-xs md:text-sm font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-500 data-[state=active]:text-white transition-all duration-300"
+              >
+                Command Deck
+              </TabsTrigger>
               <TabsTrigger 
                 value="dashboard"
                 className="text-xs md:text-sm font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-500 data-[state=active]:text-white transition-all duration-300"
@@ -93,6 +100,9 @@ export default function Home() {
             </TabsList>
 
             {/* Tab Content */}
+            <TabsContent value="command" className="animate-fade-in">
+              <CommandDeck />
+            </TabsContent>
             <TabsContent value="dashboard" className="animate-fade-in">
               <Dashboard onNavigateToPricing={() => setActiveTab('pricing')} />
             </TabsContent>
