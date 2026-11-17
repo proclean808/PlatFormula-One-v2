@@ -26,7 +26,7 @@ server = AgentServer()
 async def mario(ctx: agents.JobContext):
     session = AgentSession(
         llm=google.realtime.RealtimeModel(
-            model=os.getenv("GEMINI_LIVE_MODEL", "gemini-3.8-live"),
+            model=os.getenv("GEMINI_LIVE_MODEL", "gemini-3.1-flash-audio-eap"),
             voice=os.getenv("MARIO_VOICE", "Puck"),
         )
     )
