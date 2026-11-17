@@ -47,13 +47,13 @@ export default function Home() {
             <h2 id="joyce-heading" className="text-2xl font-bold md:text-3xl">Talk to PitWall</h2>
             <p className="mt-2 max-w-2xl text-sm text-slate-300">Start with your idea. Speak naturally in the provider's native conversation interface. From idea to impact. From seed to scale.</p>
           </div>
-          {typeof import.meta.env.VITE_PITWALL_STREAM_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_PITWALL_STREAM_URL) ? (
+          {typeof import.meta.env.VITE_JOYCE_STREAM_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_JOYCE_STREAM_URL) ? (
             <div className="p-3 md:p-5">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                 <span className="text-sm text-emerald-300">Interactive browser session</span>
-                <a href={import.meta.env.VITE_PITWALL_STREAM_URL} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-950">Open full-screen session</a>
+                <a href={import.meta.env.VITE_JOYCE_STREAM_URL} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-950">Open full-screen session</a>
               </div>
-              <iframe title="PitWall — interactive browser conversation" src={import.meta.env.VITE_PITWALL_STREAM_URL} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
+              <iframe title="PitWall — interactive browser conversation" src={import.meta.env.VITE_JOYCE_STREAM_URL} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
               <p className="mt-2 text-xs text-slate-400">Native voice availability depends on the authenticated provider session, browser permissions and microphone forwarding.</p>
             </div>
           ) : (
