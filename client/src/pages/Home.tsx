@@ -30,15 +30,22 @@ export default function Home() {
         {/* Hero Section */}
         <div className="mb-12 text-center">
           <h1 className="gradient-text text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-            PlatFormula.ONE
+            PlatFormula.One
           </h1>
           <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-2">
-            AI-Powered Startup Accelerator Platform
+            The Evolution of Startup Accelerators
           </p>
           <p className="text-sm md:text-base text-slate-500 dark:text-slate-400">
-            Build, pitch, track, and scale your startup with intelligent tools and community support
+            From Idea to Impact. From Seed to Scale.
           </p>
         </div>
+
+        <section className="mx-auto mb-10 max-w-3xl text-center" aria-label="Voice-first venture studio">
+          <p className="text-lg font-semibold text-slate-900 dark:text-white">The AI-Native, Voice-First Venture Studio.</p>
+          <p className="mt-3 text-base text-slate-600 dark:text-slate-300">Bring your idea. Talk it through. Build it slice by slice with your AI team—from first concept to working product, launch, and growth.</p>
+          <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">No waiting for a cohort. No coding experience required to begin. Start building today, with your voice.</p>
+          <p className="mt-4 text-sm font-medium text-slate-700 dark:text-slate-200">Converse → Understand → Research → Qualify → Assemble → Build → Verify → Operate</p>
+        </section>
 
         {/* Tab Navigation */}
         <div className="mb-8">
