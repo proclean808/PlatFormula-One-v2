@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from '@/components/Header';
-import FounderVoice from '@/components/FounderVoice';
+import EmbeddedBrowser from '@/components/EmbeddedBrowser';
 import Dashboard from '@/components/tabs/Dashboard';
 import Resources from '@/components/tabs/Resources';
 import Builder from '@/components/tabs/Builder';
@@ -43,7 +43,7 @@ export default function Home() {
             <div>
               <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Founder conversation · Starting grid</p>
               <h2 id="mario-heading" className="text-3xl font-bold">Talk to Mario</h2>
-              <p className="mt-2 max-w-2xl text-sm text-slate-300">Bring the idea. Mario is your founder-facing guide. Start a native real-time voice conversation. Microphone permission is requested when you connect.</p>
+              <p className="mt-2 max-w-2xl text-sm text-slate-300">Bring the idea. Mario is your founder-facing guide. Use the real Gemini application in an isolated streamed Chrome session. Sign in with Google directly; enable microphone forwarding in the browser session.</p>
             </div>
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
               <span className="rounded-full border border-emerald-700 bg-emerald-950 px-3 py-1 text-emerald-200">Mario</span>
@@ -51,7 +51,7 @@ export default function Home() {
               <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Grok Auto</span>
             </div>
           </div>
-          <FounderVoice />
+          <EmbeddedBrowser />
         </section>
 
         <section aria-label="How PlatFormula works" className="mb-10 grid gap-3 md:grid-cols-3">
