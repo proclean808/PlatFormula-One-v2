@@ -18,6 +18,8 @@ services:
       CHROME_CLI: "https://gemini.google.com/app"
       SELKIES_AUDIO_ENABLED: "true"
       SELKIES_MICROPHONE_ENABLED: "true"
+      SELKIES_MICROPHONE_ON_START: "demand"
+      SELKIES_AUDIO_ON_START: "true"
       SELKIES_FRAME_ANCESTORS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
       SELKIES_ALLOWED_ORIGINS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
     volumes:
@@ -39,6 +41,8 @@ services:
       CHROME_CLI: "https://chatgpt.com/"
       SELKIES_AUDIO_ENABLED: "true"
       SELKIES_MICROPHONE_ENABLED: "true"
+      SELKIES_MICROPHONE_ON_START: "demand"
+      SELKIES_AUDIO_ON_START: "true"
       SELKIES_FRAME_ANCESTORS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
       SELKIES_ALLOWED_ORIGINS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
     volumes:
