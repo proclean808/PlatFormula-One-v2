@@ -50,30 +50,14 @@ export default function Home() {
               <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Grok Auto</span>
             </div>
           </div>
-          {typeof import.meta.env.VITE_MARIO_ELEVENLABS_AGENT_ID === 'string' && /^agent_[a-zA-Z0-9]+$/.test(import.meta.env.VITE_MARIO_ELEVENLABS_AGENT_ID) ? (
-            <div className="p-5 md:p-8">
-              <p className="mb-4 text-sm text-emerald-200">Mario · Live voice and text conversation</p>
-              <div ref={(node) => {
-                if (!node || node.childElementCount) return;
-                const widget = document.createElement('elevenlabs-convai');
-                widget.setAttribute('agent-id', import.meta.env.VITE_MARIO_ELEVENLABS_AGENT_ID);
-                widget.setAttribute('variant', 'expanded');
-                widget.setAttribute('action-text', 'Talk to Mario');
-                widget.setAttribute('start-call-text', 'Start talking');
-                node.appendChild(widget);
-              }} />
-              <p className="mt-4 text-xs text-slate-400">Voice requires microphone permission. The configured agent must be enabled for public widget access and restricted to approved domains.</p>
-            </div>
-          ) : typeof import.meta.env.VITE_JOYCE_STREAM_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_JOYCE_STREAM_URL) ? (
+          {typeof import.meta.env.VITE_MARIO_LIVEKIT_EMBED_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_MARIO_LIVEKIT_EMBED_URL) ? (
             <div className="p-3 md:p-5">
-              <p className="mb-3 text-sm text-emerald-300">Mario · Interactive browser conversation</p>
-              <iframe title="Mario — interactive browser conversation" src={import.meta.env.VITE_JOYCE_STREAM_URL} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
+              <iframe title="Mario — LiveKit real-time voice agent" src={import.meta.env.VITE_MARIO_LIVEKIT_EMBED_URL} allow="microphone; camera; autoplay" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
             </div>
           ) : (
             <div className="p-6 md:p-8">
-              <p className="font-semibold">Mario's live voice connection is being configured.</p>
-              <p className="mt-2 text-sm text-slate-300">A verified ElevenLabs agent ID or existing secure browser stream is required. No simulated voice controls.</p>
-              <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" className="mt-5 inline-block rounded-xl bg-emerald-500 px-5 py-3 font-bold text-slate-950">Start a browser conversation ↗</a>
+              <p className="font-semibold">Mario's native voice session is not connected yet.</p>
+              <p className="mt-2 text-sm text-slate-300">Requires deployment of a LiveKit agent and its inline web interface. No third-party voice widget, simulated call, or browser-stream fallback is active.</p>
             </div>
           )}
         </section>
