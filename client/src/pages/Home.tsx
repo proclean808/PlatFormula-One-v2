@@ -42,7 +42,7 @@ export default function Home() {
             <div>
               <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Founder conversation · Starting grid</p>
               <h2 id="mario-heading" className="text-3xl font-bold">Talk to Mario</h2>
-              <p className="mt-2 max-w-2xl text-sm text-slate-300">Bring the idea. Mario helps you begin the founder journey through a live, native browser conversation.</p>
+              <p className="mt-2 max-w-2xl text-sm text-slate-300">Bring the idea. Mario is your founder-facing guide. The secured browser workspace will host the native provider experience once connected and verified.</p>
             </div>
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
               <span className="rounded-full border border-emerald-700 bg-emerald-950 px-3 py-1 text-emerald-200">Mario</span>
@@ -50,14 +50,14 @@ export default function Home() {
               <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Grok Auto</span>
             </div>
           </div>
-          {typeof import.meta.env.VITE_MARIO_LIVEKIT_EMBED_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_MARIO_LIVEKIT_EMBED_URL) ? (
+          {typeof import.meta.env.VITE_MARIO_BROWSER_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_MARIO_BROWSER_URL) ? (
             <div className="p-3 md:p-5">
-              <iframe title="Mario — LiveKit real-time voice agent" src={import.meta.env.VITE_MARIO_LIVEKIT_EMBED_URL} allow="microphone; camera; autoplay" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
+              <iframe title="Mario — secured interactive Chrome session" src={import.meta.env.VITE_MARIO_BROWSER_URL} allow="microphone; camera; autoplay" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
             </div>
           ) : (
             <div className="p-6 md:p-8">
               <p className="font-semibold">Mario's native voice session is not connected yet.</p>
-              <p className="mt-2 text-sm text-slate-300">Requires deployment of a LiveKit agent and its inline web interface. No third-party voice widget, simulated call, or browser-stream fallback is active.</p>
+              <p className="mt-2 text-sm text-slate-300">Requires an authenticated HTTPS Selkies Chrome session with WebSocket streaming and microphone forwarding. The provider website itself cannot be embedded directly.</p>
             </div>
           )}
         </section>
