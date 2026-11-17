@@ -40,35 +40,37 @@ export default function Home() {
           </p>
         </div>
 
-        <section className="mx-auto mb-10 max-w-3xl text-center" aria-label="Voice-first venture studio">
-          <p className="text-lg font-semibold text-slate-900 dark:text-white">The AI-Native, Voice-First Venture Studio.</p>
-          <p className="mt-3 text-base text-slate-600 dark:text-slate-300">Bring your idea. Talk it through. Build it slice by slice with your AI team—from first concept to working product, launch, and growth.</p>
-          <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">No waiting for a cohort. No coding experience required to begin. Start building today, with your voice.</p>
-          <p className="mt-4 text-sm font-medium text-slate-700 dark:text-slate-200">Converse → Understand → Research → Qualify → Assemble → Build → Verify → Operate</p>
+        {/* joYCe is the primary founder interaction, directly below the hero, never behind a tab. */}
+        <section id="talk-to-joyce" aria-labelledby="joyce-heading" className="mx-auto mb-8 max-w-6xl overflow-hidden rounded-2xl border border-emerald-500/40 bg-[#07130f] text-white shadow-2xl">
+          <div className="border-b border-emerald-500/20 bg-gradient-to-r from-emerald-950 via-[#0b201b] to-slate-950 px-5 py-5 md:px-8">
+            <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Your AI-native venture studio</p>
+            <h2 id="joyce-heading" className="text-2xl font-bold md:text-3xl">Talk to joYCe</h2>
+            <p className="mt-2 max-w-2xl text-sm text-slate-300">Start with your idea. Speak naturally in the provider's native conversation interface. From idea to impact. From seed to scale.</p>
+          </div>
+          {typeof import.meta.env.VITE_JOYCE_STREAM_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_JOYCE_STREAM_URL) ? (
+            <div className="p-3 md:p-5">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-sm text-emerald-300">Interactive browser session</span>
+                <a href={import.meta.env.VITE_JOYCE_STREAM_URL} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-950">Open full-screen session</a>
+              </div>
+              <iframe title="joYCe — interactive browser conversation" src={import.meta.env.VITE_JOYCE_STREAM_URL} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
+              <p className="mt-2 text-xs text-slate-400">Native voice availability depends on the authenticated provider session, browser permissions and microphone forwarding.</p>
+            </div>
+          ) : (
+            <div className="grid gap-5 p-5 md:grid-cols-[1fr_auto] md:items-center md:p-8">
+              <div>
+                <p className="font-medium text-white">Live browser connection not configured</p>
+                <p className="mt-2 text-sm text-slate-400">The joYCe session will appear here when the secure Chrome stream is deployed. This is not a simulated voice assistant.</p>
+              </div>
+              <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-emerald-600 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-emerald-500">Open Gemini conversation</a>
+            </div>
+          )}
         </section>
 
-        {(() => {
-          const streams = [
-            { name: 'joYCe · Live browser', url: import.meta.env.VITE_JOYCE_STREAM_URL },
-            { name: 'Council · Live browser', url: import.meta.env.VITE_COUNCIL_STREAM_URL },
-          ].filter((session): session is { name: string; url: string } =>
-            typeof session.url === 'string' && /^https:\/\//.test(session.url)
-          );
-          if (!streams.length) return null;
-          return <section aria-label="Live browser harness" className="mb-10 rounded-2xl border border-emerald-700/50 bg-slate-950 p-4 text-white">
-            <h2 className="text-xl font-semibold">Live browser harness</h2>
-            <p className="mt-1 mb-4 text-sm text-slate-400">Persistent interactive Chrome sessions with native provider interfaces. Microphone and audio are carried by the remote desktop stream, not an STT/TTS service.</p>
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-              {streams.map(session => <div key={session.name} className="overflow-hidden rounded-xl border border-slate-700 bg-slate-900">
-                <div className="flex items-center justify-between p-3">
-                  <h3 className="font-medium">{session.name}</h3>
-                  <a className="text-sm text-emerald-300 underline" href={session.url} target="_blank" rel="noopener noreferrer">Full screen</a>
-                </div>
-                <iframe title={session.name} src={session.url} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[550px] w-full bg-slate-950" />
-              </div>)}
-            </div>
-          </section>;
-        })()}
+        <section className="mx-auto mb-8 max-w-4xl text-center" aria-label="Founder journey">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">The Evolution of Startup Accelerators</h2>
+          <p className="mt-2 text-slate-600 dark:text-slate-300">Converse → Understand → Research → Qualify → Assemble → Build → Verify → Operate</p>
+        </section>
 
         {/* Tab Navigation */}
         <div className="mb-8">
