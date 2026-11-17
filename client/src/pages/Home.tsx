@@ -47,6 +47,29 @@ export default function Home() {
           <p className="mt-4 text-sm font-medium text-slate-700 dark:text-slate-200">Converse → Understand → Research → Qualify → Assemble → Build → Verify → Operate</p>
         </section>
 
+        {(() => {
+          const streams = [
+            { name: 'joYCe · Live browser', url: import.meta.env.VITE_JOYCE_STREAM_URL },
+            { name: 'Council · Live browser', url: import.meta.env.VITE_COUNCIL_STREAM_URL },
+          ].filter((session): session is { name: string; url: string } =>
+            typeof session.url === 'string' && /^https:\/\//.test(session.url)
+          );
+          if (!streams.length) return null;
+          return <section aria-label="Live browser harness" className="mb-10 rounded-2xl border border-emerald-700/50 bg-slate-950 p-4 text-white">
+            <h2 className="text-xl font-semibold">Live browser harness</h2>
+            <p className="mt-1 mb-4 text-sm text-slate-400">Persistent interactive Chrome sessions with native provider interfaces. Microphone and audio are carried by the remote desktop stream, not an STT/TTS service.</p>
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+              {streams.map(session => <div key={session.name} className="overflow-hidden rounded-xl border border-slate-700 bg-slate-900">
+                <div className="flex items-center justify-between p-3">
+                  <h3 className="font-medium">{session.name}</h3>
+                  <a className="text-sm text-emerald-300 underline" href={session.url} target="_blank" rel="noopener noreferrer">Full screen</a>
+                </div>
+                <iframe title={session.name} src={session.url} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[550px] w-full bg-slate-950" />
+              </div>)}
+            </div>
+          </section>;
+        })()}
+
         {/* Tab Navigation */}
         <div className="mb-8">
           <Tabs 
