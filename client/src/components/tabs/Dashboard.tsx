@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ArrowRight, Zap, Users, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -12,34 +11,12 @@ import { Button } from '@/components/ui/button';
  * - Interactive newsletter signup
  */
 export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing?: () => void }) {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleNewsletterSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 3000);
-    } catch (error) {
-      console.error('Newsletter signup failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <div className="space-y-8">
       {/* Hero Section with Background Image */}
       <div 
-        className="relative rounded-2xl overflow-hidden h-96 md:h-[500px] bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310419663031081065/ulwvClWrjLPCXvVg.png)',
-        }}
+        className="relative rounded-2xl overflow-hidden h-96 md:h-[500px] bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950"
+        
       >
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 via-purple-800/60 to-pink-900/80"></div>
@@ -47,10 +24,10 @@ export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing
         {/* Content */}
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            🏆 🏎 AI Startup Accelerator Program & ToolKit SDK 🏁
+            AI-Native Startup Accelerator & Venture Studio
           </h2>
           <p className="text-lg text-purple-100 mb-8 max-w-2xl">
-            Everything Founders Need to Cross their B2B SaaS FinishLine First!
+            A conversational workspace for founders: discover, design, build, verify and operate.
           </p>
           <Button className="gradient-btn" onClick={onNavigateToPricing}>
             Get Started <ArrowRight className="ml-2 w-4 h-4" />
@@ -106,40 +83,17 @@ export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing
         })}
       </div>
 
-      {/* Stats Section */}
-      <div className="glass p-8 rounded-2xl">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-          Platform Statistics
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { label: 'Active Startups', value: '2,500+' },
-            { label: 'Success Rate', value: '78%' },
-            { label: 'Total Funding', value: '$150M+' }
-          ].map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="gradient-text text-4xl font-bold mb-2">
-                {stat.value}
-              </div>
-              <p className="text-slate-600 dark:text-slate-400">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* About Section */}
       <div className="glass p-8 rounded-2xl">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-          🏆 About PlatFormula.ONE
+          About PlatFormula.One
         </h3>
         <div className="space-y-4 text-slate-600 dark:text-slate-400">
           <p className="text-lg leading-relaxed">
-            <strong className="gradient-text">🏎 AI Startup Accelerator Program & ToolKit SDK 🏁</strong>
+            <strong className="gradient-text">AI-native venture building</strong>
           </p>
           <p className="leading-relaxed">
-            PlatFormula.ONE is the ultimate B2B SaaS accelerator platform designed to help founders cross the finish line first. We provide everything you need to build, pitch, track, and scale your AI-powered startup with confidence.
+            PlatFormula.One is building a conversational, multimodal environment for venture creation. Features shown elsewhere in this workspace may be prototypes; integration and execution require verification.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
@@ -162,41 +116,6 @@ export default function Dashboard({ onNavigateToPricing }: { onNavigateToPricing
         </div>
       </div>
 
-      {/* Newsletter Signup */}
-      <div className="glass p-8 rounded-2xl">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-          Stay Updated
-        </h3>
-        <p className="text-slate-600 dark:text-slate-400 mb-6">
-          Subscribe to our newsletter for the latest accelerator opportunities and startup insights
-        </p>
-        
-        <form onSubmit={handleNewsletterSignup} className="flex flex-col md:flex-row gap-4">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="flex-1 px-4 py-3 rounded-lg bg-white/80 dark:bg-slate-700/50 border border-purple-200 dark:border-purple-700 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-600"
-          />
-          <Button 
-            type="submit" 
-            className="gradient-btn"
-            disabled={loading}
-          >
-            {loading ? 'Subscribing...' : 'Subscribe'}
-          </Button>
-        </form>
-
-        {subscribed && (
-          <div className="mt-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 rounded-lg">
-            <p className="text-green-800 dark:text-green-200">
-              ✓ Successfully subscribed! Check your email for confirmation.
-            </p>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
