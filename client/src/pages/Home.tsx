@@ -27,49 +27,59 @@ export default function Home() {
       <Header />
       
       <main className="container mx-auto px-4 py-8 md:py-12">
-        {/* Hero Section */}
-        <div className="mb-12 text-center">
-          <h1 className="gradient-text text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-            PlatFormula.One
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-2">
-            The Evolution of Startup Accelerators
-          </p>
-          <p className="text-sm md:text-base text-slate-500 dark:text-slate-400">
-            From Idea to Impact. From Seed to Scale.
-          </p>
-        </div>
+        <section aria-labelledby="founder-hero" className="relative mb-5 overflow-hidden rounded-[28px] border border-emerald-500/20 bg-[#07130f] px-5 py-8 text-white shadow-2xl md:px-10 md:py-12">
+          <div className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+          <p className="relative mb-4 text-xs font-bold uppercase tracking-[0.24em] text-emerald-300">PlatFormula.One · AI-native venture studio</p>
+          <h1 id="founder-hero" className="relative max-w-4xl text-4xl font-black leading-[1.06] tracking-tight md:text-6xl">Your startup starts with a conversation.</h1>
+          <p className="relative mt-5 max-w-3xl text-lg leading-relaxed text-slate-200 md:text-xl">Have an idea? You don't need an application, a cohort, or a technical co-founder just to get started. Tell us what you're building. Explore the opportunity, shape the business, assemble your AI team, and take the first step toward a working venture.</p>
+          <p className="relative mt-4 text-sm font-semibold text-emerald-300">From idea to impact. From seed to scale.</p>
+          <a href="#talk-to-mario" className="relative mt-7 inline-flex rounded-xl bg-emerald-500 px-6 py-3 font-bold text-[#07130f] shadow-lg shadow-emerald-950/40 hover:bg-emerald-400">Start talking now <span aria-hidden="true" className="ml-2">↗</span></a>
+          <p className="relative mt-4 text-xs text-slate-400">Explore the experience first. Decide whether to continue afterward.</p>
+        </section>
 
-        {/* PitWall is the primary founder interaction, directly below the hero, never behind a tab. */}
-        <section id="talk-to-joyce" aria-labelledby="joyce-heading" className="mx-auto mb-8 max-w-6xl overflow-hidden rounded-2xl border border-emerald-500/40 bg-[#07130f] text-white shadow-2xl">
-          <div className="border-b border-emerald-500/20 bg-gradient-to-r from-emerald-950 via-[#0b201b] to-slate-950 px-5 py-5 md:px-8">
-            <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Your AI-native venture studio</p>
-            <h2 id="joyce-heading" className="text-2xl font-bold md:text-3xl">Talk to PitWall</h2>
-            <p className="mt-2 max-w-2xl text-sm text-slate-300">Start with your idea. Speak naturally in the provider's native conversation interface. From idea to impact. From seed to scale.</p>
+        <section id="talk-to-mario" aria-labelledby="mario-heading" className="mx-auto mb-10 max-w-6xl overflow-hidden rounded-[24px] border border-emerald-500/40 bg-[#0b1715] text-white shadow-xl">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-emerald-500/20 px-5 py-5 md:px-8">
+            <div>
+              <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">Founder conversation · Starting grid</p>
+              <h2 id="mario-heading" className="text-3xl font-bold">Talk to Mario</h2>
+              <p className="mt-2 max-w-2xl text-sm text-slate-300">Bring the idea. Mario helps you begin the founder journey through a live, native browser conversation.</p>
+            </div>
+            <div className="flex flex-wrap gap-2 text-xs font-semibold">
+              <span className="rounded-full border border-emerald-700 bg-emerald-950 px-3 py-1 text-emerald-200">Mario</span>
+              <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Joyce</span>
+              <span className="rounded-full border border-slate-700 px-3 py-1 text-slate-300">Grok Auto</span>
+            </div>
           </div>
           {typeof import.meta.env.VITE_JOYCE_STREAM_URL === 'string' && /^https:\/\//.test(import.meta.env.VITE_JOYCE_STREAM_URL) ? (
             <div className="p-3 md:p-5">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-                <span className="text-sm text-emerald-300">Interactive browser session</span>
-                <a href={import.meta.env.VITE_JOYCE_STREAM_URL} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-950">Open full-screen session</a>
+                <span className="text-sm text-emerald-300">Mario · Browser conversation</span>
+                <a href={import.meta.env.VITE_JOYCE_STREAM_URL} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-emerald-600 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-950">Open full-screen</a>
               </div>
-              <iframe title="PitWall — interactive browser conversation" src={import.meta.env.VITE_JOYCE_STREAM_URL} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
-              <p className="mt-2 text-xs text-slate-400">Native voice availability depends on the authenticated provider session, browser permissions and microphone forwarding.</p>
+              <iframe title="Mario — live browser conversation" src={import.meta.env.VITE_JOYCE_STREAM_URL} allow="microphone; camera; autoplay; clipboard-read; clipboard-write" className="h-[560px] w-full rounded-xl border border-slate-700 bg-slate-950 md:h-[680px]" />
+              <p className="mt-2 text-xs text-slate-400">Microphone and native voice require an authenticated browser session and provider support.</p>
             </div>
           ) : (
             <div className="grid gap-5 p-5 md:grid-cols-[1fr_auto] md:items-center md:p-8">
               <div>
-                <p className="font-medium text-white">Live browser connection not configured</p>
-                <p className="mt-2 text-sm text-slate-400">Your PitWall session will appear here when the secure Chrome stream is deployed. This is not a simulated voice assistant.</p>
+                <p className="font-semibold text-white">Live Mario session awaiting connection</p>
+                <p className="mt-2 max-w-xl text-sm text-slate-300">The embedded Chrome stream is not configured on this deployment. You can still start a native browser conversation now; the embedded session will replace this access link when securely connected.</p>
               </div>
-              <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-emerald-600 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-emerald-500">Open Gemini conversation</a>
+              <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-emerald-500 px-5 py-3 text-center text-sm font-bold text-slate-950 hover:bg-emerald-400">Start a conversation ↗</a>
             </div>
           )}
         </section>
 
-        <section className="mx-auto mb-8 max-w-4xl text-center" aria-label="Founder journey">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">The Evolution of Startup Accelerators</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">Converse → Understand → Research → Qualify → Assemble → Build → Verify → Operate</p>
+        <section aria-label="How PlatFormula works" className="mb-10 grid gap-3 md:grid-cols-3">
+          {[
+            { n: '01', heading: 'Tell us the idea', body: 'Start with your voice. Describe the problem, customer, or opportunity. No pitch deck required.' },
+            { n: '02', heading: 'Build the venture', body: 'Turn the conversation into research, a business model, a product plan, and verifiable next steps.' },
+            { n: '03', heading: 'Take the wheel', body: 'Keep what you create. Review the evidence, direct the AI team, and decide what gets built next.' }
+          ].map(step => <div key={step.n} className="rounded-2xl border border-emerald-900/20 bg-white p-5 shadow-sm dark:bg-slate-900">
+            <span className="text-xs font-bold tracking-widest text-emerald-600 dark:text-emerald-400">{step.n}</span>
+            <h3 className="mt-2 text-lg font-bold text-slate-900 dark:text-white">{step.heading}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">{step.body}</p>
+          </div>)}
         </section>
 
         {/* Tab Navigation */}
