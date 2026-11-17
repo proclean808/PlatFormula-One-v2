@@ -1,0 +1,50 @@
+# Two isolated, persistent Chrome sessions streamed through Selkies (not provider iframes).
+# Bind to loopback; publish externally ONLY through authenticated HTTPS reverse proxy.
+# Set JOYCE_BROWSER_USER, JOYCE_BROWSER_PASSWORD, COUNCIL_BROWSER_USER,
+# COUNCIL_BROWSER_PASSWORD, and PF1_PORTAL_ORIGIN in an uncommitted .env.
+services:
+  joyce-browser:
+    image: lscr.io/linuxserver/chrome:latest
+    restart: unless-stopped
+    shm_size: "1gb"
+    ports:
+      - "127.0.0.1:3101:3001"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "Etc/UTC"
+      CUSTOM_USER: "${JOYCE_BROWSER_USER:?set user}"
+      PASSWORD: "${JOYCE_BROWSER_PASSWORD:?set password}"
+      CHROME_CLI: "https://gemini.google.com/app"
+      SELKIES_AUDIO_ENABLED: "true"
+      SELKIES_MICROPHONE_ENABLED: "true"
+      SELKIES_FRAME_ANCESTORS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
+      SELKIES_ALLOWED_ORIGINS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
+    volumes:
+      - joyce-profile:/config
+    security_opt:
+      - no-new-privileges:true
+  council-browser:
+    image: lscr.io/linuxserver/chrome:latest
+    restart: unless-stopped
+    shm_size: "1gb"
+    ports:
+      - "127.0.0.1:3102:3001"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "Etc/UTC"
+      CUSTOM_USER: "${COUNCIL_BROWSER_USER:?set user}"
+      PASSWORD: "${COUNCIL_BROWSER_PASSWORD:?set password}"
+      CHROME_CLI: "https://chatgpt.com/"
+      SELKIES_AUDIO_ENABLED: "true"
+      SELKIES_MICROPHONE_ENABLED: "true"
+      SELKIES_FRAME_ANCESTORS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
+      SELKIES_ALLOWED_ORIGINS: "${PF1_PORTAL_ORIGIN:?set HTTPS portal origin}"
+    volumes:
+      - council-profile:/config
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  joyce-profile:
+  council-profile:
